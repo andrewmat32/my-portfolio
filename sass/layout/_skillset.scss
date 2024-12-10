@@ -21,6 +21,10 @@
 
         p {
             @include typography('content', 'larger');
+
+            @media screen and (max-width: map-get($media-queries, tablet-max)) {
+                @include typography('content', 'regular');
+            }
         }
     }
 }
