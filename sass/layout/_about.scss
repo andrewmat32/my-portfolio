@@ -1,0 +1,82 @@
+.about {
+    @media screen and (max-width: map-get($media-queries, popup-max)) {
+        height: max-content;
+
+        .section-right,
+        .section-left {
+            height: -webkit-fill-available;
+        }
+    }
+
+    &-content {
+        &-text {
+            height: -webkit-fill-available;
+            moz-height: -moz-available;
+
+            &-description {
+                @include flexbox(space-around, flex-start, column, null, $content-gap);
+                animation: slideInFromRight;
+
+                @media screen and (max-width: map-get($media-queries, tablet-max)) {
+                    @include flexbox(center, center, column, null, $content-gap);
+                }
+
+                img {
+                    width: 100%;
+                    height: auto;
+                    border-radius: 50%;
+                    box-shadow: 0 0 10px 0 rgba($color-main-dark, 0.5);
+                }
+            }
+
+            p  {
+                @include typography('content', 'larger');
+            }
+        }
+    }
+
+    .section-left {
+        .about-content-text-title {
+            @include flexbox(flex-end, center, row, null);
+            //background-color: black;
+
+            @media screen and (max-width: map-get($media-queries, tablet-max)) {
+                @include flexbox(center, center, column, null);
+            }
+        }
+    }
+
+    .section-right {
+        @include typography('content', 'larger');
+
+        .services {
+            &-content {
+                &-text-description {
+                    ul {
+                        @include flexbox(space-around, flex-start, column, null, $content-gap);
+
+                        li,
+                        span {
+                            @include typography('content', 'larger');
+                        }
+
+                        li {
+                            @include flexbox(space-around, center, row, null, $content-gap-small);
+
+                            i {
+                                transition: margin-right 0.3s;
+                            }
+                        }
+
+                        li:hover {
+                            i {
+                                margin-right: $content-gap-small;
+                                transition: margin-right 0.3s;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

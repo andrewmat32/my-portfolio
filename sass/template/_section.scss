@@ -1,0 +1,105 @@
+section {
+    //padding: $padding-section 0;
+
+    @media screen and (max-width: map-get($media-queries, desktop-min)) {
+        height:max-content;
+    }
+
+    .container {
+        @include container;
+    }
+}
+
+section:has(.section-left),
+section:has(.section-right) {
+    @include flexbox( space-between, center, row, wrap, 0);
+
+    .section-left,
+    .section-right {
+        flex-grow: 1;
+        height: 100%;
+        width: 50%;
+        padding: $padding-section;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s;
+    }
+
+    .section-left {
+        background-color: rgba($color-main, 0.6);
+        color: $color-secondary;
+    }
+
+    @media screen and (max-width: map-get($media-queries, tablet-max)) {
+        @include flexbox( space-between, center, column, wrap, 0);
+
+        .section-left,
+        .section-right {
+            width: 100%;
+        }
+
+        .section-left {
+            //background-color: unset;
+            //color: $color-main;
+        }
+    }
+}
+
+section:has(.section-right:hover) {
+    .section-right {
+        background-color: rgba($color-main, 0.6);
+        color: $color-secondary;
+        transition: all 0.3s;
+    }
+
+    .section-left {
+        backdrop-filter: blur(10px);
+        background-color: unset;
+        color: $color-main;
+        transition: all 0.3s;
+    }
+}
+
+
+section.section-quarter {
+    height: fit-content;
+}
+
+section.section-full {
+    height: 100vh;
+    height: 100dvh;
+
+    @media screen and (max-width: map-get($media-queries, desktop-min)) {
+        height: max-content;
+    }
+}
+
+section.section-dynamic {
+    height: auto;
+    padding: $padding-section-dynamic 0;
+}
+
+section.header {
+    //background-color: $color-secondary;
+}
+
+.blur-background {
+    background-color: $color-main;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+}
+
+

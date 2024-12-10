@@ -1,0 +1,116 @@
+// -----------------------------------------------------------------------------
+// This file contains all @font-face declarations, if any.
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// Fjalla One
+// -----------------------------------------------------------------------------
+
+@font-face {
+    font-family: 'Fjalla One';
+    src: local('FjallaOne-Regular'), url('/fonts/Fjalla_One/FjallaOne-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+// -----------------------------------------------------------------------------
+// Ubuntu
+// -----------------------------------------------------------------------------
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: local('Ubuntu-Light'), url('/fonts/Ubuntu/Ubuntu-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: local('Ubuntu-Regular'), url('/fonts/Ubuntu/Ubuntu-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: local('Ubuntu-Medium'), url('/fonts/Ubuntu/Ubuntu-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('/fonts/Ubuntu/ubuntu-v14-latin-500.ttf') format('ttf');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('/fonts/Ubuntu/ubuntu-v14-latin-regular.ttf') format('ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+// -----------------------------------------------------------------------------
+// Zeyada
+// -----------------------------------------------------------------------------
+@font-face {
+    font-family: 'Zeyada';
+    src: local('Zeyada-Regular'), url('/fonts/Zeyada/Zeyada-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+// -----------------------------------------------------------------------------
+// Space Grotesk
+// -----------------------------------------------------------------------------
+
+@font-face {
+    font-family: 'Space Grotesk';
+    src: local('SpaceGrotesk-Light'), url('/fonts/SpaceGrotesk/SpaceGrotesk-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'Space Grotesk';
+    src: local('SpaceGrotesk-Medium'), url('/fonts/SpaceGrotesk/SpaceGrotesk-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Grotesk';
+    src: local('SpaceGrotesk-Regular'), url('/fonts/SpaceGrotesk/SpaceGrotesk-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Grotesk';
+    src: local('SpaceGrotesk-Bold'), url('/fonts/SpaceGrotesk/SpaceGrotesk-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Grotesk';
+    src: local('SpaceGrotesk-SemiBold'), url('/fonts/SpaceGrotesk/SpaceGrotesk-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}

@@ -1,0 +1,9 @@
+footer {
+    background-color: $color-main-dark;
+    color: $color-secondary;
+
+    .container {
+        @include flexbox(center, center, row, null, $content-gap);
+        border-top: 1px solid rgba($color-secondary, 0.5);
+    }
+}

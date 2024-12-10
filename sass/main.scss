@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+// 1. Vendors
+@import 'vendors/normalize';
+
+// 2. Configuration and helpers
+@import 'abstracts/variables',
+        'abstracts/functions',
+        'abstracts/mixins',
+        'abstracts/key-frames';
+
+// 3. Base stuff
+@import 'base/base',
+        'base/fonts',
+        'base/typography',
+        'base/helpers';
+
+// 4. Components
+@import 'components/_burger-menu',
+        'components/_navigation',
+        'components/_animated-name',
+        'components/_author',
+        'components/_buttons',
+        'components/scroll-to-top';
+
+
+// 5. Page-specific styles
+
+
+// 6. Themes
+
+
+// 7. Template
+@import 'template/section';
+
+
+// 8. Layout
+@import 'layout/header',
+        'layout/projects',
+        'layout/about',
+        'layout/skillset',
+        'layout/footer',
+        'layout/resume',
+        'layout/linkedin';
+//@import 'layout/burger-',
+        //'layout/footer'
+
+.container {
+    @include container;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@include generate-classes('display', 'd', ('grid': grid));
+@include generate-classes('grid-template-columns', 'grid-cols', $grid-columns-rows-values);
+@include generate-classes('grid-template-rows', 'grid-rows', $grid-columns-rows-values);
+@include generate-classes('grid-column', 'grid-cols-span', $grid-span-values);
+@include generate-classes('grid-row', 'grid-rows-span', $grid-span-values);
+
+@include generate-classes('gap', 'gap', $gap);
+
+body {
+    background-image: url('../images/bg-main.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: bottom;
+}
+
+.cursor {
+    display: none;
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 100px;
+    background-color: $color-secondary;
+    transition: ease-in-out;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    mix-blend-mode: difference;
+}

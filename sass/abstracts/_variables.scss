@@ -1,0 +1,245 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+/*
+ * Grid variables
+ */
+
+:root {
+
+    // ** HEADING STYLES **
+    --typography-h1-font-size: 45px;
+    --typography-h1-line-height: 45px;
+
+    --typography-h2-font-size: 36px;
+    --typography-h2-line-height: 36px;
+
+    --typography-h3-font-size: 30px;
+    --typography-h3-line-height: 30px;
+
+    --typography-h4-font-size: 24px;
+    --typography-h4-line-height: 24px;
+
+    --typography-h5-font-size: 20px;
+    --typography-h5-line-height: 20px;
+
+    --typography-h6-font-size: 16px;
+    --typography-h6-line-height: 16px;
+
+    // ** BODY STYLES **
+    --typography--content-smallest-font-size: 12px;
+    --typography--content-smallest-line-height: 12px;
+
+    --typography--content-smaller-font-size: 12px;
+    --typography--content-smaller-line-height: 16px;
+
+    --typography--content-small-font-size: 14px;
+    --typography--content-small-line-height: 16px;
+
+    --typography--content-regular-font-size: 17px;
+    --typography--content-regular-line-height: 22px; //20px
+
+    --typography--content-medium-font-size: 19px;
+    --typography--content-medium-line-height: 28px;
+
+    --typography--content-large-font-size: 22px;
+    --typography--content-large-line-height: 24px;
+
+    --typography--content-larger-font-size: 22px;
+    --typography--content-larger-line-height: 32px;
+
+    --typography--content-largest-font-size: 28px;
+    --typography--content-largest-line-height: 32px;
+
+    // ** BUTTON STYLES **
+    --typography-button-call-to-action-font-size: 16px;
+    --typography-button-call-to-action-line-height: 16px;
+
+
+
+    // ** SHADOW **
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.15);
+    --shadow-default: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.16);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.26);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.36);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.46);
+    --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.65);
+    --shadow-none: none;
+
+
+
+    // ** MEDIA QUERIES **
+    --media-query-desktop-4k: 2560px;
+    --media-query-desktop-2k: 1920px;
+    --media-query-popup-max: 1600px;
+    --media-query-desktop-min: 1280px;
+    --media-query-tablet-max: 1024px;
+    --media-query-tablet-min: 768px;
+    --media-query-mobile-max: 767px;
+    --media-query-mobile-large: 550px;
+
+    //// ** COLORS **
+    //--columns: 12;
+    --color-main: #1a202c;
+    --color-main-dark: #121826;
+    --color-main-light: #2d3748;
+
+    --secondary-color: #edf2f7;
+    --secondary-color-dark: #e2e8f0;
+
+    --tertiary-color: #e53e3e;
+
+    --action-color: #38a169;
+
+    --overlay-medium: rgba(0, 0, 0, 0.5);     // Moderate Dark Overlay
+    --overlay-light: rgba(0, 0, 0, 0.08);     // Subtle Dark Overlay
+    --overlay-none: rgba(3, 2, 1, 0);         // Invisible Background Layer
+
+    // ** PADDINGS **
+    --padding-content: 1rem;
+    --padding-section: 2rem;
+    --padding-section-dynamic: 6rem;
+    --padding-to-screen-edge: 2rem;
+
+    // ** MARGINS **
+    --margin-right-to-screen-edge: 12%;
+
+    // ** RADIUS **
+    --border-radius: .5rem;
+}
+
+
+$color-main: #1a202c;
+.color-main {
+    color: $color-main;
+}
+
+$color-main-dark: #121826;
+.color-main-dark {
+    color: $color-main-dark;
+}
+$color-main-light: #2d3748;
+.color-main-light {
+    color: $color-main-light;
+}
+
+$color-secondary: #edf2f7;
+.color-secondary {
+    color: $color-secondary;
+}
+
+$color-secondary-dark: #e2e8f0;
+.color-secondary-dark {
+    color: $color-secondary-dark;
+}
+
+$color-tertiary: #e53e3e;
+.color-tertiary {
+    color: $color-tertiary;
+}
+
+$color-action: #38a169;
+.color-action {
+    color: $color-action;
+}
+
+$filter-color-main: brightness(0) saturate(100%) invert(9%) sepia(42%) saturate(2709%) hue-rotate(328deg) brightness(99%) contrast(88%);
+
+$overlay-medium: rgba(0, 0, 0, 0.5);     // Moderate Dark Overlay
+$overlay-light: rgba(0, 0, 0, 0.08);     // Subtle Dark Overlay
+$overlay-none: rgba(3, 2, 1, 0);         // Invisible Background Layer
+
+$columns: 12;
+$content-gap: 1rem;
+$content-gap-small: 0.5rem;
+
+$shadow-sm: var(--shadow-sm);
+$shadow-default: var(--shadow-default);
+$shadow-md: var(--shadow-md);
+$shadow-lg: var(--shadow-lg);
+$shadow-xl: var(--shadow-xl);
+$shadow-2xl: var(--shadow-2xl);
+
+$padding-content: var(--padding-content);
+$padding-section: var(--padding-section);
+$padding-section-dynamic: var(--padding-section-dynamic);
+
+$padding-to-screen-edge: var(--padding-to-screen-edge);
+$margin-right-to-screen-edge: var(--margin-right-to-screen-edge);
+
+$border-radius: var(--border-radius);
+
+// Order of media queries is important.
+// typography mixin will loop through this map and apply styles in order of this map
+$media-queries: (
+    desktop-4k: 2560px,
+    desktop-2k: 1920px,
+    popup-max: 1600px,
+    desktop-min: 1280px,
+    tablet-max: 1024px,
+    tablet-min: 768px,
+    mobile-max: 767px,
+    mobile-large: 550px
+);
+
+$gap: (
+        '0': 0,
+        '1': 0.25rem,
+        '2': 0.5rem,
+        '3': 0.75rem,
+        '4': 1rem,
+        '5': 1.25rem,
+        '6': 1.5rem,
+        '8': 2rem,
+        '10': 2.5rem,
+        '12': 3rem,
+        '16': 4rem,
+        '20': 5rem,
+        '24': 6rem,
+        '32': 8rem,
+        '40': 10rem,
+);
+
+$grid-columns-rows-values: (
+        '1': repeat(1, minmax(0, 1fr)),
+        '2': repeat(2, minmax(0, 1fr)),
+        '3': repeat(3, minmax(0, 1fr)),
+        '4': repeat(4, minmax(0, 1fr)),
+        '5': repeat(5, minmax(0, 1fr)),
+        '6': repeat(6, minmax(0, 1fr)),
+        '7': repeat(7, minmax(0, 1fr)),
+        '8': repeat(8, minmax(0, 1fr)),
+        '9': repeat(9, minmax(0, 1fr)),
+        '10': repeat(10, minmax(0, 1fr)),
+        '11': repeat(11, minmax(0, 1fr)),
+        '12': repeat(12, minmax(0, 1fr))
+);
+
+$grid-span-values: (
+        '1': span 1,
+        '2': span 2,
+        '3': span 3,
+        '4': span 4,
+        '5': span 5,
+        '6': span 6,
+        '7': span 7,
+        '8': span 8,
+        '9': span 9,
+        '10': span 10,
+        '11': span 11,
+        '12': span 12
+);
+
+////Text
+//$font: "Open Sans";
+//// buttonFont applies to all typography elements of type 'buttons' in typography mixin
+//$buttonFont: "Open Sans Semi Condensed";
+
+//Text
+$headingFont: 'Space Grotesk';
+$font: 'Space Grotesk';
+// buttonFont applies to all typography elements of type 'buttons' in typography mixin
+$buttonFont: 'Space Grotesk';
+$accentFont: 'Space Grotesk';
+

@@ -1,0 +1,8 @@
+.resume {
+    padding: $padding-section-dynamic 0;
+    backdrop-filter: blur(10px);
+
+    .container {
+        @include flexbox( space-between, center, column, wrap, 0);
+    }
+}

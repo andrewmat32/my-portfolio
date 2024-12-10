@@ -1,0 +1,263 @@
+/**
+ * Basic typography style for copy text
+ */
+
+$typography-styles: (
+        headings: (
+                h1: (
+                        font-size: var(--typography-h1-font-size),
+                        line-height: var(--typography-h1-line-height),
+
+                        responsive: (
+                                tablet-min: (
+                                        font-size: var(--typography-h2-font-size),
+                                        line-height: var(--typography-h2-line-height)
+                                ),
+                                mobile-large: (
+                                        font-size: var(--typography-h3-font-size),
+                                        line-height: var(--typography-h3-line-height)
+                                )
+                        )
+                ),
+
+                h2: (
+                        font-size: var(--typography-h2-font-size),
+                        line-height: var(--typography-h2-line-height),
+
+                        responsive: (
+                                tablet-min: (
+                                        font-size: var(--typography-h3-font-size),
+                                        line-height: var(--typography-h3-line-height)
+                                ),
+                                mobile-large: (
+                                        font-size: var(--typography-h4-font-size),
+                                        line-height: var(--typography-h4-line-height)
+                                )
+                        )
+                ),
+
+                h3: (
+                        font-size: var(--typography-h3-font-size),
+                        line-height: var(--typography-h3-line-height),
+
+                        responsive: (
+                                tablet-min: (
+                                        font-size: var(--typography-h4-font-size),
+                                        line-height: var(--typography-h4-line-height)
+                                ),
+                                mobile-large: (
+                                        font-size: var(--typography-h5-font-size),
+                                        line-height: var(--typography-h5-line-height)
+                                )
+                        )
+                ),
+
+                h4: (
+                        font-size: var(--typography-h4-font-size),
+                        line-height: var(--typography-h4-line-height),
+
+                        responsive: (
+                                tablet-min: (
+                                        font-size: var(--typography-h5-font-size),
+                                        line-height: var(--typography-h5-line-height)
+                                ),
+                                mobile-large: (
+                                        font-size: var(--typography-h6-font-size),
+                                        line-height: var(--typography-h6-line-height)
+                                )
+                        )
+                ),
+
+                h5: (
+                        font-size: var(--typography-h5-font-size),
+                        line-height: var(--typography-h5-line-height),
+
+                        responsive: (
+                                tablet-min: (
+                                        font-size: var(--typography-h6-font-size),
+                                        line-height: var(--typography-h6-line-height)
+                                )
+                        )
+                ),
+
+                h6: (
+                        font-size: var(--typography-h6-font-size),
+                        line-height: var(--typography-h6-line-height),
+                )
+
+        ),
+        content: (
+
+                largest: (
+                        font-size: var( --typography--content-largest-font-size ),
+                        line-height: var( --typography--content-largest-line-height )
+                ),
+
+                larger: (
+                        font-size: var( --typography--content-larger-font-size ),
+                        line-height: var( --typography--content-larger-line-height )
+                ),
+
+                larger-responsive: (
+                        font-size: var( --typography--content-larger-font-size ),
+                        line-height: var( --typography--content-larger-line-height ),
+
+                        responsive: (
+                                tablet-min: (
+                                        font-size: var( --typography--content-medium-font-size ),
+                                        line-height: var( --typography--content-medium-line-height )
+                                )
+                        )
+                ),
+
+                large: (
+                        font-size: var( --typography--content-large-font-size ),
+                        line-height: var( --typography--content-large-line-height )
+                ),
+
+                medium: (
+                        font-size: var( --typography--content-medium-font-size ),
+                        line-height: var( --typography--content-medium-line-height )
+                ),
+
+                regular: (
+                        font-size: var( --typography--content-regular-font-size ),
+                        line-height: var( --typography--content-regular-line-height )
+                ),
+
+                small: (
+                        font-size: var( --typography--content-small-font-size ),
+                        line-height: var( --typography--content-small-line-height )
+                ),
+
+                smaller: (
+                        font-size: var( --typography--content-smaller-font-size ),
+                        line-height: var( --typography--content-smaller-line-height )
+                ),
+
+                smallest: (
+                        font-size: var( --typography--content-smallest-font-size ),
+                        line-height: var( --typography--content-smallest-line-height )
+                )
+
+
+        ),
+        buttons: (
+                call-to-action: (
+                        font-size: var( --typography-button-call-to-action-font-size ),
+                        line-height: var( --typography-button-call-to-action-line-height )
+                )
+        )
+);
+
+@mixin typography( $category, $style, $font-weight: null, $color: null, $text-transform: null ) {
+    @if map-has-key( $typography-styles, $category ) {
+        $category-map: map-get( $typography-styles, $category );
+
+        @if map-has-key( $category-map, $style ) {
+            $typography: map-get( $category-map, $style );
+
+            @if $category == 'buttons' {
+                font-family: $buttonFont;
+            }
+            @else if $category == 'headings' {
+                font-family: $headingFont;
+            }
+            @else {
+                font-family: $font;
+            }
+
+            font-size: map-get( $typography, font-size );
+            line-height: map-get( $typography, line-height );
+
+            @if $font-weight != null {
+                font-weight: $font-weight;
+            }
+
+            @if $color != null {
+                color: $color;
+            }
+            @if $text-transform != null {
+                text-transform: $text-transform;
+            }
+
+            @each $breakpoint, $width in $media-queries {
+                $media-query: map-get( $typography, responsive );
+
+                @if $media-query {
+                    @if map-has-key( $media-query, $breakpoint ) {
+                        $responsive-styles: map-get( $media-query, $breakpoint );
+
+                        @media ( max-width: $width ) {
+                            @each $property, $value in $responsive-styles {
+                                #{ $property }: $value;
+                            }
+                        }
+                    }
+                }
+            }
+
+        } @else {
+            @warn "The style `#{ $style }` is not defined in the `#{ $category }` category.";
+        }
+
+    } @else {
+        @warn "The category `#{ $category }` is not defined in $typography-styles.";
+    }
+}
+
+.text {
+    @include typography( 'content', 'regular', );
+}
+
+h1,
+.h1 {
+    @include typography( 'headings', 'h1' );
+}
+
+h2,
+.h2 {
+    @include typography( 'headings', 'h2' );
+}
+
+h3,
+.h3 {
+    @include typography( 'headings', 'h3' );
+}
+
+h4,
+.h4 {
+    @include typography( 'headings', 'h4' );
+}
+
+h5,
+.h5 {
+}
+
+h6,
+.h6 {
+    @include typography( 'headings', 'h6' );
+
+}
+
+p {
+    @include typography( 'content', 'regular' );
+}
+
+a {
+    @include typography( 'content', 'regular', null, var(--accent-500) );
+    text-decoration: none;
+}
+
+span {
+    @include typography( 'content', 'regular' );
+}
+
+.sub-title {
+    font-family: $accentFont;
+    color: $color-action;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 0 rgba($color-main, 0.1);
+    text-align: center;
+}
+

@@ -1,0 +1,46 @@
+@keyframes bounce {
+    0%, 45% {transform: translateY(0);}
+    20% {transform: translateY(-15px);}
+    30% {transform: translateY(-7px);}
+}
+
+@keyframes slideInFromRight {
+    0%, 50% {
+        right: -2rem;
+        opacity: 0;
+    }
+    100% {
+        transform: 1.8rem;
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #DDE6ED;
+    }
+}

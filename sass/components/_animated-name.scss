@@ -1,0 +1,31 @@
+.animated-name {
+    //@include flexbox(center, center, column, null);
+    //position: absolute;
+    //padding: 1rem;
+    //cursor: pointer;
+    //transition: background-color 0.3s, color 0.1s;
+    //
+    //.main-name,
+    //.secondary-name {
+    //    position: absolute;
+    //    color: $color-main-dark;
+    //}
+    //
+    //.secondary-name {
+    //    height: 0;
+    //    overflow: hidden;
+    //    transition: all 0.3s ease-in-out;
+    //}
+    //
+    ////@include underline-hover($color-main);
+    //
+    //&:hover {
+    //    //transition: background-color 0.3s, color 0.1s;
+    //    //background-blend-mode: screen;
+    //
+    //    .secondary-name {
+    //        height: auto;
+    //        transition: all 0.3s ease-in-out;
+    //    }
+    //}
+}

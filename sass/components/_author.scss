@@ -1,0 +1,42 @@
+.author {
+    @include flexbox(flex-start, center, row, null, $content-gap);
+
+    @media screen and (max-width: map-get($media-queries, tablet-min)) {
+        @include flexbox( center, center, column, null, $content-gap );
+    }
+
+    .author-image {
+        height: 100px;
+        width: 100px;
+
+        img {
+            height: 100px;
+            border-radius: $border-radius;
+            object-fit: cover;
+        }
+
+        @media screen and (max-width: map-get($media-queries, tablet-min)) {
+            height: 300px;
+            width: -webkit-fill-available;
+            width: -moz-available;
+
+            img {
+                height: 300px;
+                width: -webkit-fill-available;
+                width: -moz-available;
+            }
+        }
+
+    }
+
+    .author-info {
+        .author-name {
+            @include typography( content, larger, 600 );
+            white-space: nowrap;
+        }
+
+        .author-title {
+            @include typography( content, regular, 400 );
+        }
+    }
+}

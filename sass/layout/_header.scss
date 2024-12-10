@@ -1,0 +1,93 @@
+.header {
+    transition: all 0.3s;
+
+    @media screen and (max-width: map-get($media-queries, desktop-min)) {
+        height: 100vh !important;
+    }
+
+    .container {
+        @include absCenter();
+    }
+
+    .hero-content {
+        @include flexbox(center, center, column, null);
+        text-align: center;
+        z-index: 1;
+
+        &-text-title {
+            @include flexbox(center, center, row, null);
+            white-space: nowrap;
+        }
+
+        h1 {
+            span {
+                @include typography('headings', 'h1');
+                position: relative;
+                transition: color 0.5s, background-color 0.5s;
+                cursor: pointer;
+            }
+            //transform: translateX(-50%);
+
+            //.animated-name {
+            //    padding-left: 1rem;
+            //    transform: translatex(100%);
+            //};
+        }
+
+        p {
+            @include typography('content', 'larger');
+        }
+
+        h1,
+        p {
+            color: $color-main-dark;
+        }
+    }
+
+    .header-likes-counter {
+        opacity: 0;
+        transition: opacity 0.2s;
+
+        @include position-on-screen(fixed, auto, $padding-to-screen-edge, 0, $margin-right-to-screen-edge);
+        color: $color-secondary;
+        //color: $color-main-dark;
+
+        .h4 {
+            transform: rotate(-45deg);
+            margin-left: -80px;
+        }
+        //each letter in the span has a style
+        span {
+            @include typography('content', 'larger');
+            padding: 0.5rem;
+            background-color: $color-main-dark;
+            border-radius: $border-radius;
+            box-shadow: $shadow-lg;
+            margin-right: 0.5rem;
+        }
+        //display: none;
+    }
+}
+
+.header:has(.main-name:hover) {
+    background-color: rgba($color-main-dark, 0.6);
+    transition: all 0.3s;
+    //backdrop-filter: blur(10px);
+
+    .hero-content {
+        h1,
+        p {
+            color: $color-secondary;
+            animation: bounce 1s ease-out;
+        }
+
+        h1 span {
+            transition: all 0.8s;
+        }
+    }
+
+    //.header-likes-counter {
+    //    opacity: 1;
+    //    transition: opacity 1s;
+    //}
+}
