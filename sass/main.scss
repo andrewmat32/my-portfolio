@@ -21,7 +21,8 @@
         'components/_animated-name',
         'components/_author',
         'components/_buttons',
-        'components/scroll-to-top';
+        'components/_scroll-to-top',
+        'components/_labels';
 
 
 // 5. Page-specific styles
@@ -41,9 +42,7 @@
         'layout/skillset',
         'layout/footer',
         'layout/resume',
-        'layout/linkedin';
-//@import 'layout/burger-',
-        //'layout/footer'
+        'layout/connect';
 
 .container {
     @include container;
@@ -67,17 +66,4 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: bottom;
-}
-
-.cursor {
-    display: none;
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    border-radius: 100px;
-    background-color: $color-secondary;
-    transition: ease-in-out;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    mix-blend-mode: difference;
 }

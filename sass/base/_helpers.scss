@@ -29,6 +29,18 @@
   }
 }
 
+@mixin container-large {
+  max-width: 1920px; /* 1 */
+  margin-left: auto; /* 2 */
+  margin-right: auto; /* 2 */
+  width: 100%; /* 1 */
+
+  @media screen and (max-width: map-get($media-queries, popup-max)) {
+    padding: 0 20px;
+    width: unset;
+  }
+}
+
 
 body {
   font-family: $font, sans-serif;

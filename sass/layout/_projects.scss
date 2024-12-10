@@ -12,6 +12,15 @@
         }
     }
 
+    &-labels {
+        @include flexbox(space-around, null, column, wrap, $content-gap);
+        background-color: $color-secondary-dark;
+        padding: $padding-content;
+        border-radius: $border-radius;
+
+        display: none;// @TODO: Remove this line when ready LABELS
+    }
+
     &-description {
         @include flexbox(space-around, center, column, null, $content-gap);
 
@@ -33,9 +42,14 @@
 
             &-title {
                 @include flexbox(space-between, center, row, null);
-                @include typography(headings, h2, 700);
                 padding: $padding-content 0;
                 border-bottom: 1px solid $color-main-dark;
+
+                .name {
+                    @include flexbox(null, center, row, null, $content-gap);
+                    @include typography(headings, h2, 700);
+                }
+
 
                 i {
                     transition: transform 0.3s;

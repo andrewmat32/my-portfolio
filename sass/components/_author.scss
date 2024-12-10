@@ -1,18 +1,33 @@
 .author {
     @include flexbox(flex-start, center, row, null, $content-gap);
 
-    @media screen and (max-width: map-get($media-queries, tablet-min)) {
+    @media screen and (max-width: map-get($media-queries, popup-max)) {
+        @include flexbox( flex-start, flex-start, column, null, $content-gap );
+    }
+
+    @media screen and (max-width: map-get($media-queries, tablet-max)) {
         @include flexbox( center, center, column, null, $content-gap );
     }
 
-    .author-image {
-        height: 100px;
-        width: 100px;
+    &-image {
+        height: 300px;
+        width: 300px;
 
         img {
-            height: 100px;
-            border-radius: $border-radius;
+            height: inherit;
+            border-radius: 50%;
             object-fit: cover;
+            box-shadow: $shadow-md;
+            transition: all 0.3s ease-in-out;
+
+            @media screen and (max-width: map-get($media-queries, tablet-min)) {
+                border-radius: $border-radius;
+            }
+        }
+
+        img:hover {
+            border-radius:$border-radius;
+            transition: all 0.3s ease-in-out;
         }
 
         @media screen and (max-width: map-get($media-queries, tablet-min)) {
@@ -29,14 +44,31 @@
 
     }
 
-    .author-info {
+    &-info {
+        @include flexbox( space-around, null, column, null, $content-gap );
+
         .author-name {
-            @include typography( content, larger, 600 );
-            white-space: nowrap;
+            @include typography( content, largest, 600 );
+            //white-space: nowrap;
         }
 
         .author-title {
             @include typography( content, regular, 400 );
+        }
+    }
+
+    &-details {
+        //color: $color-main-dark;
+        opacity: 0.8;
+
+        i {
+            width: 20px;
+            height: auto;
+            text-align: center;
+        }
+
+        &-location {
+            @include flexbox( null, center, row, null );
         }
     }
 }

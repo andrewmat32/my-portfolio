@@ -12,25 +12,26 @@ section {
 
 section:has(.section-left),
 section:has(.section-right) {
-    @include flexbox( space-between, center, row, wrap, 0);
+    @include flexbox( space-between, null, row, wrap, 0);
+    padding: 0 !important;
 
     .section-left,
     .section-right {
         flex-grow: 1;
-        height: 100%;
+        height: auto;
         width: 50%;
         padding: $padding-section;
         backdrop-filter: blur(10px);
         transition: all 0.3s;
     }
 
-    .section-left {
+    .section-right {
         background-color: rgba($color-main, 0.6);
         color: $color-secondary;
     }
 
     @media screen and (max-width: map-get($media-queries, tablet-max)) {
-        @include flexbox( space-between, center, column, wrap, 0);
+        @include flexbox( space-between, null, column, wrap, 0);
 
         .section-left,
         .section-right {
@@ -45,13 +46,13 @@ section:has(.section-right) {
 }
 
 section:has(.section-right:hover) {
-    .section-right {
+    .section-left {
         background-color: rgba($color-main, 0.6);
         color: $color-secondary;
         transition: all 0.3s;
     }
 
-    .section-left {
+    .section-right {
         backdrop-filter: blur(10px);
         background-color: unset;
         color: $color-main;

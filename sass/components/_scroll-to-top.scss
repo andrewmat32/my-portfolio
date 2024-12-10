@@ -2,7 +2,7 @@
     @include position-on-screen(fixed, auto, $padding-to-screen-edge, 0, 150px);
     background-color: $color-main;
     padding: $padding-content;
-    border-radius: $border-radius;
+    border-radius: 50%;
     z-index: 110;
     box-shadow: $shadow-md;
     color: $color-secondary;
@@ -19,7 +19,7 @@
     transition: all 0.3s;
 
     &:hover {
-        border-radius: 50%;
+        border-radius: $border-radius;
         transition: all 0.3s;
     }
 }

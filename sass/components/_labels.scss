@@ -1,0 +1,31 @@
+.label {
+    &-live {
+        background-color: $color-action;
+        color: $color-secondary;
+        padding: .3rem .5rem;
+        border-radius: $border-radius;
+    }
+
+    &-playground {
+        background-color: $color-main-light;
+        color: $color-secondary;
+        padding: .3rem .5rem;
+        border-radius: $border-radius;
+    }
+
+    &-wip {
+        background-color: $color-tertiary;
+        color: $color-secondary;
+        padding: .3rem .5rem;
+        border-radius: $border-radius;
+    }
+
+    &-live,
+    &-playground,
+    &-wip {
+        font-weight: 400;
+        opacity: .9;
+
+        display: none; // @TODO: Remove this line when ready LABELS
+    }
+}

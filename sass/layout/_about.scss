@@ -8,6 +8,10 @@
         }
     }
 
+    @media screen and (min-width: map-get($media-queries, desktop-2k)) {
+        //@include container-large;
+    }
+
     &-content {
         &-text {
             height: -webkit-fill-available;
@@ -20,13 +24,6 @@
                 @media screen and (max-width: map-get($media-queries, tablet-max)) {
                     @include flexbox(center, center, column, null, $content-gap);
                 }
-
-                img {
-                    width: 100%;
-                    height: auto;
-                    border-radius: 50%;
-                    box-shadow: 0 0 10px 0 rgba($color-main-dark, 0.5);
-                }
             }
 
             p  {
@@ -38,10 +35,15 @@
     .section-left {
         .about-content-text-title {
             @include flexbox(flex-end, center, row, null);
+
             //background-color: black;
 
             @media screen and (max-width: map-get($media-queries, tablet-max)) {
                 @include flexbox(center, center, column, null);
+            }
+
+            @media screen and (min-width: map-get($media-queries, popup-max)) {
+                margin-bottom: 0;
             }
         }
     }

@@ -1,0 +1,82 @@
+.connect {
+    background-color: $color-secondary;
+    color: $color-main-dark;
+    backdrop-filter: blur(5px);
+
+    .container {
+        @include flexbox(space-between, null, center, null, $content-gap);
+
+        @media screen and (max-width: map-get($media-queries, tablet-max)) {
+            @include flexbox(center, null, column, null, $content-gap);
+        }
+    }
+
+    &-card {
+        @include flexbox(null, null, column, null);
+        position: relative;
+        padding: $padding-content;
+        transition: all 0.3s;
+        width: 33.33%;
+
+        @media screen and (max-width: map-get($media-queries, tablet-max)) {
+            width: 100%;
+        }
+
+        h2 {
+            @include flexbox(null, center, column, null);
+            text-align: center;
+
+            i {
+                font-size: 10rem;
+                margin-bottom: $content-gap;
+            }
+        }
+
+        p {
+            height: -webkit-fill-available;
+            height: -moz-available;
+        }
+
+        &:hover {
+            background-color: $color-main;
+            border-radius: $border-radius;
+            transition: all 0.3s;
+            color: $color-secondary;
+
+            h2 {
+                i {
+                    animation: bounce 1s infinite;
+                }
+            }
+
+            .connect-card-label {
+                color: rgba($color-main-dark, 0.5);
+                transition: all 0.3s;
+                opacity: 1;
+            }
+        }
+
+        &-inactive {
+            h2,
+            p,
+            .btn {
+                opacity: 0.3;
+                pointer-events: none;
+            }
+
+            &:hover {
+                background-color: $color-secondary;
+                color: $color-main-dark;
+            }
+        }
+
+        &-label {
+            @include absCenter();
+            font-size: 8rem;
+            rotate: -10deg;
+            color: rgba($color-main-dark, 0.1);
+            transition: all 0.3s;
+            opacity: 0;
+        }
+    }
+}
