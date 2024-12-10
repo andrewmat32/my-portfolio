@@ -74,6 +74,7 @@ a {
 abbr[title] {
   border-bottom: none; /* 1 */
   text-decoration: underline; /* 2 */
+  -webkit-text-decoration: underline dotted;
   text-decoration: underline dotted; /* 2 */
 }
 
@@ -312,6 +313,7 @@ template {
 ul {
   padding-left: 0;
 }
+
 ul li {
   list-style: none;
 }
@@ -587,6 +589,7 @@ h1,
   font-size: var(--typography-h1-font-size);
   line-height: var(--typography-h1-line-height);
 }
+
 @media (max-width: 768px) {
   h1,
   .h1 {
@@ -601,13 +604,13 @@ h1,
     line-height: var(--typography-h3-line-height);
   }
 }
-
 h2,
 .h2 {
   font-family: "Space Grotesk";
   font-size: var(--typography-h2-font-size);
   line-height: var(--typography-h2-line-height);
 }
+
 @media (max-width: 768px) {
   h2,
   .h2 {
@@ -622,13 +625,13 @@ h2,
     line-height: var(--typography-h4-line-height);
   }
 }
-
 h3,
 .h3 {
   font-family: "Space Grotesk";
   font-size: var(--typography-h3-font-size);
   line-height: var(--typography-h3-line-height);
 }
+
 @media (max-width: 768px) {
   h3,
   .h3 {
@@ -643,13 +646,13 @@ h3,
     line-height: var(--typography-h5-line-height);
   }
 }
-
 h4,
 .h4 {
   font-family: "Space Grotesk";
   font-size: var(--typography-h4-font-size);
   line-height: var(--typography-h4-line-height);
 }
+
 @media (max-width: 768px) {
   h4,
   .h4 {
@@ -664,7 +667,6 @@ h4,
     line-height: var(--typography-h6-line-height);
   }
 }
-
 h6,
 .h6 {
   font-family: "Space Grotesk";
@@ -761,6 +763,7 @@ i {
 *:has(> i):hover {
   cursor: pointer;
 }
+
 body.no-scroll {
   overflow: hidden;
 }
@@ -771,6 +774,7 @@ body.no-scroll {
   right: 0;
   z-index: 10;
 }
+
 @media screen and (min-width: 1024px) {
   .burger-menu {
     display: none;
@@ -782,6 +786,7 @@ body.no-scroll {
   height: 100dvh;
   width: 100%;
 }
+
 .burger-menu-icon {
   top: 1.5rem;
   right: 1.5rem;
@@ -789,6 +794,7 @@ body.no-scroll {
   height: 3rem;
   position: absolute;
 }
+
 .burger-menu-icon .line1,
 .burger-menu-icon .line2,
 .burger-menu-icon .line3 {
@@ -799,9 +805,11 @@ body.no-scroll {
   transition: all 0.3s;
   box-shadow: var(--shadow-lg);
 }
+
 .burger-menu-list {
   display: none;
 }
+
 .burger-menu-list-item {
   position: relative;
   padding: 1rem;
@@ -810,6 +818,7 @@ body.no-scroll {
   cursor: pointer;
   transition: all 0.3s;
 }
+
 .burger-menu-list-item span {
   white-space: nowrap;
   font-size: 1.7rem;
@@ -819,17 +828,21 @@ body.no-scroll {
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.9);
 }
+
 .burger-menu.opened .burger-menu-icon .line1 {
   transform: rotate(-45deg) translate(-5px, 6px);
   background-color: #edf2f7;
 }
+
 .burger-menu.opened .burger-menu-icon .line2 {
   opacity: 0;
 }
+
 .burger-menu.opened .burger-menu-icon .line3 {
   transform: rotate(45deg) translate(-5px, -6px);
   background-color: #edf2f7;
 }
+
 .burger-menu.opened .burger-menu-list {
   display: flex;
   justify-content: center;
@@ -845,6 +858,7 @@ body.no-scroll {
   padding: var(--padding-section) 0;
   transition: all 0.3s;
 }
+
 @media screen and (max-width: 1024px) {
   .navigation {
     display: none;
@@ -858,6 +872,7 @@ body.no-scroll {
   flex-wrap: nowrap;
   gap: 0;
 }
+
 .navigation-brand a {
   font-family: "Space Grotesk";
   font-size: var(--typography-h1-font-size);
@@ -867,6 +882,7 @@ body.no-scroll {
   text-decoration: none;
   transition: color 0.3s ease;
 }
+
 @media (max-width: 768px) {
   .navigation-brand a {
     font-size: var(--typography-h2-font-size);
@@ -886,9 +902,11 @@ body.no-scroll {
   box-shadow: 0 0 10px 0 rgba(18, 24, 38, 0.5);
   transition: all 0.3s ease;
 }
+
 .navigation-brand a img:hover {
   border-radius: var(--border-radius);
 }
+
 .navigation-links ul {
   display: flex;
   justify-content: space-between;
@@ -899,10 +917,12 @@ body.no-scroll {
   padding: 0;
   margin: 0;
 }
+
 .navigation-links ul li {
   position: relative;
   padding: 1rem 1.5rem;
 }
+
 .navigation-links ul li::after {
   content: "";
   position: absolute;
@@ -914,9 +934,11 @@ body.no-scroll {
   background: #1a202c;
   transition: width 0.3s ease;
 }
+
 .navigation-links ul li:hover::after {
   width: 100%;
 }
+
 .navigation-links ul li a {
   font-family: "Space Grotesk";
   font-size: var(--typography-h4-font-size);
@@ -926,6 +948,7 @@ body.no-scroll {
   text-decoration: none;
   transition: color 0.3s ease;
 }
+
 @media (max-width: 768px) {
   .navigation-links ul li a {
     font-size: var(--typography-h5-font-size);
@@ -944,12 +967,15 @@ body.no-scroll {
 
 .navigation:has(+ .header .main-name:hover) {
   background-color: rgba(18, 24, 38, 0.6);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   transition: all 0.3s;
 }
+
 .navigation:has(+ .header .main-name:hover) .navigation-brand a {
   color: #edf2f7;
 }
+
 .navigation:has(+ .header .main-name:hover) .navigation-links ul li::after {
   content: "";
   position: absolute;
@@ -961,12 +987,15 @@ body.no-scroll {
   background: #edf2f7;
   transition: width 0.3s ease;
 }
+
 .navigation:has(+ .header .main-name:hover) .navigation-links ul li:hover::after {
   width: 100%;
 }
+
 .navigation:has(+ .header .main-name:hover) .navigation-links ul li a {
   color: #edf2f7;
 }
+
 .navigation:has(+ .header .main-name:hover) .navigation-links ul li a:hover {
   color: #edf2f7;
 }
@@ -978,6 +1007,7 @@ body.no-scroll {
   flex-direction: row;
   gap: 1rem;
 }
+
 @media screen and (max-width: 768px) {
   .author {
     display: flex;
@@ -991,11 +1021,14 @@ body.no-scroll {
   height: 100px;
   width: 100px;
 }
+
 .author .author-image img {
   height: 100px;
   border-radius: var(--border-radius);
+  -o-object-fit: cover;
   object-fit: cover;
 }
+
 @media screen and (max-width: 768px) {
   .author .author-image {
     height: 300px;
@@ -1015,6 +1048,7 @@ body.no-scroll {
   font-weight: 600;
   white-space: nowrap;
 }
+
 .author .author-info .author-title {
   font-family: "Space Grotesk";
   font-size: var(--typography--content-regular-font-size);
@@ -1032,6 +1066,7 @@ body.no-scroll {
 }
 
 .btn-contain {
+  width: -moz-fit-content;
   width: fit-content;
 }
 
@@ -1043,6 +1078,7 @@ body.no-scroll {
   transition: all 0.3s;
   box-shadow: var(--shadow-md);
 }
+
 .btn-main:hover {
   background-color: #1a202c;
   color: #edf2f7;
@@ -1057,6 +1093,7 @@ body.no-scroll {
   transition: all 0.3s;
   box-shadow: var(--shadow-md);
 }
+
 .btn-secondary:hover {
   background-color: #38a169;
   color: #edf2f7;
@@ -1078,6 +1115,7 @@ body.no-scroll {
   border: 1px solid #1a202c;
   transition: all 0.3s;
 }
+
 @media screen and (max-width: 1024px) {
   .scroll-to-top {
     position: fixed;
@@ -1090,6 +1128,7 @@ body.no-scroll {
 .scroll-to-top span {
   color: #edf2f7;
 }
+
 .scroll-to-top:hover {
   border-radius: 50%;
   transition: all 0.3s;
@@ -1102,6 +1141,7 @@ body.no-scroll {
 
 @media screen and (max-width: 1280px) {
   section {
+    height: -moz-max-content;
     height: max-content;
   }
 }
@@ -1111,13 +1151,13 @@ section .container {
   margin-right: auto; /* 2 */
   width: 100%; /* 1 */
 }
+
 @media screen and (max-width: 1600px) {
   section .container {
     padding: 0 20px;
     width: unset;
   }
 }
-
 section:has(.section-left),
 section:has(.section-right) {
   display: flex;
@@ -1127,6 +1167,7 @@ section:has(.section-right) {
   flex-wrap: wrap;
   gap: 0;
 }
+
 section:has(.section-left) .section-left,
 section:has(.section-left) .section-right,
 section:has(.section-right) .section-left,
@@ -1135,14 +1176,17 @@ section:has(.section-right) .section-right {
   height: 100%;
   width: 50%;
   padding: var(--padding-section);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   transition: all 0.3s;
 }
+
 section:has(.section-left) .section-left,
 section:has(.section-right) .section-left {
   background-color: rgba(26, 32, 44, 0.6);
   color: #edf2f7;
 }
+
 @media screen and (max-width: 1024px) {
   section:has(.section-left),
   section:has(.section-right) {
@@ -1160,13 +1204,14 @@ section:has(.section-right) .section-left {
     width: 100%;
   }
 }
-
 section:has(.section-right:hover) .section-right {
   background-color: rgba(26, 32, 44, 0.6);
   color: #edf2f7;
   transition: all 0.3s;
 }
+
 section:has(.section-right:hover) .section-left {
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   background-color: unset;
   color: #1a202c;
@@ -1174,6 +1219,7 @@ section:has(.section-right:hover) .section-left {
 }
 
 section.section-quarter {
+  height: -moz-fit-content;
   height: fit-content;
 }
 
@@ -1181,12 +1227,13 @@ section.section-full {
   height: 100vh;
   height: 100dvh;
 }
+
 @media screen and (max-width: 1280px) {
   section.section-full {
+    height: -moz-max-content;
     height: max-content;
   }
 }
-
 section.section-dynamic {
   height: auto;
   padding: var(--padding-section-dynamic) 0;
@@ -1200,6 +1247,7 @@ section.section-dynamic {
   position: relative;
   z-index: 1;
 }
+
 .blur-background::before {
   content: "";
   position: absolute;
@@ -1214,6 +1262,7 @@ section.section-dynamic {
 .header {
   transition: all 0.3s;
 }
+
 @media screen and (max-width: 1280px) {
   .header {
     height: 100vh !important;
@@ -1225,6 +1274,7 @@ section.section-dynamic {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .header .hero-content {
   display: flex;
   justify-content: center;
@@ -1234,6 +1284,7 @@ section.section-dynamic {
   text-align: center;
   z-index: 1;
 }
+
 .header .hero-content-text-title {
   display: flex;
   justify-content: center;
@@ -1242,6 +1293,7 @@ section.section-dynamic {
   gap: 0;
   white-space: nowrap;
 }
+
 .header .hero-content h1 span {
   font-family: "Space Grotesk";
   font-size: var(--typography-h1-font-size);
@@ -1250,6 +1302,7 @@ section.section-dynamic {
   transition: color 0.5s, background-color 0.5s;
   cursor: pointer;
 }
+
 @media (max-width: 768px) {
   .header .hero-content h1 span {
     font-size: var(--typography-h2-font-size);
@@ -1267,10 +1320,12 @@ section.section-dynamic {
   font-size: var(--typography--content-larger-font-size);
   line-height: var(--typography--content-larger-line-height);
 }
+
 .header .hero-content h1,
 .header .hero-content p {
   color: #121826;
 }
+
 .header .header-likes-counter {
   opacity: 0;
   transition: opacity 0.2s;
@@ -1281,10 +1336,12 @@ section.section-dynamic {
   margin-right: var(--margin-right-to-screen-edge);
   color: #edf2f7;
 }
+
 .header .header-likes-counter .h4 {
   transform: rotate(-45deg);
   margin-left: -80px;
 }
+
 .header .header-likes-counter span {
   font-family: "Space Grotesk";
   font-size: var(--typography--content-larger-font-size);
@@ -1300,11 +1357,13 @@ section.section-dynamic {
   background-color: rgba(18, 24, 38, 0.6);
   transition: all 0.3s;
 }
+
 .header:has(.main-name:hover) .hero-content h1,
 .header:has(.main-name:hover) .hero-content p {
   color: #edf2f7;
   animation: bounce 1s ease-out;
 }
+
 .header:has(.main-name:hover) .hero-content h1 span {
   transition: all 0.8s;
 }
@@ -1315,6 +1374,7 @@ section.section-dynamic {
   color: #121826;
   width: 100%;
 }
+
 .projects-content {
   display: flex;
   justify-content: center;
@@ -1322,12 +1382,14 @@ section.section-dynamic {
   flex-direction: column;
   gap: 0;
 }
+
 .projects-content span {
   font-family: "Space Grotesk";
   font-size: var(--typography-h1-font-size);
   line-height: var(--typography-h1-line-height);
   font-weight: 700;
 }
+
 @media (max-width: 768px) {
   .projects-content span {
     font-size: var(--typography-h2-font-size);
@@ -1347,16 +1409,20 @@ section.section-dynamic {
   flex-direction: column;
   gap: 1rem;
 }
+
 .projects-description p {
   text-align: center;
 }
+
 .projects .project {
   position: relative;
 }
+
 .projects .project-content {
   width: -webkit-fill-available;
   moz-width: -moz-available;
 }
+
 .projects .project-content-title {
   display: flex;
   justify-content: space-between;
@@ -1370,6 +1436,7 @@ section.section-dynamic {
   padding: var(--padding-content) 0;
   border-bottom: 1px solid #121826;
 }
+
 @media (max-width: 768px) {
   .projects .project-content-title {
     font-size: var(--typography-h3-font-size);
@@ -1385,24 +1452,30 @@ section.section-dynamic {
 .projects .project-content-title i {
   transition: transform 0.3s;
 }
+
 .projects .project-content-description {
   height: 0;
   overflow: hidden;
   transition: all 0.3s;
 }
+
 .projects .project-content-description-image img {
   width: 100%;
   height: 100%;
   box-shadow: var(--shadow-md);
+  -o-object-fit: cover;
   object-fit: cover;
 }
+
 .projects .project.active {
   transition: all 0.3s;
 }
+
 .projects .project.active .project-content-title i {
   transform: rotate(180deg);
   transition: transform 0.3s;
 }
+
 .projects .project.active .project-content-description {
   padding: var(--padding-content);
   height: auto;
@@ -1412,17 +1485,20 @@ section.section-dynamic {
   border-right: 1px solid #121826;
   transition: all 0.3s;
 }
+
 @media screen and (max-width: 1024px) {
   .projects .project.active .project-content-description .d-grid {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
   .projects .project.active .project-content-description .d-grid .project-content-description-image {
+    width: -moz-fit-content;
     width: fit-content;
   }
   .projects .project.active .project-content-description .d-grid .project-content-description-image img {
     width: 100%;
     height: 100%;
     box-shadow: var(--shadow-md);
+    -o-object-fit: cover;
     object-fit: cover;
   }
   .projects .project.active .project-content-description .d-grid .grid-cols-span-3 {
@@ -1434,6 +1510,7 @@ section.section-dynamic {
   color: #edf2f7;
   padding: var(--padding-content);
 }
+
 .projects .project.active .project-content-description-link {
   display: flex;
   justify-content: center;
@@ -1444,6 +1521,7 @@ section.section-dynamic {
   background-color: #121826;
   padding: var(--padding-content);
 }
+
 .projects .project.active .project-content-description-link a {
   font-family: "Space Grotesk";
   font-size: var(--typography-h4-font-size);
@@ -1455,6 +1533,7 @@ section.section-dynamic {
   padding: 0.5rem;
   position: relative;
 }
+
 @media (max-width: 768px) {
   .projects .project.active .project-content-description-link a {
     font-size: var(--typography-h5-font-size);
@@ -1478,21 +1557,27 @@ section.section-dynamic {
   background: #edf2f7;
   transition: width 0.3s ease;
 }
+
 .projects .project.active .project-content-description-link a:hover::after {
   width: 100%;
 }
+
 .projects .project.active .project-content-description-link a:hover {
   color: #e2e8f0;
 }
+
 .projects .project.active .project-content-description-info {
   padding-top: var(--padding-content);
 }
+
 .projects .project.active .project-content-description-info ul li ul {
   padding-left: 2rem;
 }
+
 .projects .project.active .project-content-description-info ul li ul li {
   list-style-type: disc;
 }
+
 .projects .project.active .project-content-description-info .technologies-used {
   display: flex;
   justify-content: space-around;
@@ -1500,12 +1585,14 @@ section.section-dynamic {
   flex-direction: column;
   gap: 1rem;
 }
+
 .projects .project.active .project-content-description-info .technologies-used-title, .projects .project.active .project-content-description-info .technologies-used-list {
   font-family: "Space Grotesk";
   font-size: var(--typography--content-larger-font-size);
   line-height: var(--typography--content-larger-line-height);
   font-weight: 600;
 }
+
 .projects .project.active .project-content-description-info .technologies-used-list {
   display: flex;
   justify-content: space-around;
@@ -1519,6 +1606,7 @@ section.section-dynamic {
 
 @media screen and (max-width: 1600px) {
   .about {
+    height: -moz-max-content;
     height: max-content;
   }
   .about .section-right,
@@ -1530,6 +1618,7 @@ section.section-dynamic {
   height: -webkit-fill-available;
   moz-height: -moz-available;
 }
+
 .about-content-text-description {
   display: flex;
   justify-content: space-around;
@@ -1538,6 +1627,7 @@ section.section-dynamic {
   gap: 1rem;
   animation: slideInFromRight;
 }
+
 @media screen and (max-width: 1024px) {
   .about-content-text-description {
     display: flex;
@@ -1553,11 +1643,13 @@ section.section-dynamic {
   border-radius: 50%;
   box-shadow: 0 0 10px 0 rgba(18, 24, 38, 0.5);
 }
+
 .about-content-text p {
   font-family: "Space Grotesk";
   font-size: var(--typography--content-larger-font-size);
   line-height: var(--typography--content-larger-line-height);
 }
+
 .about .section-left .about-content-text-title {
   display: flex;
   justify-content: flex-end;
@@ -1565,6 +1657,7 @@ section.section-dynamic {
   flex-direction: row;
   gap: 0;
 }
+
 @media screen and (max-width: 1024px) {
   .about .section-left .about-content-text-title {
     display: flex;
@@ -1579,6 +1672,7 @@ section.section-dynamic {
   font-size: var(--typography--content-larger-font-size);
   line-height: var(--typography--content-larger-line-height);
 }
+
 .about .section-right .services-content-text-description ul {
   display: flex;
   justify-content: space-around;
@@ -1586,12 +1680,14 @@ section.section-dynamic {
   flex-direction: column;
   gap: 1rem;
 }
+
 .about .section-right .services-content-text-description ul li,
 .about .section-right .services-content-text-description ul span {
   font-family: "Space Grotesk";
   font-size: var(--typography--content-larger-font-size);
   line-height: var(--typography--content-larger-line-height);
 }
+
 .about .section-right .services-content-text-description ul li {
   display: flex;
   justify-content: space-around;
@@ -1599,9 +1695,11 @@ section.section-dynamic {
   flex-direction: row;
   gap: 0.5rem;
 }
+
 .about .section-right .services-content-text-description ul li i {
   transition: margin-right 0.3s;
 }
+
 .about .section-right .services-content-text-description ul li:hover i {
   margin-right: 0.5rem;
   transition: margin-right 0.3s;
@@ -1622,15 +1720,18 @@ section.section-dynamic {
   align-items: center;
   text-align: center;
   padding: 20px;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   cursor: url("../../images/cursor.svg") 10 10, auto;
 }
+
 #skill-overlay .skillname {
   max-width: 1440px; /* 1 */
   margin-left: auto; /* 2 */
   margin-right: auto; /* 2 */
   width: 100%; /* 1 */
 }
+
 @media screen and (max-width: 1600px) {
   #skill-overlay .skillname {
     padding: 0 20px;
@@ -1643,6 +1744,13 @@ section.section-dynamic {
   line-height: var(--typography--content-larger-line-height);
 }
 
+@media screen and (max-width: 1024px) {
+  #skill-overlay .skillname p {
+    font-family: "Space Grotesk";
+    font-size: var(--typography--content-regular-font-size);
+    line-height: var(--typography--content-regular-line-height);
+  }
+}
 #skill-overlay.show {
   opacity: 1;
   display: flex;
@@ -1661,6 +1769,7 @@ footer {
   background-color: #121826;
   color: #edf2f7;
 }
+
 footer .container {
   display: flex;
   justify-content: center;
@@ -1672,8 +1781,10 @@ footer .container {
 
 .resume {
   padding: var(--padding-section-dynamic) 0;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
+
 .resume .container {
   display: flex;
   justify-content: space-between;
@@ -1687,6 +1798,7 @@ footer .container {
   background-color: #121826;
   color: #edf2f7;
 }
+
 .linkedin .container {
   display: flex;
   justify-content: center;
@@ -1700,13 +1812,13 @@ footer .container {
   margin-right: auto; /* 2 */
   width: 100%; /* 1 */
 }
+
 @media screen and (max-width: 1600px) {
   .container {
     padding: 0 20px;
     width: unset;
   }
 }
-
 html {
   scroll-behavior: smooth;
 }
@@ -1987,5 +2099,7 @@ body {
   pointer-events: none;
   mix-blend-mode: difference;
 }
+
+
 
 /*# sourceMappingURL=style.css.map */
