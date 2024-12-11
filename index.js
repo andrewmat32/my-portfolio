@@ -32,6 +32,7 @@ document.addEventListener( "DOMContentLoaded", () =>
 {
     handleSkills();
     handleProjectContent();
+    scrollFunction();
 
 } );
 
