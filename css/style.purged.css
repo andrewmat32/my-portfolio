@@ -1152,6 +1152,14 @@ section.section-dynamic {
   white-space: nowrap;
 }
 
+.header .hero-content-text-title .main-name {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
 .header .hero-content h1 span {
   font-family: "Space Grotesk";
   font-size: var(--typography-h1-font-size);
@@ -1643,6 +1651,10 @@ footer .container {
   flex-direction: row;
   gap: 1rem;
   border-top: 1px solid rgba(237, 242, 247, 0.5);
+}
+
+footer .container p {
+  text-align: center;
 }
 
 .resume {

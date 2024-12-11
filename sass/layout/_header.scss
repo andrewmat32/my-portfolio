@@ -17,6 +17,14 @@
         &-text-title {
             @include flexbox(center, center, row, null);
             white-space: nowrap;
+
+            .main-name {
+                user-select: none;
+                -moz-user-select: none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -o-user-select: none;
+            }
         }
 
         h1 {
