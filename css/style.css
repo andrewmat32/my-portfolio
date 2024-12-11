@@ -1367,9 +1367,6 @@ section.section-dynamic {
   flex-direction: row;
   gap: 0;
   white-space: nowrap;
-}
-
-.header .hero-content-text-title .main-name {
   user-select: none;
   -moz-user-select: none;
   -khtml-user-select: none;
