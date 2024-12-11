@@ -1060,8 +1060,8 @@ section:has(.section-right) .section-right {
   transition: all 0.3s;
 }
 
-section:has(.section-left) .section-right,
-section:has(.section-right) .section-right {
+section:has(.section-left) .section-left,
+section:has(.section-right) .section-left {
   background-color: rgba(26, 32, 44, 0.6);
   color: #edf2f7;
 }
@@ -1081,14 +1081,19 @@ section:has(.section-right) .section-right {
   section:has(.section-right) .section-right {
     width: 100%;
   }
+  section:has(.section-left) .section-right,
+  section:has(.section-right) .section-right {
+    background-color: unset;
+    color: #1a202c;
+  }
 }
-section:has(.section-right:hover) .section-left {
+section:has(.section-right:hover) .section-right {
   background-color: rgba(26, 32, 44, 0.6);
   color: #edf2f7;
   transition: all 0.3s;
 }
 
-section:has(.section-right:hover) .section-right {
+section:has(.section-right:hover) .section-left {
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   background-color: unset;

@@ -25,7 +25,7 @@ section:has(.section-right) {
         transition: all 0.3s;
     }
 
-    .section-right {
+    .section-left {
         background-color: rgba($color-main, 0.6);
         color: $color-secondary;
     }
@@ -38,21 +38,21 @@ section:has(.section-right) {
             width: 100%;
         }
 
-        .section-left {
-            //background-color: unset;
-            //color: $color-main;
+        .section-right {
+            background-color: unset;
+            color: $color-main;
         }
     }
 }
 
 section:has(.section-right:hover) {
-    .section-left {
+    .section-right {
         background-color: rgba($color-main, 0.6);
         color: $color-secondary;
         transition: all 0.3s;
     }
 
-    .section-right {
+    .section-left {
         backdrop-filter: blur(10px);
         background-color: unset;
         color: $color-main;
