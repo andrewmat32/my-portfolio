@@ -1412,6 +1412,9 @@ section.section-dynamic {
     line-height: var(--typography-h3-line-height);
   }
 }
+.projects-content strong {
+  color: #38a169;
+}
 .projects-labels {
   display: flex;
   justify-content: space-around;
@@ -1575,6 +1578,12 @@ section.section-dynamic {
 }
 .projects .project.active .project-content-description-info {
   padding-top: var(--padding-content);
+}
+.projects .project.active .project-content-description-info .h4 {
+  font-family: "Space Grotesk";
+  font-size: var(--typography--content-larger-font-size);
+  line-height: var(--typography--content-larger-line-height);
+  font-weight: 600;
 }
 .projects .project.active .project-content-description-info ul li ul {
   padding-left: 2rem;

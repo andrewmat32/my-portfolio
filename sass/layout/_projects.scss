@@ -149,6 +149,10 @@
             &-info {
                 padding-top: $padding-content;
 
+                .h4 {
+                    @include typography('content', 'larger', 600);
+                }
+
                 ul {
                     li {
                         ul {
