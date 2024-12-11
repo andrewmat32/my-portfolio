@@ -10,6 +10,10 @@
         span {
             @include typography(headings, h1, 700);
         }
+
+        strong {
+            color: $color-action;
+        }
     }
 
     &-labels {
