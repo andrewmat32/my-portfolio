@@ -1,8 +1,0 @@
-.linkedin {
-    background-color: $color-main-dark;
-    color: $color-secondary;
-
-    .container {
-        @include flexbox(center, null, column, null, $content-gap);
-    }
-}
