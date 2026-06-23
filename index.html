@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mateaș (Andrew) Andrei · Full Stack Developer building web platforms end to end — core JavaScript, Node.js back-ends, booking platforms, Vue & ApostropheCMS.">
+    <meta name="author" content="Mateaș Andrei">
+    <meta property="og:title" content="Mateaș Andrei · Full Stack Developer">
+    <meta property="og:description" content="Full Stack Developer building web platforms end to end — core JavaScript, Node.js back-ends, booking platforms, Vue & ApostropheCMS.">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/styles.css?v=58">
+
+    <title>Mateaș Andrei · Full Stack Developer</title>
+    <script>
+        (function () {
+            try { document.documentElement.setAttribute('data-theme', localStorage.getItem('theme2026') || 'dark'); }
+            catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+        })();
+    </script>
+</head>
+
+<body>
+<a href="#top" class="skip-link">Skip to content</a>
+<div class="glow glow--1" aria-hidden="true"></div>
+<div class="glow glow--2" aria-hidden="true"></div>
+<div class="spotlight" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="streaks" id="streaks" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<!-- HEADER -->
+<header class="header" id="header">
+    <div class="container header__inner">
+        <a href="#top" class="logo" data-magnetic><span class="logo__dot"></span>andrei<span class="logo__tld">.dev</span></a>
+        <nav class="nav" aria-label="Primary">
+            <a href="#about" class="nav__link" data-scramble>About</a>
+            <a href="#experience" class="nav__link" data-scramble>Experience</a>
+            <a href="#work" class="nav__link" data-scramble>Work</a>
+            <a href="#lab" class="nav__link" data-scramble>Lab</a>
+            <a href="#skills" class="nav__link" data-scramble>Skills</a>
+            <a href="#contact" class="nav__link" data-scramble>Contact</a>
+        </nav>
+        <a href="resume/Mateas-Andrei-CV-2026-Official.pdf" download="Mateas-Emil-Andrei-CV.pdf" class="btn btn--ghost header__cta" data-resume data-magnetic>Résumé ↓</a>
+        <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#work">Work</a>
+    <a href="#lab">Lab</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+    <a href="resume/Mateas-Andrei-CV-2026-Official.pdf" class="mobile-nav__cv" data-resume>Résumé ↗</a>
+</div>
+
+<main id="top" tabindex="-1">
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero__grid">
+            <div class="hero__copy">
+                <p class="hero__kicker load load-1"><span class="pulse"></span>Mateaș Andrei · Full Stack Developer · est. 2021</p>
+                <h1 class="hero__title">
+                    <span class="hero__line load load-2"><span class="outline">I build</span></span>
+                    <span class="hero__line load load-3">web <span class="accent">platforms</span></span>
+                    <span class="hero__line load load-4">end to end<span class="accent">.</span></span>
+                </h1>
+                <p class="hero__lead load load-5">
+                    Full-stack <strong>JavaScript</strong> developer: I build <strong>Node.js</strong> back-ends,
+                    vanilla-JS and Vue front-ends, and ApostropheCMS travel platforms in between, owning each one end to end.
+                </p>
+                <div class="hero__cta load load-6">
+                    <a href="#work" class="btn btn--solid" data-magnetic>Selected work <i class="fa-solid fa-arrow-down"></i></a>
+                    <a href="#contact" class="btn btn--ghost" data-magnetic>Get in touch</a>
+                </div>
+            </div>
+
+            <aside class="hero__card load load-4" data-tilt>
+                <div class="hero__card-glare" aria-hidden="true"></div>
+                <img class="hero__photo" src="images/andrew.jfif" alt="Portrait of Mateaș Emil Andrei">
+                <div class="hero__card-body">
+                    <span class="hero__name">Mateaș Emil Andrei</span>
+                    <span class="hero__role">Full Stack Developer</span>
+                    <ul class="hero__facts">
+                        <li><span>Live platforms</span><b>4</b></li>
+                        <li><span>Countries</span><b>CH · NL · DE</b></li>
+                        <li><span>Open source</span><b>ApostropheCMS ext.</b></li>
+                        <li><span>Status</span><b class="ok">● Available</b></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- hover morphs the compact card into this full-width panel -->
+            <div class="hero__detail" id="heroDetail" aria-hidden="true">
+                <div class="hero__detail-main">
+                    <span class="hero__detail-eyebrow"><span class="pulse"></span> What I build</span>
+                    <p class="hero__detail-lead">
+                        Full-stack <strong>JavaScript</strong>, end to end: Node.js services,
+                        vanilla-JS and Vue front-ends, and ApostropheCMS travel platforms in between.
+                    </p>
+                    <ul class="hero__detail-list">
+                        <li><b>Back-end</b><span>Node.js APIs, booking engines, data models</span></li>
+                        <li><b>Front-end</b><span>Vanilla JS &amp; DOM, Vue, SCSS, accessible UI</span></li>
+                        <li><b>Platforms</b><span>ApostropheCMS sites, custom widgets, integrations</span></li>
+                    </ul>
+                    <div class="hero__chips">
+                        <span>JavaScript</span><span>Node.js</span><span>Vue.js</span><span>Vanilla JS / DOM</span>
+                        <span>ApostropheCMS</span><span>MongoDB</span><span>REST APIs</span><span>SCSS</span>
+                    </div>
+                    <div class="hero__detail-cta">
+                        <a href="#contact" class="btn btn--solid" data-magnetic>Get in touch</a>
+                        <a href="#work" class="btn btn--ghost" data-magnetic>See the work</a>
+                    </div>
+                </div>
+                <figure class="hero__detail-figure">
+                    <img src="images/andrew.jfif" alt="">
+                    <figcaption>
+                        <span class="hero__name">Mateaș Emil Andrei</span>
+                        <span class="hero__role">Full Stack Developer</span>
+                    </figcaption>
+                </figure>
+            </div>
+        </div>
+
+        <div class="marquee load load-6" aria-hidden="true">
+            <div class="marquee__track" id="marquee">
+                <span>JavaScript</span><span>ApostropheCMS</span><span>Node.js</span><span>Vue.js</span><span>SCSS</span><span>MongoDB</span><span>REST APIs</span><span>TailwindCSS</span><span>Docker</span><span>UI / UX</span><span>SEO</span><span>Flutter</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROOF -->
+    <section class="proof" aria-label="Selected work and platforms">
+        <div class="container">
+            <p class="proof__label reveal">Selected work &amp; platforms</p>
+            <div class="proof__names">
+                <a href="#work" class="proof__name reveal" data-magnetic>Victoury</a>
+                <a href="#work" class="proof__name reveal" data-magnetic>Diving World</a>
+                <a href="#work" class="proof__name reveal" data-magnetic>WeDive</a>
+                <a href="#work" class="proof__name reveal" data-magnetic>Abendsonne Afrika</a>
+            </div>
+            <p class="proof__note reveal">Sole-built Victoury platform + 3 client travel sites · CH · NL · DE</p>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section__head reveal">
+                <span class="section__kicker"><b>01</b><i>/</i>About</span>
+                <h2 class="section__title">A full-stack engineer with a <span class="accent">designer's eye</span></h2>
+            </div>
+            <div class="about">
+                <div class="about__text">
+                    <p class="reveal">
+                        I'm a Full Stack Developer who builds web platforms <strong>end to end</strong>. For around
+                        five years I've shipped travel-booking platforms for tour operators and agencies across the
+                        Netherlands, Switzerland and Germany, owning everything from the Node.js back-end to the
+                        front-end UI. I'm grounded in <strong>core JavaScript and engineering fundamentals</strong> —
+                        happy to build custom from scratch — and just as fluent with frameworks and CMS
+                        (<strong>Vue</strong>, <strong>ApostropheCMS</strong>) when they're the right fit. My background in
+                        <strong>Automation &amp; Applied Informatics</strong> is the engineering discipline I bring to every build.
+                    </p>
+                    <p class="reveal">
+                        Today I'm the <strong>sole developer of the Victoury platform</strong>: a marketing
+                        CMS and a travel-booking minisite with a large library of custom widgets. Before that I was
+                        a core developer on diving and safari sites like <strong>Diving World</strong>, building
+                        booking engines (pricing, cabins, flights and excursions), search, multi-step forms and
+                        reusable widget libraries.
+                    </p>
+                    <p class="reveal">
+                        I care about the fundamentals users feel but never see: accessibility (WCAG, automated
+                        Pa11y checks), performance, SEO and structured data, GDPR-compliant forms, and code other
+                        developers can maintain with confidence.
+                    </p>
+                </div>
+                <ul class="about__points">
+                    <li class="reveal" data-tilt><i class="fa-solid fa-layer-group"></i><b>Design systems at scale</b><span>Reusable widgets, tokens and themes that keep many sites consistent.</span></li>
+                    <li class="reveal" data-tilt><i class="fa-solid fa-gauge-high"></i><b>Performance-minded</b><span>Lazy loading, lean token-driven CSS, fast first paint on any device.</span></li>
+                    <li class="reveal" data-tilt><i class="fa-solid fa-magnifying-glass-chart"></i><b>SEO &amp; structured data</b><span>JSON-LD, sitemaps and semantic markup that help products rank.</span></li>
+                    <li class="reveal" data-tilt><i class="fa-solid fa-universal-access"></i><b>Accessibility-first</b><span>ARIA, keyboard nav, contrast and reduced-motion, verified with a11y scans.</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section" id="experience">
+        <div class="container">
+            <div class="section__head reveal">
+                <span class="section__kicker"><b>02</b><i>/</i>Experience</span>
+                <h2 class="section__title">Where I've shipped <span class="accent">real products</span></h2>
+            </div>
+            <div class="xp">
+                <article class="xp__row reveal">
+                    <span class="xp__num" aria-hidden="true">01</span>
+                    <div class="xp__main">
+                        <div class="xp__top">
+                            <h3 class="xp__role">Full Stack Developer</h3>
+                            <span class="xp__when">Since 2021</span>
+                        </div>
+                        <p class="xp__org">Travel-booking platforms · ApostropheCMS · Node.js</p>
+                        <p class="xp__desc">
+                            Around five years building and shipping travel-booking platforms for tour operators
+                            and agencies, owning both the back-end and the front-end. I've grown from contributing
+                            on client sites, to core developer of a multi-year booking platform, to sole developer
+                            of the current Victoury platform.
+                        </p>
+                        <ul class="xp__points">
+                            <li>Heavy <strong>vanilla JavaScript</strong>: complex, framework-free features built from primitives, with hands-on DOM manipulation and custom interactive components.</li>
+                            <li>Full-stack JS: Node.js back-end logic and data work alongside the front-end interactions and UI.</li>
+                            <li>Built booking engines (pricing, cabins, flights, excursions), search, multi-step forms and reusable widget libraries.</li>
+                            <li>Shipped production sites across the Netherlands, Switzerland and Germany.</li>
+                        </ul>
+                    </div>
+                </article>
+                <article class="xp__row reveal">
+                    <span class="xp__num" aria-hidden="true">02</span>
+                    <div class="xp__main">
+                        <div class="xp__top">
+                            <h3 class="xp__role">Open-Source Contribution</h3>
+                            <span class="xp__when">2025</span>
+                        </div>
+                        <p class="xp__org">ApostropheCMS · AI Code Generator</p>
+                        <p class="xp__desc">
+                            Built an AI-powered code generator for ApostropheCMS modules using <strong>Claude AI</strong>
+                            and the <strong>MCP (Model Context Protocol)</strong> architecture, published as an
+                            official community extension on the ApostropheCMS website.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- WORK -->
+    <section class="section" id="work">
+        <div class="container">
+            <div class="section__head reveal">
+                <span class="section__kicker"><b>03</b><i>/</i>Work</span>
+                <h2 class="section__title">Live <span class="accent">production platforms</span></h2>
+                <p class="section__sub reveal">In-production work for travel agencies &amp; tour operators. Click a row to expand.</p>
+            </div>
+
+            <div class="wlist" id="wlist">
+
+                <article class="witem reveal" data-cat="platforms cms">
+                    <button class="witem__head" aria-expanded="false">
+                        <span class="witem__num">01</span>
+                        <span class="witem__name">Victoury Platform</span>
+                        <span class="witem__sum">Sole developer · ApostropheCMS 4.31 · CMS + booking</span>
+                        <span class="badge badge--live">Live</span>
+                        <span class="witem__sign" aria-hidden="true"></span>
+                    </button>
+                    <div class="witem__body"><div class="witem__inner"><div class="witem__grid">
+                        <div>
+                            <p class="witem__cs"><b>Challenge</b> One tour-operator platform had to drive both marketing and bookings, and stay maintainable by a single developer.</p>
+                            <p class="witem__cs"><b>What I built</b> An ApostropheCMS 4.31 platform in two flavours: a marketing CMS, and a minisite for travel &amp; bookings with product catalogues and search. A library of 33 custom widgets, including a cinematic scroll-driven set, powers both.</p>
+                            <ul class="witem__tags"><li>ApostropheCMS 4.31</li><li>Node.js</li><li>Alpine.js</li><li>SCSS</li><li>MongoDB</li></ul>
+                            <div class="witem__links">
+                                <a href="https://victoury.eu/" target="_blank" rel="noopener" class="tlink" data-magnetic>victoury.eu ↗</a>
+                                <a href="https://demo.victoury.eu/" target="_blank" rel="noopener" class="tlink" data-magnetic>demo ↗</a>
+                                <a href="https://demo1.victoury.eu/" target="_blank" rel="noopener" class="tlink" data-magnetic>demo1 ↗</a>
+                                <a href="https://demo2.victoury.eu/" target="_blank" rel="noopener" class="tlink" data-magnetic>demo2 ↗</a>
+                            </div>
+                        </div>
+                        <div class="impact" data-tilt>
+                            <span class="impact__h">Result</span>
+                            <ul>
+                                <li>Sole developer of the platform (CMS + booking)</li>
+                                <li>33 custom widgets incl. cinematic scroll components</li>
+                                <li>Mailchimp, Cloudflare Turnstile, GA4 + CSP integrations</li>
+                                <li>Structured data, SEO &amp; WCAG accessibility</li>
+                            </ul>
+                        </div>
+                    </div></div></div>
+                </article>
+
+                <article class="witem reveal" data-cat="platforms">
+                    <button class="witem__head" aria-expanded="false">
+                        <span class="witem__num">02</span>
+                        <span class="witem__name">Diving World</span>
+                        <span class="witem__sum">Dutch dive-vacation platform · core developer</span>
+                        <span class="badge badge--live">Live</span>
+                        <span class="witem__sign" aria-hidden="true"></span>
+                    </button>
+                    <div class="witem__body"><div class="witem__inner"><div class="witem__grid">
+                        <div>
+                            <p class="witem__cs"><b>Challenge</b> A dive-travel specialist needed a booking engine that could price genuinely complex trips: cabins, with/without-flight options, excursions and liveaboards.</p>
+                            <p class="witem__cs"><b>What I built</b> As a core developer across ~3 years and 800+ commits (ApostropheCMS, Docker, MongoDB), I built custom widgets and much of the booking engine: price tables, cabins, with/without-flight pricing, excursions and liveaboard pricing.</p>
+                            <ul class="witem__tags"><li>ApostropheCMS</li><li>Vanilla JS</li><li>MongoDB</li><li>Docker</li><li>Booking engine</li></ul>
+                            <div class="witem__links"><a href="https://divingworld.nl/" target="_blank" rel="noopener" class="tlink" data-magnetic>divingworld.nl ↗</a></div>
+                        </div>
+                        <div class="impact" data-tilt>
+                            <span class="impact__h">Result</span>
+                            <ul>
+                                <li>800+ commits over 2021–2024 as a core developer</li>
+                                <li>Built the booking engine: prices, cabins, flights, excursions</li>
+                                <li>Destination &amp; product search, booking emails</li>
+                                <li>Blog export &amp; data migration (DW2 → DW4)</li>
+                            </ul>
+                        </div>
+                    </div></div></div>
+                </article>
+
+                <article class="witem reveal" data-cat="platforms">
+                    <button class="witem__head" aria-expanded="false">
+                        <span class="witem__num">03</span>
+                        <span class="witem__name">WeDive</span>
+                        <span class="witem__sum">Diving &amp; snorkeling travel · Switzerland</span>
+                        <span class="badge badge--live">Live</span>
+                        <span class="witem__sign" aria-hidden="true"></span>
+                    </button>
+                    <div class="witem__body"><div class="witem__inner"><div class="witem__grid">
+                        <div>
+                            <p class="witem__cs"><b>Challenge</b> Launch a Swiss diving-travel brand on the proven Diving World platform without rebuilding from scratch.</p>
+                            <p class="witem__cs"><b>What I built</b> A Swiss travel agency for diving &amp; snorkeling holidays on the same ApostropheCMS platform: a destination catalogue across 9 regions, curated trip collections, advisor profiles and rich search filters in a clean, underwater-themed UI.</p>
+                            <ul class="witem__tags"><li>ApostropheCMS</li><li>JavaScript</li><li>SCSS</li><li>SEO</li></ul>
+                            <div class="witem__links"><a href="https://wedive.ch/" target="_blank" rel="noopener" class="tlink" data-magnetic>wedive.ch ↗</a></div>
+                        </div>
+                        <div class="impact" data-tilt>
+                            <span class="impact__h">Result</span>
+                            <ul>
+                                <li>Built on the Diving World platform</li>
+                                <li>Destination catalogue across 9 dive regions</li>
+                                <li>Curated trip collections &amp; advisor profiles</li>
+                                <li>Multi-filter destination search</li>
+                            </ul>
+                        </div>
+                    </div></div></div>
+                </article>
+
+                <article class="witem reveal" data-cat="platforms">
+                    <button class="witem__head" aria-expanded="false">
+                        <span class="witem__num">04</span>
+                        <span class="witem__name">Abendsonne Afrika</span>
+                        <span class="witem__sum">German safari travel · design &amp; forms</span>
+                        <span class="badge badge--live">Live</span>
+                        <span class="witem__sign" aria-hidden="true"></span>
+                    </button>
+                    <div class="witem__body"><div class="witem__inner"><div class="witem__grid">
+                        <div>
+                            <p class="witem__cs"><b>Challenge</b> A German safari operator needed a tailored design plus GDPR-compliant, ClientSpace-integrated booking forms.</p>
+                            <p class="witem__cs"><b>What I built</b> Much of the front-end design on ApostropheCMS, adapted to the client's requirements, plus ClientSpace-integrated German forms: a post-travel survey and a two-page quote-confirmation flow, with URL management and product pages.</p>
+                            <ul class="witem__tags"><li>ApostropheCMS</li><li>UI Design</li><li>JavaScript</li><li>Forms</li><li>ClientSpace</li></ul>
+                            <div class="witem__links"><a href="https://abendsonneafrika.de/" target="_blank" rel="noopener" class="tlink" data-magnetic>abendsonneafrika.de ↗</a></div>
+                        </div>
+                        <div class="impact" data-tilt>
+                            <span class="impact__h">Result</span>
+                            <ul>
+                                <li>Adapted the platform design to the client's requirements</li>
+                                <li>Delivered much of the front-end / UI design</li>
+                                <li>ClientSpace German forms: survey + 2-page quote confirmation</li>
+                                <li>URL management &amp; product pages</li>
+                            </ul>
+                        </div>
+                    </div></div></div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- LAB -->
+    <section class="section" id="lab">
+        <div class="container">
+            <div class="section__head reveal">
+                <span class="section__kicker"><b>04</b><i>/</i>Lab</span>
+                <h2 class="section__title">Lab <span class="accent">&amp; experiments</span></h2>
+                <p class="section__sub reveal">Self-initiated builds where I explore tools, motion and architecture. Experiments, not production work.</p>
+            </div>
+
+            <div class="labgrid" id="lablist">
+
+                <article class="labcard reveal" data-tilt>
+                    <div class="labcard__top"><span class="labcard__no">Exp&middot;01</span><span class="badge badge--live">Live</span></div>
+                    <h3 class="labcard__name">Portfolio</h3>
+                    <p class="labcard__sum">This site: an interactive, accessible showcase of my work, projects and accomplishments.</p>
+                    <ul class="labcard__tags"><li>HTML5</li><li>CSS3</li><li>JavaScript</li></ul>
+                    <div class="labcard__links">
+                        <a href="https://mateas-andrei.vercel.app" target="_blank" rel="noopener" class="tlink" data-magnetic>Live ↗</a>
+                        <a href="https://github.com/andrewmat32/my-portfolio" target="_blank" rel="noopener" class="tlink" data-magnetic>Code</a>
+                    </div>
+                </article>
+
+                <article class="labcard reveal" data-tilt>
+                    <div class="labcard__top"><span class="labcard__no">Exp&middot;02</span><span class="badge">Personal</span></div>
+                    <h3 class="labcard__name">Soul of Afrika</h3>
+                    <p class="labcard__sum">African-themed booking concept showcasing advanced SASS: custom functions, PostCSS &amp; PurgeCSS, with bespoke animations.</p>
+                    <ul class="labcard__tags"><li>SCSS</li><li>Animations</li><li>Vercel</li></ul>
+                    <div class="labcard__links">
+                        <a href="https://soul-of-afrika.vercel.app" target="_blank" rel="noopener" class="tlink" data-magnetic>Live ↗</a>
+                        <a href="https://github.com/andrewmat32/soul-of-afrika" target="_blank" rel="noopener" class="tlink" data-magnetic>Code</a>
+                    </div>
+                </article>
+
+                <article class="labcard reveal" data-tilt>
+                    <div class="labcard__top"><span class="labcard__no">Exp&middot;03</span><span class="badge">Personal</span></div>
+                    <h3 class="labcard__name">Prime Shine</h3>
+                    <p class="labcard__sum">A Miami-Vice-inspired neon landing page driven by bold typography and SCSS-built animations.</p>
+                    <ul class="labcard__tags"><li>SCSS</li><li>JavaScript</li><li>UI/UX</li></ul>
+                    <div class="labcard__links">
+                        <a href="https://prime-shine.vercel.app" target="_blank" rel="noopener" class="tlink" data-magnetic>Live ↗</a>
+                        <a href="https://github.com/andrewmat32/prime-shine" target="_blank" rel="noopener" class="tlink" data-magnetic>Code</a>
+                    </div>
+                </article>
+
+                <article class="labcard reveal" data-tilt>
+                    <div class="labcard__top"><span class="labcard__no">Exp&middot;04</span><span class="badge">Personal</span></div>
+                    <h3 class="labcard__name">TailLine</h3>
+                    <p class="labcard__sum">A business app built 100% with TailwindCSS: complex forms, validation states, modals and dropdowns.</p>
+                    <ul class="labcard__tags"><li>TailwindCSS</li><li>JavaScript</li></ul>
+                    <div class="labcard__links">
+                        <a href="https://tail-line.vercel.app" target="_blank" rel="noopener" class="tlink" data-magnetic>Live ↗</a>
+                        <a href="https://github.com/andrewmat32/tail-line" target="_blank" rel="noopener" class="tlink" data-magnetic>Code</a>
+                    </div>
+                </article>
+
+                <article class="labcard reveal" data-tilt>
+                    <div class="labcard__top"><span class="labcard__no">Exp&middot;05</span><span class="badge badge--wip">WIP</span></div>
+                    <h3 class="labcard__name">PictureSplash</h3>
+                    <p class="labcard__sum">An Unsplash-powered image browser with efficient async handling, pagination and load-more.</p>
+                    <ul class="labcard__tags"><li>Unsplash API</li><li>JavaScript</li></ul>
+                    <div class="labcard__links">
+                        <a href="https://picture-splash.vercel.app" target="_blank" rel="noopener" class="tlink" data-magnetic>Live ↗</a>
+                        <a href="https://github.com/andrewmat32/pictureSplash" target="_blank" rel="noopener" class="tlink" data-magnetic>Code</a>
+                    </div>
+                </article>
+
+                <article class="labcard reveal" data-tilt>
+                    <div class="labcard__top"><span class="labcard__no">Exp&middot;06</span><span class="badge badge--wip">WIP</span></div>
+                    <h3 class="labcard__name">CSS Starter Concept</h3>
+                    <p class="labcard__sum">A utility-first CSS framework prototype with ready-to-use templates, in the spirit of Tailwind.</p>
+                    <ul class="labcard__tags"><li>HTML5</li><li>CSS3</li><li>SCSS</li></ul>
+                    <div class="labcard__links">
+                        <a href="https://css-starter-concept.vercel.app" target="_blank" rel="noopener" class="tlink" data-magnetic>Live ↗</a>
+                        <a href="https://github.com/andrewmat32/css-starter" target="_blank" rel="noopener" class="tlink" data-magnetic>Code</a>
+                    </div>
+                </article>
+
+                <article class="labcard reveal" data-tilt>
+                    <div class="labcard__top"><span class="labcard__no">Exp&middot;07</span><span class="badge">Personal</span></div>
+                    <h3 class="labcard__name">Alpha Monkey</h3>
+                    <p class="labcard__sum">A custom JavaScript gallery with cached API calls, error handling and a validated contact form.</p>
+                    <ul class="labcard__tags"><li>JavaScript</li><li>API</li><li>Forms</li></ul>
+                    <div class="labcard__links">
+                        <a href="https://alpha-monkey.vercel.app" target="_blank" rel="noopener" class="tlink" data-magnetic>Live ↗</a>
+                        <a href="https://github.com/andrewmat32/alpha-monkey" target="_blank" rel="noopener" class="tlink" data-magnetic>Code</a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section" id="skills">
+        <div class="container">
+            <div class="section__head reveal">
+                <span class="section__kicker"><b>05</b><i>/</i>Skills</span>
+                <h2 class="section__title">Capabilities, grouped by <span class="accent">what they do</span></h2>
+            </div>
+            <div class="skills">
+                <div class="skills__card reveal" data-tilt>
+                    <h3><i class="fa-solid fa-code"></i> Languages &amp; Core</h3>
+                    <ul><li>JavaScript</li><li>HTML5</li><li>CSS3</li><li>SCSS / SASS / LESS</li><li>Node.js</li><li>Nunjucks</li></ul>
+                </div>
+                <div class="skills__card reveal" data-tilt>
+                    <h3><i class="fa-solid fa-cubes"></i> Frameworks &amp; CMS</h3>
+                    <ul><li class="star">ApostropheCMS</li><li>Vue.js</li><li>Angular</li><li>Express</li><li>Alpine.js</li><li>Flutter</li></ul>
+                </div>
+                <div class="skills__card reveal" data-tilt>
+                    <h3><i class="fa-solid fa-paintbrush"></i> Styling &amp; UI</h3>
+                    <ul><li>TailwindCSS</li><li>Bootstrap</li><li>Design Systems</li><li>Responsive Design</li><li>UI/UX</li><li>Figma → Code</li></ul>
+                </div>
+                <div class="skills__card reveal" data-tilt>
+                    <h3><i class="fa-solid fa-screwdriver-wrench"></i> Back-end &amp; Tooling</h3>
+                    <ul><li>MongoDB</li><li>REST APIs</li><li>Docker</li><li>Git</li><li>JIRA</li><li>SEO &amp; JSON-LD</li></ul>
+                </div>
+            </div>
+            <p class="skills__note reveal">Continuous learning: Complete Vue Developer Bootcamp (Zero To Mastery), Advanced CSS &amp; Sass, SEO Masterclass, and Flutter.</p>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section section--contact" id="contact">
+        <div class="container contact">
+            <span class="section__kicker reveal"><b>06</b><i>/</i>Contact</span>
+            <h2 class="contact__title reveal">Let's build<br><span class="outline">something great</span></h2>
+            <p class="contact__lead reveal">
+                I'm available for full-stack &amp; CMS work: an ApostropheCMS build, a booking platform, a
+                design system, or a polished product UI. Tell me what you're building and I'll usually get
+                back to you within a day.
+            </p>
+            <div class="contact__cta reveal">
+                <a href="mailto:mateasandrei.dev@gmail.com?subject=Let's%20work%20together" class="btn btn--solid btn--big" data-magnetic>Get in touch <i class="fa-regular fa-envelope"></i></a>
+            </div>
+
+            <!-- TODO: re-enable the custom form once a Web3Forms access key is added (replace YOUR_WEB3FORMS_ACCESS_KEY).
+            <form class="cform reveal" id="contactForm" novalidate>
+                <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+                <input type="hidden" name="subject" value="New message from your portfolio">
+                <input type="text" name="botcheck" class="cform__hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <div class="cform__row">
+                    <label class="cform__field">
+                        <span>Name</span>
+                        <input type="text" name="name" required autocomplete="name" placeholder="Your name">
+                    </label>
+                    <label class="cform__field">
+                        <span>Email</span>
+                        <input type="email" name="email" required autocomplete="email" placeholder="you@company.com">
+                    </label>
+                </div>
+                <label class="cform__field">
+                    <span>Message</span>
+                    <textarea name="message" rows="4" required placeholder="What are you building?"></textarea>
+                </label>
+                <div class="cform__actions">
+                    <button type="submit" class="btn btn--solid btn--big" data-magnetic>Send message <i class="fa-solid fa-paper-plane"></i></button>
+                    <span class="cform__status" id="cformStatus" role="status" aria-live="polite"></span>
+                </div>
+            </form>
+            <div class="cform__done" id="cformDone" hidden>
+                <i class="fa-solid fa-circle-check"></i>
+                <h3>Message sent</h3>
+                <p>Thanks, I'll get back to you within a day. The meteors are on me.</p>
+            </div>
+            -->
+
+            <ul class="contact__channels reveal">
+                <li><a href="mailto:mateasandrei.dev@gmail.com" data-magnetic><i class="fa-regular fa-envelope"></i> Email</a></li>
+                <li><a href="https://www.linkedin.com/in/mateaș-emil-andrei-067886279" target="_blank" rel="noopener" data-magnetic><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a></li>
+                <li><a href="https://github.com/andrewmat32" target="_blank" rel="noopener" data-magnetic><i class="fa-brands fa-github"></i> GitHub</a></li>
+                <li><a href="tel:+40734193274" data-magnetic><i class="fa-solid fa-phone"></i> +40 734 193 274</a></li>
+                <li><a href="resume/Mateas-Andrei-CV-2026-Official.pdf" download="Mateas-Emil-Andrei-CV.pdf" data-magnetic><i class="fa-solid fa-file-arrow-down"></i> Résumé</a></li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container footer__top">
+        <div class="footer__brand">
+            <a href="#top" class="footer__logo" data-magnetic><span class="logo__dot"></span>andrei<span class="logo__tld">.dev</span></a>
+            <p class="footer__tag">Full Stack Developer building web platforms end to end. Currently open to new work.</p>
+            <a href="mailto:mateasandrei.dev@gmail.com" class="footer__mail" data-magnetic>mateasandrei.dev@gmail.com</a>
+        </div>
+        <nav class="footer__col" aria-label="Sections">
+            <h4 class="footer__h">Explore</h4>
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#work">Work</a>
+            <a href="#lab">Lab</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <nav class="footer__col" aria-label="Elsewhere">
+            <h4 class="footer__h">Connect</h4>
+            <a href="https://www.linkedin.com/in/mateaș-emil-andrei-067886279" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+            <a href="https://github.com/andrewmat32" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+            <a href="tel:+40734193274"><i class="fa-solid fa-phone"></i> +40 734 193 274</a>
+            <a href="resume/Mateas-Andrei-CV-2026-Official.pdf" download="Mateas-Emil-Andrei-CV.pdf" data-resume><i class="fa-solid fa-file-arrow-down"></i> Résumé</a>
+        </nav>
+    </div>
+    <div class="container footer__bar">
+        <span>© <span id="year"></span> Mateaș Emil Andrei · Târgu Mureș, Romania</span>
+        <span class="footer__made">Designed &amp; built by hand <i class="fa-regular fa-keyboard"></i></span>
+    </div>
+</footer>
+
+<!-- Floating dock / toolbar -->
+<div class="dock" id="dock" role="region" aria-label="Toolbar">
+    <span class="dock__fx" id="dockFx" aria-hidden="true"></span>
+    <div class="dock__controls" id="dockControls">
+        <button class="dock__btn" id="themeToggle" data-magnetic aria-label="Switch to light mode" data-tip="Light mode"><i class="fa-solid fa-moon"></i></button>
+        <span class="dock__sep"></span>
+        <div class="dock__group" role="group" aria-label="Accent colour">
+            <button class="dock__swatch is-active" data-accent="vermilion" style="--sw:#ff4d2e" aria-label="Vermilion accent" data-tip="Vermilion"></button>
+            <button class="dock__swatch" data-accent="teal" style="--sw:#16c79a" aria-label="Teal accent" data-tip="Teal"></button>
+            <button class="dock__swatch" data-accent="lime" style="--sw:#c8f135" aria-label="Lime accent" data-tip="Lime"></button>
+            <button class="dock__swatch" data-accent="cobalt" style="--sw:#5b7cff" aria-label="Cobalt accent" data-tip="Cobalt"></button>
+        </div>
+        <span class="dock__sep"></span>
+        <button class="dock__btn dock__btn--accent" id="accentToggle" data-magnetic aria-label="Accent colour" aria-expanded="false" data-tip="Accent"><i class="fa-solid fa-droplet"></i></button>
+        <button class="dock__btn" id="liteToggle" data-magnetic aria-pressed="false" aria-label="Lite mode (less motion)" data-tip="Lite mode"><i class="fa-solid fa-bolt"></i></button>
+        <button class="dock__btn" id="copyEmail" data-magnetic aria-label="Copy email" data-tip="Copy email"><i class="fa-regular fa-envelope"></i></button>
+        <button class="dock__btn" id="cmdkBtn" data-magnetic aria-label="Open command palette" data-tip="Commands (⌘K)"><i class="fa-solid fa-terminal"></i></button>
+        <span class="dock__sep"></span>
+        <button class="dock__avail" id="dockAvail" aria-label="Toggle availability message" data-tip="Availability"><span class="dock__avail-dot"></span> Available</button>
+    </div>
+    <div class="dock__accent-pop" id="accentPop" role="group" aria-label="Accent colour">
+        <button class="dock__swatch" data-accent="vermilion" style="--sw:#ff4d2e" aria-label="Vermilion accent"></button>
+        <button class="dock__swatch" data-accent="teal" style="--sw:#16c79a" aria-label="Teal accent"></button>
+        <button class="dock__swatch" data-accent="lime" style="--sw:#c8f135" aria-label="Lime accent"></button>
+        <button class="dock__swatch" data-accent="cobalt" style="--sw:#5b7cff" aria-label="Cobalt accent"></button>
+    </div>
+    <span class="dock__sep dock__sep--time"></span>
+    <span class="dock__handle" title="Open toolbar" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+    <span class="dock__time"><span id="dockClock">--:--</span><span class="city">Târgu Mureș</span></span>
+    <span class="dock__copied" id="dockCopied">Copied!</span>
+</div>
+
+<!-- Availability popup -->
+<div class="modal" id="modal" aria-hidden="true">
+    <div class="modal__card" role="dialog" aria-modal="false" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+        <span class="modal__bar" aria-hidden="true"></span>
+        <button class="modal__x" aria-label="Close" data-close>&times;</button>
+        <p class="modal__eyebrow"><span class="pulse"></span> Currently available!</p>
+        <h3 class="modal__title" id="modalTitle">Got a platform to build?</h3>
+        <p class="modal__desc" id="modalDesc">I take on full-stack &amp; ApostropheCMS work: booking platforms, design systems, the lot. Let's talk before the calendar fills up.</p>
+        <div class="modal__cta">
+            <a href="mailto:mateasandrei.dev@gmail.com" class="btn btn--solid" data-magnetic>Start a conversation</a>
+            <button class="modal__later" data-close>Maybe later</button>
+        </div>
+    </div>
+</div>
+
+<button class="to-top" id="toTop" aria-label="Back to top"><span class="to-top__dot"></span></button>
+
+<!-- résumé modal: view the PDF, or explore the data with a matrix decode -->
+<div class="rez" id="rezModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Résumé">
+    <div class="rez__backdrop" data-rez-close></div>
+    <div class="rez__panel">
+        <button class="rez__x" data-rez-close aria-label="Close">&times;</button>
+
+        <!-- choice -->
+        <div class="rez__choice" id="rezChoice">
+            <p class="rez__eyebrow"><span class="pulse"></span> Résumé</p>
+            <h2 class="rez__h">Static or interactive?</h2>
+            <div class="rez__cards">
+                <a class="rez__card" href="resume/Mateas-Andrei-CV-2026-Official.pdf" target="_blank" rel="noopener">
+                    <i class="fa-regular fa-file-pdf"></i>
+                    <b>View the PDF</b>
+                    <span>Open the print-ready one-page CV in a new tab.</span>
+                </a>
+                <button class="rez__card" id="rezExplore" type="button">
+                    <i class="fa-solid fa-terminal"></i>
+                    <b>Explore the data</b>
+                    <span>Browse it live: pick a section, watch it decode.</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- data explorer -->
+        <div class="rez__data" id="rezData">
+            <div class="rez__databar">
+                <button class="rez__back" id="rezBack" type="button"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                <span class="rez__title">Mateaș Emil Andrei · Résumé</span>
+                <a class="rez__pdf" href="resume/Mateas-Andrei-CV-2026-Official.pdf" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf"></i> <span>PDF</span></a>
+            </div>
+            <div class="rez__grid">
+                <nav class="rez__menu" id="rezMenu" aria-label="Résumé sections">
+                    <button class="rez__cat is-active" data-cat="profile" type="button">Profile</button>
+                    <button class="rez__cat" data-cat="experience" type="button">Experience</button>
+                    <button class="rez__cat" data-cat="opensource" type="button">Open Source</button>
+                    <button class="rez__cat" data-cat="skills" type="button">Tech Skills</button>
+                    <button class="rez__cat" data-cat="soft" type="button">Soft Skills</button>
+                    <button class="rez__cat" data-cat="courses" type="button">Courses</button>
+                </nav>
+                <div class="rez__content" id="rezContent">
+                    <section class="rez__panelc is-active" data-panel="profile">
+                        <h3 class="rez__ph">Profile</h3>
+                        <p class="rez__line">Full Stack Developer who builds web platforms end to end, with around five years shipping travel-booking platforms — grounded in core JavaScript and fundamentals, fluent across frameworks and CMS, and able to build custom from scratch.</p>
+                        <p class="rez__line" style="margin-top:.8rem">Strong in vanilla JavaScript and Node.js, with a focus on clean, maintainable, accessible code.</p>
+                    </section>
+                    <section class="rez__panelc" data-panel="experience">
+                        <h3 class="rez__ph">Work Experience</h3>
+                        <div class="rez__job">
+                            <div class="rez__jtop"><b class="rez__line">Full Stack Web Developer</b><span class="rez__date rez__line">2025 – Present</span></div>
+                            <div class="rez__jsub rez__line">Tour operator platform</div>
+                            <ul>
+                                <li class="rez__line">Sole developer of a full-stack Apostrophe CMS application: a marketing CMS and a booking minisite.</li>
+                                <li class="rez__line">Complex, framework-free vanilla JavaScript across the Node.js back-end and front-end, with hands-on DOM manipulation and custom interactive components.</li>
+                                <li class="rez__line">New features, refactoring and a custom widget library.</li>
+                            </ul>
+                        </div>
+                        <div class="rez__job">
+                            <div class="rez__jtop"><b class="rez__line">Frontend Web Developer &amp; UI/UX</b><span class="rez__date rez__line">2024 – 2025</span></div>
+                            <div class="rez__jsub rez__line">Tour operator platform</div>
+                            <ul>
+                                <li class="rez__line">Translated client vision into a fully functioning UI with modern UX and accessibility.</li>
+                                <li class="rez__line">Front-end logic and interactions in vanilla JavaScript (DOM manipulation, custom components).</li>
+                                <li class="rez__line">SEO optimisations: increased score by ~20% across the entire application.</li>
+                            </ul>
+                        </div>
+                        <div class="rez__job">
+                            <div class="rez__jtop"><b class="rez__line">Full Stack Web Developer</b><span class="rez__date rez__line">2022 – 2024</span></div>
+                            <div class="rez__jsub rez__line">Tour operator platform</div>
+                            <ul>
+                                <li class="rez__line">Core developer: engineered a booking platform back-to-front, extending Apostrophe CMS.</li>
+                                <li class="rez__line">Built the booking engine (pricing, cabins, with/without-flight, excursions), search and forms.</li>
+                                <li class="rez__line">Figma-to-code translation of designs.</li>
+                            </ul>
+                        </div>
+                        <div class="rez__job">
+                            <div class="rez__jtop"><b class="rez__line">Full Stack Web Developer</b><span class="rez__date rez__line">2021 – 2022</span></div>
+                            <div class="rez__jsub rez__line">Tour operator platform</div>
+                            <ul>
+                                <li class="rez__line">Built features for online booking software: Splide sliders &amp; galleries, cookie-based search state, and a GDPR cookie-consent manager.</li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="rez__panelc" data-panel="opensource">
+                        <h3 class="rez__ph">Open Source</h3>
+                        <div class="rez__job">
+                            <div class="rez__jtop"><b class="rez__line">Apostrophe CMS · AI Code Generator</b><span class="rez__date rez__line">2025</span></div>
+                            <p class="rez__line" style="margin-top:.5rem">Developed an AI-powered code generator for Apostrophe CMS modules using Claude AI and the MCP (Model Context Protocol) architecture. Published as an official community extension on the Apostrophe CMS website.</p>
+                        </div>
+                    </section>
+                    <section class="rez__panelc" data-panel="skills">
+                        <h3 class="rez__ph">Tech Skills</h3>
+                        <div class="rez__skill"><span class="rez__line">JavaScript</span><span class="rez__yr rez__line">5 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">Node.js</span><span class="rez__yr rez__line">5 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">Apostrophe CMS</span><span class="rez__yr rez__line">5 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">CSS / SCSS / SASS</span><span class="rez__yr rez__line">5 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">RESTful APIs</span><span class="rez__yr rez__line">5 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">MongoDB</span><span class="rez__yr rez__line">5 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">Git</span><span class="rez__yr rez__line">5 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">JIRA</span><span class="rez__yr rez__line">5 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">UI / UX</span><span class="rez__yr rez__line">3 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">Tailwind / Bootstrap</span><span class="rez__yr rez__line">3 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">Docker</span><span class="rez__yr rez__line">3 yrs</span></div>
+                        <div class="rez__skill"><span class="rez__line">Vue.js</span><span class="rez__yr rez__line">1 yr</span></div>
+                        <div class="rez__skill"><span class="rez__line">Angular</span><span class="rez__yr rez__line">&lt; 1 yr</span></div>
+                        <div class="rez__skill"><span class="rez__line">Flutter</span><span class="rez__yr rez__line">&lt; 1 yr</span></div>
+                    </section>
+                    <section class="rez__panelc" data-panel="soft">
+                        <h3 class="rez__ph">Soft Skills</h3>
+                        <ul class="rez__chips">
+                            <li class="rez__line">Problem-Solving</li>
+                            <li class="rez__line">Attention to Detail</li>
+                            <li class="rez__line">Team Collaboration</li>
+                            <li class="rez__line">Adaptability</li>
+                            <li class="rez__line">Communication</li>
+                            <li class="rez__line">Creative Thinking</li>
+                            <li class="rez__line">Continuous Learning</li>
+                        </ul>
+                    </section>
+                    <section class="rez__panelc" data-panel="courses">
+                        <h3 class="rez__ph">Courses</h3>
+                        <div class="rez__skill"><span class="rez__line">Complete Vue Developer Bootcamp (Pinia, Vitest)</span><span class="rez__yr rez__line">Zero To Mastery · 2024</span></div>
+                        <div class="rez__skill"><span class="rez__line">Advanced CSS and Sass</span><span class="rez__yr rez__line">Udemy · 2023</span></div>
+                        <div class="rez__skill"><span class="rez__line">SEO Training Masterclass</span><span class="rez__yr rez__line">Udemy · 2023</span></div>
+                        <div class="rez__skill"><span class="rez__line">The Web Developer Bootcamp</span><span class="rez__yr rez__line">Udemy · 2020</span></div>
+                    </section>
+                </div>
+            </div>
+            <div class="rez__footer">
+                <div class="rez__finfo"><span class="rez__flabel rez__line">STATUS</span><span class="rez__line rez__ok">● Available for work</span></div>
+                <div class="rez__finfo"><span class="rez__flabel rez__line">LOC</span><span class="rez__line">Târgu Mureș, Romania</span></div>
+                <div class="rez__finfo"><span class="rez__flabel rez__line">LANG</span><span class="rez__line">Romanian · English</span></div>
+                <div class="rez__finfo"><span class="rez__flabel rez__line">EDU</span><span class="rez__line">B.Eng. Automation &amp; Applied Informatics · UMFST · 2016–2020</span></div>
+                <a class="rez__finfo" href="mailto:mateasandrei.dev@gmail.com"><span class="rez__flabel rez__line">MAIL</span><span class="rez__line">mateasandrei.dev@gmail.com</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- command palette (⌘K) -->
+<div class="cmdk" id="cmdk" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="cmdk__backdrop" data-cmdk-close></div>
+    <div class="cmdk__panel">
+        <div class="cmdk__search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="cmdkInput" placeholder="Type a command or jump to a section…" autocomplete="off" spellcheck="false" aria-label="Search commands">
+            <kbd>esc</kbd>
+        </div>
+        <ul class="cmdk__list" id="cmdkList" role="listbox" aria-label="Commands"></ul>
+        <div class="cmdk__foot">
+            <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+            <span><kbd>↵</kbd> select</span>
+            <span><kbd>⌘</kbd><kbd>K</kbd> toggle</span>
+        </div>
+    </div>
+</div>
+
+<script src="assets/script.js?v=51"></script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<title>Mateaș Emil Andrei · CV</title>
+<style>
+    :root{
+        --ink:#121215; --body:#3d4046; --mut:#7d8087; --line:#e8e8ec; --line-2:#d2d2d9;
+        --accent:#e8401f; --accent-d:#c33015; --accent-soft:#fdeae5;
+        --ff:'Instrument Sans','Segoe UI',Arial,sans-serif;
+        --ff-display:'Syne',Arial,sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    @page{ size:A4; margin:0; }
+    html,body{ background:#ffffff; }
+    body{ font-family:var(--ff); color:var(--body); font-size:9pt; line-height:1.45; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .wrap{ width:210mm; min-height:288mm; padding:9.5mm 12mm 0; }
+    a{ color:inherit; text-decoration:none; }
+
+    /* ---------- header ---------- */
+    .head{ display:flex; justify-content:space-between; align-items:center; gap:10mm; padding-bottom:7pt; }
+    .name{ font-family:var(--ff-display); font-size:23pt; font-weight:800; letter-spacing:-.01em; color:var(--ink); line-height:1.04; text-transform:uppercase; }
+    .title{ font-size:8.8pt; font-weight:700; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); margin-top:4pt; }
+    .head-rule{ width:42pt; height:2.5pt; background:var(--accent); margin-top:7pt; }
+    .contact-row{ display:flex; flex-wrap:wrap; gap:3pt 13pt; margin-top:8pt; font-size:7.9pt; color:var(--body); }
+    .contact-row .ic{ color:var(--accent); margin-right:4pt; font-weight:700; }
+    .photo{ width:27mm; height:27mm; border-radius:50%; flex:0 0 auto; padding:2.5pt; background:var(--accent-soft); border:1.6pt solid var(--accent); }
+    .photo img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
+    .topline{ height:1.2pt; background:var(--ink); }
+
+    /* ---------- body ---------- */
+    .cols{ display:grid; grid-template-columns:1fr 60mm; }
+    .main{ padding:8pt 10mm 0 0; border-right:1px solid var(--line); }
+    .aside{ padding:8pt 0 0 9mm; }
+
+    .h{ font-family:var(--ff-display); font-size:9.6pt; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--ink); display:flex; align-items:center; gap:7pt; margin-bottom:5pt; }
+    .h::after{ content:''; flex:1; height:1pt; background:var(--line); }
+    .h .tick{ width:11pt; height:2.5pt; background:var(--accent); flex:0 0 auto; }
+    .block{ margin-bottom:6.5pt; }
+
+    .about-p{ font-size:9pt; color:var(--ink); line-height:1.45; }
+    .about-p b{ color:var(--ink); }
+
+    .job{ position:relative; padding-left:12pt; margin-bottom:5pt; break-inside:avoid; }
+    .job::before{ content:''; position:absolute; left:2.6pt; top:4pt; bottom:1pt; width:1pt; background:var(--line-2); }
+    .job::after{ content:''; position:absolute; left:0; top:3.5pt; width:6.5pt; height:6.5pt; background:var(--accent); }
+    .job-top{ display:flex; justify-content:space-between; align-items:baseline; gap:10pt; }
+    .job-role{ font-family:var(--ff-display); font-size:10.4pt; font-weight:700; color:var(--ink); }
+    .job-date{ font-size:7.6pt; font-weight:700; color:var(--accent); white-space:nowrap; letter-spacing:.03em; }
+    .job-sub{ font-size:8pt; color:var(--mut); margin:1pt 0 4pt; }
+    .job ul{ margin-left:11pt; }
+    .job li{ font-size:8.5pt; margin-bottom:1.3pt; }
+    .job li::marker{ color:var(--accent); }
+    .job li b{ color:var(--ink); font-weight:700; }
+
+    .contrib{ break-inside:avoid; background:var(--accent-soft); border:1pt solid rgba(232,64,31,.3); border-radius:6pt; padding:9pt 11pt; }
+    .contrib-top{ display:flex; justify-content:space-between; align-items:baseline; gap:10pt; }
+    .contrib-title{ font-family:var(--ff-display); font-size:10pt; font-weight:700; color:var(--ink); }
+    .contrib-date{ font-size:7.6pt; font-weight:700; color:var(--accent); }
+    .contrib p{ font-size:8.6pt; color:var(--ink); margin-top:3pt; }
+
+    /* ---------- aside ---------- */
+    .skill{ display:flex; justify-content:space-between; align-items:baseline; gap:6pt; font-size:8.6pt; color:var(--ink); font-weight:500; margin-bottom:3.5pt; }
+    .skill .yr{ font-size:7.5pt; font-weight:600; color:var(--mut); white-space:nowrap; }
+    .plat{ display:block; margin-bottom:3.5pt; break-inside:avoid; }
+    .plat b{ display:block; font-size:8.4pt; font-weight:700; color:var(--ink); line-height:1.25; }
+    .plat span{ font-size:7.5pt; color:var(--accent); font-weight:600; }
+
+    .edu b{ display:block; font-size:8.8pt; font-weight:700; color:var(--ink); line-height:1.3; }
+    .edu span{ display:block; font-size:8pt; color:var(--mut); margin-top:2pt; line-height:1.35; }
+    .edu .date{ color:var(--accent); font-weight:700; font-size:7.6pt; margin-top:3pt; }
+
+    .lang li{ list-style:none; font-size:8.6pt; color:var(--ink); font-weight:500; margin-bottom:2.5pt; }
+    .lang li span{ font-size:7.8pt; color:var(--mut); font-weight:400; }
+
+    .course{ margin-bottom:4.5pt; break-inside:avoid; }
+    .course b{ font-size:8.2pt; font-weight:600; color:var(--ink); line-height:1.3; display:block; }
+    .course span{ font-size:7.3pt; color:var(--mut); }
+    .block:last-child{ margin-bottom:0; }
+    .course:last-child{ margin-bottom:0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <header class="head">
+        <div>
+            <div class="name">Mateaș Emil Andrei</div>
+            <div class="title">Full Stack Developer</div>
+            <div class="head-rule"></div>
+            <div class="contact-row">
+                <span><span class="ic">✆</span><a href="tel:+40734193274">+40 734 193 274</a></span>
+                <span><span class="ic">✉</span><a href="mailto:mateasandrei.dev@gmail.com">mateasandrei.dev@gmail.com</a></span>
+                <span><span class="ic">⌖</span>Târgu Mureș, Romania</span>
+                <span><span class="ic">in</span><a href="https://www.linkedin.com/in/mateaș-emil-andrei-067886279">linkedin.com/in/mateas-andrei</a></span>
+                <span><span class="ic">gh</span><a href="https://github.com/andrewmat32">github.com/andrewmat32</a></span>
+                <span><span class="ic">↗</span><a href="https://mateas-andrei.vercel.app">mateas-andrei.vercel.app</a></span>
+            </div>
+        </div>
+        <div class="photo"><img src="../images/andrew.jfif" alt="Mateaș Emil Andrei"></div>
+    </header>
+    <div class="topline"></div>
+
+    <div class="cols">
+        <main class="main">
+            <section class="block">
+                <div class="h"><span class="tick"></span> Profile</div>
+                <p class="about-p">
+                    Full Stack Developer (~5 yrs) who builds web platforms <b>end to end</b> — Node.js back-ends,
+                    booking engines and accessible front-ends. Grounded in <b>core JavaScript and engineering
+                    fundamentals</b>, and fluent across frameworks and CMS (Vue.js, ApostropheCMS): I reach for the
+                    right tool for the job and can build custom from scratch when it pays off. Sole developer of a live
+                    marketing + booking platform and contributor to <b>4 production travel platforms</b> across
+                    Switzerland, the Netherlands and Germany.
+                </p>
+            </section>
+
+            <section class="block">
+                <div class="h"><span class="tick"></span> Work Experience</div>
+
+                <div class="job">
+                    <div class="job-top"><span class="job-role">Full Stack Web Developer</span><span class="job-date">2025 – Present</span></div>
+                    <div class="job-sub">Tour operator platform · sole developer</div>
+                    <ul>
+                        <li>Sole developer of a full-stack Apostrophe CMS platform — a marketing CMS and a travel-booking minisite — owning the Node.js back-end and front-end end to end.</li>
+                        <li>Built a library of <b>33 custom widgets</b> (incl. a cinematic scroll-driven set) in framework-free vanilla JavaScript with hands-on DOM and component work.</li>
+                        <li>Integrated Mailchimp, Cloudflare Turnstile and GA4 under a strict CSP; shipped structured data, SEO and <b>WCAG</b> accessibility.</li>
+                    </ul>
+                </div>
+
+                <div class="job">
+                    <div class="job-top"><span class="job-role">Frontend Developer &amp; UI/UX</span><span class="job-date">2024 – 2025</span></div>
+                    <div class="job-sub">Tour operator platform</div>
+                    <ul>
+                        <li>Translated client vision into a fully functioning, accessible UI in vanilla JavaScript (DOM manipulation, custom components).</li>
+                        <li>Raised the application's <b>SEO score by ~20%</b> through structured data and on-page optimisation.</li>
+                        <li>Delivered Figma-to-code builds with modern UX patterns across the product.</li>
+                    </ul>
+                </div>
+
+                <div class="job">
+                    <div class="job-top"><span class="job-role">Full Stack Web Developer</span><span class="job-date">2022 – 2024</span></div>
+                    <div class="job-sub">Dutch dive-travel platform · core developer</div>
+                    <ul>
+                        <li>Core developer across <b>800+ commits</b>, extending Apostrophe CMS back-to-front (Docker, MongoDB).</li>
+                        <li>Engineered the <b>booking engine</b> end to end: pricing, cabins, with/without-flight, excursions and liveaboards, plus destination search and multi-step forms.</li>
+                        <li>Led a blog export and a full data migration (DW2 → DW4).</li>
+                    </ul>
+                </div>
+
+                <div class="job">
+                    <div class="job-top"><span class="job-role">Web Developer</span><span class="job-date">2021 – 2022</span></div>
+                    <div class="job-sub">Tour operator platform</div>
+                    <ul>
+                        <li>Built booking-software features in JavaScript: Splide sliders &amp; galleries, cookie-based search-state persistence, and a <b>GDPR</b> cookie-consent manager.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="block">
+                <div class="h"><span class="tick"></span> Open Source</div>
+                <div class="contrib">
+                    <div class="contrib-top">
+                        <span class="contrib-title">Apostrophe CMS · AI Code Generator</span>
+                        <span class="contrib-date">2025</span>
+                    </div>
+                    <p>
+                        Built an AI-powered code generator for Apostrophe CMS modules using Claude AI and the MCP
+                        (Model Context Protocol) architecture. Published as an <b>official community extension</b> on
+                        the Apostrophe CMS website.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <aside class="aside">
+            <section class="block">
+                <div class="h"><span class="tick"></span> Tech Skills</div>
+                <div class="skill"><span>JavaScript</span><span class="yr">5 yrs</span></div>
+                <div class="skill"><span>Node.js</span><span class="yr">5 yrs</span></div>
+                <div class="skill"><span>Apostrophe CMS</span><span class="yr">5 yrs</span></div>
+                <div class="skill"><span>CSS / SCSS / SASS</span><span class="yr">5 yrs</span></div>
+                <div class="skill"><span>RESTful APIs</span><span class="yr">5 yrs</span></div>
+                <div class="skill"><span>MongoDB</span><span class="yr">5 yrs</span></div>
+                <div class="skill"><span>Git</span><span class="yr">5 yrs</span></div>
+                <div class="skill"><span>JIRA</span><span class="yr">5 yrs</span></div>
+                <div class="skill"><span>UI / UX</span><span class="yr">3 yrs</span></div>
+                <div class="skill"><span>Tailwind / Bootstrap</span><span class="yr">3 yrs</span></div>
+                <div class="skill"><span>Docker</span><span class="yr">3 yrs</span></div>
+                <div class="skill"><span>Vue.js</span><span class="yr">1 yr</span></div>
+                <div class="skill"><span>Angular</span><span class="yr">&lt; 1 yr</span></div>
+                <div class="skill"><span>Flutter</span><span class="yr">&lt; 1 yr</span></div>
+            </section>
+
+            <section class="block">
+                <div class="h"><span class="tick"></span> Selected Work</div>
+                <a class="plat" href="https://victoury.eu" target="_blank" rel="noopener"><b>Victoury</b><span>victoury.eu</span></a>
+                <a class="plat" href="https://divingworld.nl" target="_blank" rel="noopener"><b>Diving World</b><span>divingworld.nl</span></a>
+                <a class="plat" href="https://wedive.ch" target="_blank" rel="noopener"><b>WeDive</b><span>wedive.ch</span></a>
+                <a class="plat" href="https://abendsonneafrika.de" target="_blank" rel="noopener"><b>Abendsonne Afrika</b><span>abendsonneafrika.de</span></a>
+            </section>
+
+            <section class="block edu">
+                <div class="h"><span class="tick"></span> Education</div>
+                <b>B.Eng. · Automation &amp; Applied Informatics</b>
+                <span>UMFST "G.E. Palade" of Târgu Mureș</span>
+                <span class="date">2016 – 2020</span>
+            </section>
+
+            <section class="block">
+                <div class="h"><span class="tick"></span> Languages</div>
+                <ul class="lang">
+                    <li>Romanian <span>· Native</span></li>
+                    <li>English <span>· Highly Proficient</span></li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</div>
+</body>
+</html>

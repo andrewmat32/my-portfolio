@@ -1,30 +1,24 @@
-# Portfolio Website
+# Mateaș Emil Andrei — Developer Portfolio
 
-## Key Features and Technical Highlights:
+This is my personal portfolio. I'm Mateaș Emil Andrei, a full-stack web developer, and this is a place to get a quick, honest sense of who I am, the platforms I've built, the experience behind them, and the easiest ways to reach me.
 
-- **Interactive Project Showcase**: A dedicated section for showcasing individual projects with detailed descriptions and links.
-  - Includes live demos and GitHub repositories for each project.
-  
-- **Responsive Design**: Fully optimized for all devices, including desktops, tablets, and mobile screens.
-  - Ensures consistent and high-quality user experience across different screen sizes.
-  - Designed with modern CSS frameworks and custom styling.
+## What you'll find
 
-- **Personalized About Section**: Highlights key skills, experiences, and career journey.
+- **A short introduction** to who I am and the kind of work I do.
+- **Selected projects**, each with the story behind it: the problem, what I built, and the result.
+- **Skills and background** at a glance.
+- **A résumé** you can read right on the page or download as a PDF.
+- **A contact section** with all the direct ways to reach me.
 
-This portfolio website combines modern design, interactivity, and functionality to effectively present personal and professional projects.
+## The experience
 
-## Why It Matters:
+I made the site to feel modern and alive rather than static. It opens in a clean dark look that you can switch to light, lets you pick from a few accent colours, and adds small, tasteful touches of motion as you move around. I built it to work smoothly on both desktop and mobile, and to stay easy to use for everyone.
 
-- **This project demonstrates my ability to**:
-  - Design and implement professional, user-friendly web interfaces.
-  - Showcase complex projects with detailed and engaging presentations.
-  - Develop responsive and accessible web applications for various devices.
+## Contact
 
-## Technologies Used:
+**Mateaș Emil Andrei** · Full Stack Developer · Târgu Mureș, Romania
+✉️ mateasandrei.dev@gmail.com · [LinkedIn](https://www.linkedin.com/in/mateaș-emil-andrei-067886279) · [GitHub](https://github.com/andrewmat32)
 
-- UI/UX
-- Web Design
-- CSS3
-- JavaScript
-- HTML5
-- Responsive Design
+---
+
+© Mateaș Emil Andrei. The personal content, copy, and résumé are not for reuse.
