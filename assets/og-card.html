@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; }
+    body {
+        font-family: 'Instrument Sans', 'Segoe UI', sans-serif;
+        background: #0b0b0e; color: #f2f0ec; overflow: hidden; position: relative;
+    }
+    .glow { position: absolute; border-radius: 50%; filter: blur(10px); }
+    .glow--1 { width: 760px; height: 760px; top: -300px; right: -220px;
+        background: radial-gradient(circle, rgba(255,77,46,.30), transparent 60%); }
+    .glow--2 { width: 560px; height: 560px; bottom: -260px; left: -160px;
+        background: radial-gradient(circle, rgba(255,77,46,.12), transparent 60%); }
+    .grid { position: absolute; inset: 0;
+        background-image: radial-gradient(rgba(242,240,236,.05) 1px, transparent 1px);
+        background-size: 26px 26px; }
+    .frame { position: absolute; inset: 56px; border: 1px solid rgba(242,240,236,.12); border-radius: 26px; }
+    .wrap { position: relative; height: 100%; display: flex; flex-direction: column;
+        justify-content: flex-start; padding: 150px 110px 150px; }
+    .brand { position: absolute; top: 60px; left: 110px; display: flex; align-items: center; gap: 12px;
+        font-family: 'Syne', sans-serif; font-weight: 700; font-size: 26px; letter-spacing: .01em; }
+    .brand .dot { width: 12px; height: 12px; border-radius: 50%; background: #ff4d2e;
+        box-shadow: 0 0 18px rgba(255,77,46,.8); }
+    .brand .tld { color: #ff4d2e; }
+    .kicker { margin-top: 0; font-size: 17px; font-weight: 600; letter-spacing: .34em;
+        text-transform: uppercase; color: #ff4d2e; }
+    h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 62px; line-height: 1.06;
+        letter-spacing: -.02em; text-transform: uppercase; margin: 16px 0 0; }
+    h1 .o { color: transparent; -webkit-text-stroke: 2px #6c6a68; }
+    .sub { margin-top: 30px; max-width: 30ch; font-size: 26px; line-height: 1.5; color: #a7a4a0; }
+    .foot { position: absolute; left: 110px; bottom: 64px; display: flex; gap: 28px;
+        font-size: 19px; color: #a7a4a0; }
+    .foot b { color: #f2f0ec; font-weight: 600; }
+    .rule { position: absolute; right: 110px; bottom: 70px; width: 120px; height: 4px;
+        background: #ff4d2e; border-radius: 4px; }
+</style>
+</head>
+<body>
+    <div class="glow glow--1"></div>
+    <div class="glow glow--2"></div>
+    <div class="grid"></div>
+    <div class="frame"></div>
+    <div class="wrap">
+        <div class="brand"><span class="dot"></span>andrei<span class="tld">.dev</span></div>
+        <div class="kicker">Full Stack Developer</div>
+        <h1>Web platforms,<br><span class="o">built end</span> to end.</h1>
+        <p class="sub">Booking engines, design systems and accessible front-ends.</p>
+    </div>
+    <div class="foot"><span><b>Mateaș Emil Andrei</b></span><span>Târgu Mureș, Romania</span></div>
+    <div class="rule"></div>
+</body>
+</html>
