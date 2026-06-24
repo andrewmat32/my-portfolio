@@ -712,6 +712,7 @@ body.lite.has-cursor a[href], body.lite.has-cursor button, body.lite.has-cursor 
     .hero__kicker { font-size: .52rem; letter-spacing: .05em; margin-bottom: .5rem; }
     .hero__lead { font-size: .78rem; max-width: 32ch; }
     .hero__cta .btn { max-width: 240px; font-size: .76rem; padding: .55rem .9rem; }
+    .contact__title { font-size: clamp(1.9rem, 9vw, 2.6rem); }
     .contact__cta .btn { width: 100%; justify-content: center; }
     .dock { gap: .4rem; padding: .45rem .6rem; max-width: calc(100vw - 1rem); }
     .dock__time .city { display: none; }
