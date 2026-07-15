@@ -738,6 +738,10 @@ body.lite.has-cursor a[href], body.lite.has-cursor button, body.lite.has-cursor 
     .about__points li { padding: 1rem 1.1rem 1rem 2.9rem; }
     .skills__card { padding: 1.15rem; }
     .impact { padding: 1rem 1.1rem; }
+    /* when the toolbar is open on mobile it spans nearly full width, so lift the
+       back-to-top button above it; collapsed dock (narrow pill) keeps it in the corner.
+       Uses transform (already transitioned) so the shift eases both ways instead of snapping. */
+    .dock:not(.collapsed) ~ .to-top.is-visible { transform: translateY(-3.65rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
