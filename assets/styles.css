@@ -128,6 +128,14 @@ strong { color: var(--text); font-weight: 600; }
 .cursor { width: 8px; height: 8px; background: var(--accent); }
 .cursor-ring { width: 36px; height: 36px; border: 1.5px solid rgba(var(--accent-rgb),.55); transition: width .25s var(--ease), height .25s var(--ease), border-color .25s, opacity .25s; }
 .cursor-ring.is-hover { width: 64px; height: 64px; border-color: rgba(var(--accent-rgb),.9); }
+/* click echo — a pseudo-element ring that expands independently, so the cursor's
+   own positioning transform is never touched (no jump) */
+.cursor-ring::after {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    border: 1.5px solid rgba(var(--accent-rgb), .7); opacity: 0; pointer-events: none;
+}
+.cursor-ring.is-click::after { animation: ringEcho .5s var(--ease); }
+@keyframes ringEcho { from { opacity: .8; transform: scale(1); } to { opacity: 0; transform: scale(2.3); } }
 @media (pointer: coarse) { .cursor, .cursor-ring { display: none; } }
 body.has-cursor, body.has-cursor a, body.has-cursor button { cursor: none; }
 
@@ -519,6 +527,21 @@ body.is-loaded .load-6 { animation-delay: .58s; }
 .to-top:hover .to-top__dot { background: var(--on-accent); }
 .to-top:active { transform: translateY(-1px); }
 @media (prefers-reduced-motion: reduce) { .to-top__dot, .to-top.is-visible, .to-top.is-visible::before, .to-top.is-visible::after { animation: none; } }
+
+/* ---------- click ripple ---------- */
+.ripple-layer { position: fixed; inset: 0; z-index: 900; pointer-events: none; overflow: hidden; }
+.ripple {
+    position: fixed; width: 12px; height: 12px; border-radius: 50%; pointer-events: none;
+    border: 1.5px solid rgba(var(--accent-rgb), .5);
+    background: radial-gradient(circle, rgba(var(--accent-rgb), .28), transparent 68%);
+    transform: translate(-50%, -50%) scale(.3); will-change: transform, opacity;
+    animation: rippleOut .6s var(--ease) forwards;
+}
+@keyframes rippleOut {
+    from { opacity: .85; transform: translate(-50%, -50%) scale(.3); }
+    to   { opacity: 0;   transform: translate(-50%, -50%) scale(3.6); }
+}
+@media (prefers-reduced-motion: reduce) { .ripple-layer { display: none; } }
 
 /* ============================================================
    Floating dock (toolbar)

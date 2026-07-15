@@ -1011,3 +1011,41 @@
         }
     });
 })();
+
+/* ============================================================
+   Click ripple — a small accent ring on every primary click/tap.
+   Off under reduced-motion and in lite mode.
+   ============================================================ */
+(function () {
+    'use strict';
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const layer = document.createElement('div');
+    layer.className = 'ripple-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(layer);
+
+    const ring = document.getElementById('cursorRing');             // custom-cursor outer ring (desktop only)
+    if (ring) ring.addEventListener('animationend', (ev) => {
+        if (ev.animationName === 'ringEcho') ring.classList.remove('is-click');
+    });
+
+    window.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0 || !e.isPrimary) return;                 // primary click / first-touch only
+        if (document.body.classList.contains('lite')) return;       // respect lite mode
+
+        const r = document.createElement('span');
+        r.className = 'ripple';
+        r.style.left = e.clientX + 'px';
+        r.style.top = e.clientY + 'px';
+        layer.appendChild(r);
+        r.addEventListener('animationend', () => r.remove(), { once: true });
+        setTimeout(() => r.remove(), 800);                          // safety cleanup
+
+        if (ring) {                                                 // pop the cursor ring outward in sync
+            ring.classList.remove('is-click');
+            void ring.offsetWidth;                                  // reflow so the pulse restarts on rapid clicks
+            ring.classList.add('is-click');
+        }
+    }, { passive: true });
+})();
