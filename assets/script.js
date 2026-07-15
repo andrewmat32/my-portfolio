@@ -284,7 +284,7 @@
     });
 
     /* ---------- scrollspy ---------- */
-    const ids = ['about', 'experience', 'work', 'lab', 'skills', 'contact'];
+    const ids = ['about', 'experience', 'work', 'ai', 'lab', 'skills', 'contact'];
     const secs = ids.map(id => document.getElementById(id)).filter(Boolean);
     const links = $$('.nav__link');
     if ('IntersectionObserver' in window && secs.length) {
@@ -796,9 +796,10 @@
         { icon: 'fa-circle-info', label: 'Go to About', hint: '01', run: go('#about') },
         { icon: 'fa-briefcase', label: 'Go to Experience', hint: '02', run: go('#experience') },
         { icon: 'fa-rocket', label: 'Go to Work', hint: '03', run: go('#work') },
-        { icon: 'fa-flask', label: 'Go to Lab', hint: '04', run: go('#lab') },
-        { icon: 'fa-layer-group', label: 'Go to Skills', hint: '05', run: go('#skills') },
-        { icon: 'fa-paper-plane', label: 'Go to Contact', hint: '06', run: go('#contact') },
+        { icon: 'fa-robot', label: 'Go to AI', hint: '04', run: go('#ai') },
+        { icon: 'fa-flask', label: 'Go to Lab', hint: '05', run: go('#lab') },
+        { icon: 'fa-layer-group', label: 'Go to Skills', hint: '06', run: go('#skills') },
+        { icon: 'fa-paper-plane', label: 'Go to Contact', hint: '07', run: go('#contact') },
         { icon: 'fa-envelope', label: 'Copy email address', hint: 'copy', run: click('#copyEmail') },
         { icon: 'fa-file-lines', label: 'Open résumé', hint: 'cv', run: click('[data-resume]') },
         { icon: 'fa-download', label: 'Download CV (PDF)', hint: 'pdf', run: () => { const a = document.createElement('a'); a.href = 'resume/Mateas-Andrei-CV-2026-Official.pdf'; a.download = 'Mateas-Emil-Andrei-CV.pdf'; document.body.appendChild(a); a.click(); a.remove(); } },
