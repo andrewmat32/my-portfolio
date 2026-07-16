@@ -43,10 +43,11 @@
     const burger = $('#burger');
     const mnav = $('#mobileNav');
     if (burger) {
-        const close = () => { burger.classList.remove('is-open'); mnav.classList.remove('is-open'); burger.setAttribute('aria-expanded', 'false'); };
+        const close = () => { burger.classList.remove('is-open'); mnav.classList.remove('is-open'); if (header) header.classList.remove('nav-open'); burger.setAttribute('aria-expanded', 'false'); };
         burger.addEventListener('click', () => {
             const open = burger.classList.toggle('is-open');
             mnav.classList.toggle('is-open', open);
+            if (header) header.classList.toggle('nav-open', open);
             burger.setAttribute('aria-expanded', String(open));
         });
         $$('a', mnav).forEach(a => a.addEventListener('click', close));

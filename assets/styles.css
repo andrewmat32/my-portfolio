@@ -146,7 +146,10 @@ body.has-cursor, body.has-cursor a, body.has-cursor button { cursor: none; }
    Header
    ============================================================ */
 .header { position: fixed; top: 0; inset-inline: 0; z-index: 900; transition: background .35s, border-color .35s, backdrop-filter .35s; border-bottom: 1px solid transparent; }
-.header.is-scrolled { background: rgba(11, 11, 14, .72); backdrop-filter: blur(14px); border-bottom-color: var(--line); }
+.header.is-scrolled { background: rgba(11, 11, 14, .72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom-color: var(--line); }
+/* when the mobile menu is open, make the header bar solid so hero content can't show through the top strip */
+.header.nav-open { background: rgba(11, 11, 14, .97); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom-color: var(--line); }
+[data-theme="light"] .header.nav-open { background: rgba(246, 246, 243, .98); }
 .header__inner { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 1.5rem; }
 .logo { font-family: var(--ff-display); font-weight: 700; font-size: 1.12rem; color: var(--text); align-items: center; gap: .5rem; }
 .logo__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
@@ -164,7 +167,7 @@ body.has-cursor, body.has-cursor a, body.has-cursor button { cursor: none; }
 .burger.is-open span:nth-child(2) { opacity: 0; }
 .burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-.mobile-nav { position: fixed; inset: 70px 0 auto 0; z-index: 880; background: rgba(11, 11, 14, .97); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; padding: .6rem 5vw 1.6rem; text-align: center; transform: translateY(-130%); transition: transform .4s var(--ease); }
+.mobile-nav { position: fixed; inset: 70px 0 auto 0; z-index: 880; background: rgba(11, 11, 14, .97); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; padding: .6rem 5vw 1.6rem; text-align: center; transform: translateY(-130%); transition: transform .4s var(--ease); }
 .mobile-nav.is-open { transform: translateY(0); }
 .mobile-nav a { padding: .95rem 0; font-weight: 600; color: var(--text); border-bottom: 1px solid var(--line); transition: color .2s; }
 .mobile-nav a:last-child { border-bottom: none; }
@@ -189,13 +192,13 @@ body.has-cursor, body.has-cursor a, body.has-cursor button { cursor: none; }
    Load orchestration (hero)
    ============================================================ */
 .load { opacity: 0; transform: translateY(30px); }
-body.is-loaded .load { animation: loadIn .9s var(--ease) both; }
-body.is-loaded .load-1 { animation-delay: .05s; }
-body.is-loaded .load-2 { animation-delay: .15s; }
-body.is-loaded .load-3 { animation-delay: .25s; }
-body.is-loaded .load-4 { animation-delay: .35s; }
-body.is-loaded .load-5 { animation-delay: .45s; }
-body.is-loaded .load-6 { animation-delay: .58s; }
+body.is-loaded .load { animation: loadIn .6s var(--ease) both; }
+body.is-loaded .load-1 { animation-delay: .04s; }
+body.is-loaded .load-2 { animation-delay: .09s; }
+body.is-loaded .load-3 { animation-delay: .14s; }
+body.is-loaded .load-4 { animation-delay: .19s; }
+body.is-loaded .load-5 { animation-delay: .24s; }
+body.is-loaded .load-6 { animation-delay: .30s; }
 @keyframes loadIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
 
 /* ============================================================
@@ -546,7 +549,7 @@ body.is-loaded .load-6 { animation-delay: .58s; }
 /* ============================================================
    Floating dock (toolbar)
    ============================================================ */
-.dock { position: fixed; left: 50%; bottom: 1.4rem; transform: translateX(-50%); z-index: 850;
+.dock { position: fixed; left: 50%; bottom: calc(1.4rem + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 850;
     display: flex; align-items: center; gap: .55rem; padding: .5rem .75rem;
     background: rgba(20, 20, 26, .72); backdrop-filter: blur(14px) saturate(140%);
     border: 1px solid var(--line-2); border-radius: 999px;
