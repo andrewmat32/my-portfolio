@@ -6,10 +6,13 @@
     <meta name="description" content="Mateaș (Andrew) Andrei · Senior Full Stack Developer building web platforms end to end: Node.js back-ends, booking platforms, and AI-augmented tooling (Claude AI, MCP).">
     <meta name="author" content="Mateaș Andrei">
     <meta name="theme-color" content="#0b0b0e">
+    <link rel="canonical" href="https://mateas-andrei.vercel.app/">
 
     <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 
     <!-- Open Graph (link previews) -->
     <meta property="og:title" content="Mateaș Andrei · Senior Full Stack Developer">
@@ -31,8 +34,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="assets/styles.css?v=59">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="assets/styles.css?v=60">
 
     <title>Mateaș Andrei · Senior Full Stack Developer</title>
     <script>
@@ -40,6 +45,48 @@
             try { document.documentElement.setAttribute('data-theme', localStorage.getItem('theme2026') || 'dark'); }
             catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
         })();
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://mateas-andrei.vercel.app/#person",
+          "name": "Mateaș Emil Andrei",
+          "alternateName": "Mateaș Andrei",
+          "jobTitle": "Senior Full Stack Developer",
+          "description": "Senior Full Stack Developer building web platforms end to end: Node.js back-ends, booking platforms, and AI-augmented tooling (Claude AI, MCP).",
+          "url": "https://mateas-andrei.vercel.app/",
+          "image": "https://mateas-andrei.vercel.app/assets/og-image.png",
+          "email": "mailto:mateasandrei.dev@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Târgu Mureș",
+            "addressCountry": "RO"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/in/mateas-andrei",
+            "https://github.com/andrewmat32"
+          ],
+          "knowsAbout": ["JavaScript", "Node.js", "ApostropheCMS", "Vue.js", "MongoDB", "Docker", "REST APIs", "Model Context Protocol", "Claude AI", "Web Accessibility", "SEO"],
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Medicine, Pharmacy, Science and Technology \"G.E. Palade\" of Târgu Mureș"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://mateas-andrei.vercel.app/#website",
+          "url": "https://mateas-andrei.vercel.app/",
+          "name": "Mateaș Andrei · Senior Full Stack Developer",
+          "description": "Personal portfolio and résumé of Mateaș Andrei, Senior Full Stack Developer.",
+          "publisher": { "@id": "https://mateas-andrei.vercel.app/#person" },
+          "inLanguage": "en"
+        }
+      ]
+    }
     </script>
 </head>
 
@@ -144,7 +191,7 @@
                     </div>
                 </div>
                 <figure class="hero__detail-figure">
-                    <img src="images/andrew.jfif" alt="">
+                    <img src="images/andrew.jfif" alt="Mateaș Emil Andrei, Senior Full Stack Developer" loading="lazy">
                     <figcaption>
                         <span class="hero__name">Mateaș Emil Andrei</span>
                         <span class="hero__role">Senior Full Stack Developer</span>
@@ -834,6 +881,6 @@
     </div>
 </div>
 
-<script src="assets/script.js?v=51"></script>
+<script src="assets/script.js?v=52"></script>
 </body>
 </html>
