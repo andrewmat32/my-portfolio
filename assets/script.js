@@ -810,7 +810,7 @@
         { icon: 'fa-droplet', label: 'Accent · Lime', hint: 'accent', run: click('[data-accent="lime"]') },
         { icon: 'fa-droplet', label: 'Accent · Cobalt', hint: 'accent', run: click('[data-accent="cobalt"]') },
         { icon: 'fa-brands fa-github', label: 'GitHub', hint: '↗', run: () => window.open('https://github.com/andrewmat32', '_blank', 'noopener') },
-        { icon: 'fa-brands fa-linkedin-in', label: 'LinkedIn', hint: '↗', run: () => window.open('https://www.linkedin.com/in/mateaș-emil-andrei-067886279', '_blank', 'noopener') }
+        { icon: 'fa-brands fa-linkedin-in', label: 'LinkedIn', hint: '↗', run: () => window.open('https://www.linkedin.com/in/mateas-andrei', '_blank', 'noopener') }
     ];
 
     let filtered = commands.slice(), active = 0, lastFocused = null;

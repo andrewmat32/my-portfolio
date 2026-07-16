@@ -19,7 +19,7 @@ I made the site to feel modern and alive rather than static. It opens in a clean
 Feel free to reach out anytime, whether it's about a project, a role, or just to say hello. I'm always happy to chat.
 
 **Mateaș Emil Andrei** · Full Stack Developer · Târgu Mureș, Romania
-✉️ mateasandrei.dev@gmail.com · [LinkedIn](https://www.linkedin.com/in/mateaș-emil-andrei-067886279) · [GitHub](https://github.com/andrewmat32)
+✉️ mateasandrei.dev@gmail.com · [LinkedIn](https://www.linkedin.com/in/mateas-andrei) · [GitHub](https://github.com/andrewmat32)
 
 ---
 
