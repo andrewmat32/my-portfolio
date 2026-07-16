@@ -33,7 +33,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet"></noscript>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
@@ -88,6 +89,9 @@
       ]
     }
     </script>
+
+    <!-- Plausible Analytics (privacy-friendly, cookieless). Register the domain at plausible.io for data to collect. -->
+    <script defer data-domain="mateas-andrei.vercel.app" src="https://plausible.io/js/script.js"></script>
 </head>
 
 <body>
@@ -155,7 +159,7 @@
 
             <aside class="hero__card load load-4" data-tilt>
                 <div class="hero__card-glare" aria-hidden="true"></div>
-                <img class="hero__photo" src="images/andrew.jfif" alt="Portrait of Mateaș Emil Andrei">
+                <img class="hero__photo" src="images/andrew-800.jpg" srcset="images/andrew-400.jpg 400w, images/andrew-800.jpg 800w" sizes="(max-width: 1020px) 420px, 360px" alt="Portrait of Mateaș Emil Andrei">
                 <div class="hero__card-body">
                     <span class="hero__name">Mateaș Emil Andrei</span>
                     <span class="hero__role">Senior Full Stack Developer</span>
@@ -191,7 +195,7 @@
                     </div>
                 </div>
                 <figure class="hero__detail-figure">
-                    <img src="images/andrew.jfif" alt="Mateaș Emil Andrei, Senior Full Stack Developer" loading="lazy">
+                    <img src="images/andrew-800.jpg" srcset="images/andrew-400.jpg 400w, images/andrew-800.jpg 800w" sizes="380px" alt="Mateaș Emil Andrei, Senior Full Stack Developer" loading="lazy">
                     <figcaption>
                         <span class="hero__name">Mateaș Emil Andrei</span>
                         <span class="hero__role">Senior Full Stack Developer</span>
@@ -226,7 +230,7 @@
         <div class="container">
             <div class="section__head reveal">
                 <span class="section__kicker"><b>01</b><i>/</i>About</span>
-                <h2 class="section__title">A senior full-stack engineer with a <span class="accent">designer's eye</span></h2>
+                <h2 class="section__title">A senior full-stack developer with a <span class="accent">designer's eye</span></h2>
             </div>
             <div class="about">
                 <div class="about__text">
