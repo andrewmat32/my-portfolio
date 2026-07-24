@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex">
+<title>FallingSand · a game by Mateaș Andrei</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600..800&family=Instrument+Sans:wght@400..600&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --bg:#0b0b0e; --panel:#141419; --text:#f2f0ec; --dim:#a7a7ad; --mut:#6f6f76;
+        --accent:#ff4d2e; --accent-2:#ff8a3d; --line:rgba(255,255,255,.1); --ok:#5fd99a;
+        --ff:'Instrument Sans','Segoe UI',Arial,sans-serif;
+        --ff-d:'Syne',Arial,sans-serif;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ height:100%; }
+    body{
+        background:
+            radial-gradient(90% 70% at 80% -5%, rgba(255,77,46,.10) 0%, rgba(255,77,46,0) 55%),
+            var(--bg);
+        color:var(--text); font-family:var(--ff);
+        min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+        gap:.9rem; padding:1rem; overflow:hidden;
+    }
+    a{ color:inherit; }
+
+    .top{ width:100%; max-width:560px; display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
+    .brand{ font-family:var(--ff-d); font-weight:800; letter-spacing:-.01em; font-size:1.15rem; text-transform:uppercase; }
+    .brand b{ color:var(--accent); }
+    .back{ font-size:.82rem; color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px; }
+    .back:hover{ color:var(--accent); border-color:var(--accent); }
+
+    .stage{ position:relative; width:100%; max-width:560px; }
+    canvas{ display:block; width:100%; border:1px solid var(--line); border-radius:14px; background:linear-gradient(180deg, #0e0e13, #0a0a0d); touch-action:none; cursor:crosshair; image-rendering:pixelated; }
+
+    /* palette + tools */
+    .palette{ width:100%; max-width:560px; display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center; }
+    .chip{
+        font-family:var(--ff); font-weight:600; font-size:.82rem; color:var(--dim);
+        background:var(--panel); border:1px solid var(--line); border-radius:999px;
+        padding:.42rem .8rem; cursor:pointer; transition:.15s; display:inline-flex; align-items:center; gap:.4rem;
+        user-select:none; -webkit-user-select:none;
+    }
+    .chip:hover{ border-color:var(--accent-2); color:var(--text); }
+    .chip.active{ border-color:var(--accent); color:var(--text); background:rgba(255,77,46,.10); }
+    .chip .sw{ width:11px; height:11px; border-radius:3px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.35); }
+
+    .tools{ width:100%; max-width:560px; display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; justify-content:center; font-size:.8rem; color:var(--mut); }
+    .tools .group{ display:inline-flex; align-items:center; gap:.5rem; }
+    .tools label{ text-transform:uppercase; letter-spacing:.14em; font-size:.62rem; color:var(--mut); }
+    .seg{ display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; }
+    .seg button{
+        font-family:var(--ff); font-weight:600; font-size:.78rem; color:var(--dim);
+        background:transparent; border:none; padding:.34rem .62rem; cursor:pointer; transition:.15s;
+    }
+    .seg button:hover{ color:var(--text); }
+    .seg button.active{ background:var(--accent); color:#0b0b0e; }
+    .btn{
+        font-family:var(--ff); font-weight:600; font-size:.8rem; color:var(--dim);
+        background:var(--panel); border:1px solid var(--line); border-radius:9px;
+        padding:.36rem .72rem; cursor:pointer; transition:.15s;
+    }
+    .btn:hover{ border-color:var(--accent); color:var(--accent); }
+    .btn.on{ border-color:var(--ok); color:var(--ok); }
+
+    .hint{ font-size:.78rem; color:var(--mut); text-align:center; max-width:560px; }
+    .hint b{ color:var(--dim); font-weight:600; }
+    @media (max-width:560px){ .hint .desk{ display:none; } }
+    @media (min-width:561px){ .hint .touch{ display:none; } }
+</style>
+</head>
+<body>
+    <div class="top">
+        <div class="brand">Falling<b>Sand</b></div>
+        <a class="back" href="/">← back to site</a>
+    </div>
+
+    <div class="palette" id="palette"></div>
+
+    <div class="stage">
+        <canvas id="c"></canvas>
+    </div>
+
+    <div class="tools">
+        <div class="group">
+            <label>Brush</label>
+            <div class="seg" id="brush">
+                <button data-size="2">S</button>
+                <button data-size="4" class="active">M</button>
+                <button data-size="7">L</button>
+            </div>
+        </div>
+        <div class="group">
+            <button class="btn" id="pause">Pause</button>
+            <button class="btn" id="clear">Clear</button>
+        </div>
+    </div>
+
+    <p class="hint">
+        <span class="desk">Paint: <b>click + drag</b> · Pick an element above · Brush: <b>S / M / L</b> · Pause: <b>Space</b> · Clear: <b>C</b></span>
+        <span class="touch">Paint: <b>drag your finger</b> · Pick an element above · Tap Pause or Clear</span>
+    </p>
+
+<script>
+(function(){
+    'use strict';
+
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const paletteEl = document.getElementById('palette');
+    const brushSeg = document.getElementById('brush');
+    const pauseBtn = document.getElementById('pause');
+    const clearBtn = document.getElementById('clear');
+
+    // --- simulation grid ---------------------------------------------------
+    const COLS = 150, ROWS = 110;
+    const grid = new Uint8Array(COLS * ROWS);      // element id per cell
+    const tint = new Uint8Array(COLS * ROWS);      // 0..255 per-cell shade for texture
+    const life = new Uint8Array(COLS * ROWS);      // countdown for fire / smoke
+    const idx = (x, y) => y * COLS + x;
+
+    // --- element ids -------------------------------------------------------
+    const EMPTY = 0, SAND = 1, WATER = 2, STONE = 3, OIL = 4, FIRE = 5, PLANT = 6, SMOKE = 7;
+
+    // element metadata for the palette + rendering base colours (r,g,b)
+    const ELEMENTS = [
+        { id: SAND,  name: 'Sand',   sw: '#d9b36b' },
+        { id: WATER, name: 'Water',  sw: '#3f78d6' },
+        { id: STONE, name: 'Stone',  sw: '#6b7280' },
+        { id: OIL,   name: 'Oil',    sw: '#4a3d2e' },
+        { id: FIRE,  name: 'Fire',   sw: '#ff7a1a' },
+        { id: PLANT, name: 'Plant',  sw: '#3fae55' },
+        { id: SMOKE, name: 'Smoke',  sw: '#8a8a90' },
+        { id: EMPTY, name: 'Eraser', sw: '#141419' }
+    ];
+
+    let current = SAND;
+    let brushSize = 4;
+    let paused = false;
+
+    // --- palette UI --------------------------------------------------------
+    ELEMENTS.forEach(el => {
+        const b = document.createElement('button');
+        b.className = 'chip' + (el.id === current ? ' active' : '');
+        b.dataset.id = el.id;
+        b.innerHTML = '<span class="sw" style="background:' + el.sw + '"></span>' + el.name;
+        b.addEventListener('click', () => {
+            current = el.id;
+            [...paletteEl.children].forEach(c => c.classList.toggle('active', +c.dataset.id === current));
+        });
+        paletteEl.appendChild(b);
+    });
+
+    brushSeg.addEventListener('click', (e) => {
+        const t = e.target.closest('button'); if (!t) return;
+        brushSize = +t.dataset.size;
+        [...brushSeg.children].forEach(c => c.classList.toggle('active', c === t));
+    });
+
+    clearBtn.addEventListener('click', clearGrid);
+    pauseBtn.addEventListener('click', togglePause);
+
+    function togglePause(){
+        paused = !paused;
+        pauseBtn.textContent = paused ? 'Resume' : 'Pause';
+        pauseBtn.classList.toggle('on', paused);
+    }
+    function clearGrid(){
+        grid.fill(EMPTY); life.fill(0);
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space'){ e.preventDefault(); togglePause(); }
+        else if (e.key === 'c' || e.key === 'C'){ clearGrid(); }
+    });
+
+    // --- canvas sizing -----------------------------------------------------
+    // Backing store is exactly COLS x ROWS; CSS scales it up (pixelated).
+    let DPR = 1, cellPx = 4;
+    function fit(){
+        const cssW = Math.min(canvas.parentElement.clientWidth, 560);
+        const cssH = Math.round(cssW * (ROWS / COLS));
+        canvas.style.height = cssH + 'px';
+        canvas.width = COLS;
+        canvas.height = ROWS;
+        cellPx = cssW / COLS;
+    }
+    window.addEventListener('resize', fit);
+    fit();
+
+    // Offscreen pixel buffer we paint each frame.
+    const image = ctx.createImageData(COLS, ROWS);
+    const pix = image.data;
+
+    // --- painting (pointer + touch) ----------------------------------------
+    let painting = false, lastPx = -1, lastPy = -1;
+
+    function pointerCell(e){
+        const rect = canvas.getBoundingClientRect();
+        const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+        const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+        return {
+            x: Math.floor(cx / rect.width * COLS),
+            y: Math.floor(cy / rect.height * ROWS)
+        };
+    }
+
+    function paintAt(cx, cy){
+        const r = brushSize;
+        for (let dy = -r; dy <= r; dy++){
+            for (let dx = -r; dx <= r; dx++){
+                if (dx*dx + dy*dy > r*r) continue;
+                const x = cx + dx, y = cy + dy;
+                if (x < 0 || x >= COLS || y < 0 || y >= ROWS) continue;
+                // fluids/gases paint sparsely so a stroke does not pack solid
+                if (current === EMPTY){ setCell(x, y, EMPTY); continue; }
+                if ((current === WATER || current === OIL || current === SMOKE || current === FIRE)
+                     && Math.random() > 0.55) continue;
+                setCell(x, y, current);
+            }
+        }
+    }
+
+    function setCell(x, y, id){
+        const i = idx(x, y);
+        grid[i] = id;
+        tint[i] = (Math.random() * 255) | 0;
+        if (id === FIRE) life[i] = 60 + (Math.random() * 40 | 0);
+        else if (id === SMOKE) life[i] = 120 + (Math.random() * 80 | 0);
+        else life[i] = 0;
+    }
+
+    // draw a line between the last cell and the current one so fast drags stay solid
+    function paintStroke(cx, cy){
+        if (lastPx < 0){ paintAt(cx, cy); }
+        else {
+            const steps = Math.max(Math.abs(cx - lastPx), Math.abs(cy - lastPy));
+            for (let s = 0; s <= steps; s++){
+                const t = steps === 0 ? 0 : s / steps;
+                paintAt(Math.round(lastPx + (cx - lastPx) * t), Math.round(lastPy + (cy - lastPy) * t));
+            }
+        }
+        lastPx = cx; lastPy = cy;
+    }
+
+    function onDown(e){
+        e.preventDefault();
+        painting = true; lastPx = -1; lastPy = -1;
+        const c = pointerCell(e); paintStroke(c.x, c.y);
+    }
+    function onMoveEvt(e){
+        if (!painting) return;
+        e.preventDefault();
+        const c = pointerCell(e); paintStroke(c.x, c.y);
+    }
+    function onUp(){ painting = false; lastPx = -1; lastPy = -1; }
+
+    canvas.addEventListener('pointerdown', onDown);
+    canvas.addEventListener('pointermove', onMoveEvt);
+    window.addEventListener('pointerup', onUp);
+    // touch fallbacks (some browsers without pointer events)
+    canvas.addEventListener('touchstart', onDown, { passive:false });
+    canvas.addEventListener('touchmove', onMoveEvt, { passive:false });
+    window.addEventListener('touchend', onUp);
+
+    // --- helpers -----------------------------------------------------------
+    function swap(i, j){
+        const g = grid[i]; grid[i] = grid[j]; grid[j] = g;
+        const t = tint[i]; tint[i] = tint[j]; tint[j] = t;
+        const l = life[i]; life[i] = life[j]; life[j] = l;
+    }
+    function isLiquid(id){ return id === WATER || id === OIL; }
+    function isGas(id){ return id === SMOKE; }
+
+    // --- simulation step ---------------------------------------------------
+    // We update bottom-up so gravity resolves in a single pass. Horizontal
+    // direction alternates each row to avoid a directional bias.
+    function step(){
+        for (let y = ROWS - 1; y >= 0; y--){
+            const leftFirst = (y & 1) === 0;
+            for (let k = 0; k < COLS; k++){
+                const x = leftFirst ? k : (COLS - 1 - k);
+                const i = idx(x, y);
+                const el = grid[i];
+                if (el === EMPTY || el === STONE) continue;
+
+                switch (el){
+                    case SAND:  updateSand(x, y, i); break;
+                    case WATER: updateLiquid(x, y, i, WATER); break;
+                    case OIL:   updateLiquid(x, y, i, OIL); break;
+                    case FIRE:  updateFire(x, y, i); break;
+                    case PLANT: updatePlant(x, y, i); break;
+                    case SMOKE: updateSmoke(x, y, i); break;
+                }
+            }
+        }
+    }
+
+    // sand: fall down, else slide diagonally; can sink through liquids
+    function updateSand(x, y, i){
+        if (y + 1 >= ROWS) return;
+        const below = idx(x, y + 1);
+        if (grid[below] === EMPTY || isLiquid(grid[below])){ swap(i, below); return; }
+        const dir = Math.random() < 0.5 ? -1 : 1;
+        for (const d of [dir, -dir]){
+            const nx = x + d;
+            if (nx < 0 || nx >= COLS) continue;
+            const diag = idx(nx, y + 1);
+            if (grid[diag] === EMPTY || isLiquid(grid[diag])){ swap(i, diag); return; }
+        }
+    }
+
+    // water / oil: fall, sink relative to each other, then spread to find level.
+    // oil is lighter than water, so oil floats up through water.
+    function updateLiquid(x, y, i, kind){
+        if (y + 1 < ROWS){
+            const below = idx(x, y + 1);
+            const b = grid[below];
+            if (b === EMPTY){ swap(i, below); return; }
+            // oil floats on water: water below oil trades places
+            if (kind === WATER && b === OIL){ swap(i, below); return; }
+        }
+        // diagonal downhill flow
+        const dir = Math.random() < 0.5 ? -1 : 1;
+        if (y + 1 < ROWS){
+            for (const d of [dir, -dir]){
+                const nx = x + d;
+                if (nx < 0 || nx >= COLS) continue;
+                const diag = idx(nx, y + 1);
+                const dg = grid[diag];
+                if (dg === EMPTY || (kind === WATER && dg === OIL)){ swap(i, diag); return; }
+            }
+        }
+        // spread sideways to level out (look a couple cells for smoother flow)
+        for (const d of [dir, -dir]){
+            for (let step = 1; step <= 2; step++){
+                const nx = x + d * step;
+                if (nx < 0 || nx >= COLS) break;
+                const side = idx(nx, y);
+                if (grid[side] === EMPTY){ swap(i, side); return; }
+                if (grid[side] !== kind && !isLiquid(grid[side])) break;
+            }
+        }
+    }
+
+    // fire: ignite nearby oil / plant, drift upward, then burn out into smoke
+    function updateFire(x, y, i){
+        // spread to flammable neighbours
+        for (let dy = -1; dy <= 1; dy++){
+            for (let dx = -1; dx <= 1; dx++){
+                if (dx === 0 && dy === 0) continue;
+                const nx = x + dx, ny = y + dy;
+                if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) continue;
+                const n = idx(nx, ny);
+                const ng = grid[n];
+                if ((ng === OIL || ng === PLANT) && Math.random() < (ng === OIL ? 0.28 : 0.10)){
+                    grid[n] = FIRE; tint[n] = (Math.random() * 255) | 0;
+                    life[n] = 40 + (Math.random() * 40 | 0);
+                }
+                // fire touching water is quenched
+                if (ng === WATER && Math.random() < 0.5){ grid[i] = SMOKE; life[i] = 90; return; }
+            }
+        }
+        // countdown to smoke / burnout
+        if (life[i] > 0) life[i]--;
+        if (life[i] <= 0){
+            if (Math.random() < 0.6){ grid[i] = SMOKE; tint[i] = (Math.random()*255)|0; life[i] = 100 + (Math.random()*80|0); }
+            else grid[i] = EMPTY;
+            return;
+        }
+        // rise: prefer moving up into empty space
+        if (y - 1 >= 0){
+            const up = idx(x, y - 1);
+            if (grid[up] === EMPTY && Math.random() < 0.5){ swap(i, up); return; }
+        }
+    }
+
+    // plant: creep slowly into adjacent water
+    function updatePlant(x, y, i){
+        if (Math.random() > 0.06) return;   // grows slowly
+        const dirs = [[0,-1],[0,1],[-1,0],[1,0]];
+        const d = dirs[(Math.random() * dirs.length) | 0];
+        const nx = x + d[0], ny = y + d[1];
+        if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) return;
+        const n = idx(nx, ny);
+        if (grid[n] === WATER){ grid[n] = PLANT; tint[n] = (Math.random() * 255) | 0; }
+    }
+
+    // smoke: rise, wander sideways, fade out
+    function updateSmoke(x, y, i){
+        if (life[i] > 0) life[i]--;
+        if (life[i] <= 0){ grid[i] = EMPTY; return; }
+        if (y - 1 >= 0){
+            const up = idx(x, y - 1);
+            if (grid[up] === EMPTY){ swap(i, up); return; }
+            // drift diagonally up
+            const dir = Math.random() < 0.5 ? -1 : 1;
+            for (const dd of [dir, -dir]){
+                const nx = x + dd;
+                if (nx < 0 || nx >= COLS) continue;
+                const diag = idx(nx, y - 1);
+                if (grid[diag] === EMPTY){ swap(i, diag); return; }
+            }
+        }
+    }
+
+    // --- rendering ---------------------------------------------------------
+    // Per-cell colour with a subtle tint offset baked in for texture.
+    function colorFor(el, t, i){
+        // t is 0..255 shade seed; returns [r,g,b]
+        let r, g, b;
+        const v = (t / 255 - 0.5);     // -0.5..0.5
+        switch (el){
+            case SAND:  r = 214 + v*40; g = 178 + v*38; b = 104 + v*44; break;
+            case WATER: r = 50  + v*24; g = 110 + v*36; b = 210 + v*40; break;
+            case STONE: r = 96  + v*40; g = 104 + v*40; b = 116 + v*40; break;
+            case OIL:   r = 66  + v*26; g = 55  + v*22; b = 40  + v*20; break;
+            case PLANT: r = 48  + v*36; g = 168 + v*54; b = 74  + v*40; break;
+            case SMOKE: {
+                const a = life[i] / 200;              // fade as life drops
+                const s = 120 + v*40;
+                return [s, s, s + 6, Math.max(0.15, Math.min(0.85, a))];
+            }
+            case FIRE: {
+                // animated flicker between deep orange and yellow
+                const f = (Math.random() * 0.4) + (life[i] / 100) * 0.6;
+                r = 255; g = 90 + f * 150; b = 20 + f * 40;
+                return [r, g, b, 1];
+            }
+            default: r = 0; g = 0; b = 0; break;
+        }
+        return [r, g, b, 1];
+    }
+
+    function render(){
+        for (let y = 0; y < ROWS; y++){
+            for (let x = 0; x < COLS; x++){
+                const i = idx(x, y);
+                const el = grid[i];
+                const p = i * 4;
+                if (el === EMPTY){
+                    // transparent so the CSS canvas gradient shows through
+                    pix[p] = 0; pix[p+1] = 0; pix[p+2] = 0; pix[p+3] = 0;
+                    continue;
+                }
+                const c = colorFor(el, tint[i], i);
+                pix[p]   = c[0] | 0;
+                pix[p+1] = c[1] | 0;
+                pix[p+2] = c[2] | 0;
+                pix[p+3] = (c[3] * 255) | 0;
+            }
+        }
+        ctx.putImageData(image, 0, 0);
+    }
+
+    // --- main loop (fixed-step sim, capped for ~60fps) ---------------------
+    let acc = 0, last = 0;
+    const SIM_DT = 1000 / 60;
+    function frame(ts){
+        const dt = last ? Math.min(ts - last, 50) : 0; last = ts;
+        if (!paused){
+            acc += dt;
+            let iterations = 0;
+            while (acc >= SIM_DT && iterations < 3){   // cap to keep ~60fps
+                step();
+                acc -= SIM_DT;
+                iterations++;
+            }
+            if (acc > SIM_DT * 3) acc = 0;             // avoid spiral of death
+        }
+        render();
+        requestAnimationFrame(frame);
+    }
+
+    // a small starter scene so the canvas is not empty on load
+    (function seed(){
+        for (let x = 0; x < COLS; x++){
+            for (let y = ROWS - 6; y < ROWS; y++) setCell(x, y, STONE);
+        }
+        for (let x = 40; x < 110; x++){
+            for (let y = 20; y < 30; y++) if (Math.random() < 0.9) setCell(x, y, SAND);
+        }
+    })();
+
+    requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

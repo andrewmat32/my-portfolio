@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Compiler · an idle game by Mateaș Andrei</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600..800&family=Instrument+Sans:wght@400..600&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --bg:#0b0b0e; --panel:#141419; --text:#f2f0ec; --dim:#a7a7ad; --mut:#6f6f76;
+        --accent:#ff4d2e; --accent-2:#ff8a3d; --line:rgba(255,255,255,.1); --ok:#5fd99a;
+        --ff:'Instrument Sans','Segoe UI',Arial,sans-serif;
+        --ff-d:'Syne',Arial,sans-serif;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ min-height:100%; }
+    body{
+        background:
+            radial-gradient(90% 60% at 80% -5%, rgba(255,77,46,.10) 0%, rgba(255,77,46,0) 55%),
+            var(--bg);
+        color:var(--text); font-family:var(--ff);
+        min-height:100dvh; display:flex; flex-direction:column; align-items:center;
+        gap:1rem; padding:1rem 1rem 2.5rem;
+    }
+    a{ color:inherit; }
+
+    .top{ width:100%; max-width:900px; display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
+    .brand{ font-family:var(--ff-d); font-weight:800; letter-spacing:-.01em; font-size:1.15rem; text-transform:uppercase; }
+    .brand b{ color:var(--accent); }
+    .back{ font-size:.82rem; color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px; }
+    .back:hover{ color:var(--accent); border-color:var(--accent); }
+
+    /* headline HUD */
+    .hud{ width:100%; max-width:900px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:1.5rem 2rem; }
+    .stat{ display:flex; flex-direction:column; gap:3px; }
+    .stat .k{ font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mut); }
+    .stat .v{ font-family:var(--ff-d); font-weight:800; font-variant-numeric:tabular-nums; color:var(--text); line-height:1; }
+    .stat.big .v{ font-size:clamp(2.2rem,8vw,3.4rem); color:var(--text); letter-spacing:-.02em; }
+    .stat.big .v .u{ font-size:.4em; color:var(--accent); margin-left:.35rem; letter-spacing:0; }
+    .stat .v.accent{ color:var(--accent); font-size:1.3rem; }
+    .stat .v.med{ font-size:1.3rem; }
+
+    .layout{ width:100%; max-width:900px; display:grid; grid-template-columns:1fr 1fr; gap:1rem; align-items:start; }
+    @media (max-width:760px){ .layout{ grid-template-columns:1fr; } }
+
+    /* compile column */
+    .compile-col{ display:flex; flex-direction:column; gap:1rem; }
+    .compile-wrap{ position:relative; display:grid; place-items:center; padding:.5rem; }
+    .compile{
+        position:relative; width:100%; max-width:340px; aspect-ratio:1/1; border-radius:26px; border:none; cursor:pointer;
+        background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#0b0b0e;
+        font-family:var(--ff-d); font-weight:800; text-transform:uppercase; letter-spacing:.01em;
+        display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.35rem;
+        box-shadow:0 24px 60px -22px rgba(255,77,46,.75); transition:transform .12s, box-shadow .2s;
+        user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+    }
+    .compile:hover{ transform:translateY(-2px); box-shadow:0 30px 70px -22px rgba(255,77,46,.85); }
+    .compile:active{ transform:translateY(1px) scale(.99); }
+    .compile.pulse{ animation:pulse .13s ease; }
+    @keyframes pulse{ 40%{ transform:scale(.955); } }
+    .compile .big{ font-size:clamp(1.5rem,5vw,2rem); line-height:1; }
+    .compile .sub{ font-size:.72rem; font-weight:700; opacity:.7; letter-spacing:.06em; }
+    .float{ position:absolute; font-family:var(--ff-d); font-weight:800; font-size:1.25rem; color:#fff;
+        pointer-events:none; text-shadow:0 2px 10px rgba(0,0,0,.5); animation:floatUp .8s ease-out forwards; z-index:5; }
+    @keyframes floatUp{ 0%{ opacity:1; transform:translate(-50%,0) scale(1);} 100%{ opacity:0; transform:translate(-50%,-70px) scale(1.1);} }
+
+    .panel{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:1rem; }
+    .panel h2{ font-family:var(--ff-d); font-weight:700; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mut); margin-bottom:.75rem; }
+
+    .list{ display:flex; flex-direction:column; gap:.55rem; }
+    .item{
+        width:100%; text-align:left; background:rgba(255,255,255,.02); border:1px solid var(--line); border-radius:12px;
+        padding:.7rem .8rem; cursor:pointer; color:var(--text); font-family:var(--ff);
+        display:flex; align-items:center; gap:.8rem; transition:border-color .15s, background .15s, transform .05s;
+    }
+    .item:hover:not(.locked):not(.disabled){ border-color:var(--accent); background:rgba(255,77,46,.06); }
+    .item:active:not(.locked):not(.disabled){ transform:scale(.99); }
+    .item.disabled{ opacity:.45; cursor:not-allowed; }
+    .item.locked{ display:none; }
+    .item .body{ flex:1 1 auto; min-width:0; }
+    .item .name{ font-weight:600; font-size:.95rem; display:flex; align-items:baseline; gap:.5rem; }
+    .item .name .own{ font-family:var(--ff-d); font-weight:800; color:var(--accent); font-variant-numeric:tabular-nums; }
+    .item .flavor{ font-size:.76rem; color:var(--dim); margin-top:2px; line-height:1.3; }
+    .item .prod{ font-size:.72rem; color:var(--mut); margin-top:3px; font-variant-numeric:tabular-nums; }
+    .item .cost{ flex:0 0 auto; text-align:right; }
+    .item .cost .c{ font-family:var(--ff-d); font-weight:800; font-size:1rem; font-variant-numeric:tabular-nums; }
+    .item .cost .c.afford{ color:var(--ok); }
+    .item .cost .c.cant{ color:var(--mut); }
+    .item .cost .lbl{ font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mut); display:block; }
+    .item.upg .name .tag{ font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-2); border:1px solid var(--line); border-radius:6px; padding:1px 5px; }
+
+    .foot{ width:100%; max-width:900px; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+    .reset{ background:none; border:1px solid var(--line); color:var(--mut); font-family:var(--ff); font-size:.78rem; padding:.5rem .9rem; border-radius:999px; cursor:pointer; transition:.15s; }
+    .reset:hover{ border-color:var(--accent); color:var(--accent); }
+
+    .hint{ font-size:.78rem; color:var(--mut); text-align:center; max-width:900px; }
+    .hint b{ color:var(--dim); font-weight:600; }
+
+    .toast{
+        position:fixed; left:50%; bottom:1.2rem; transform:translateX(-50%) translateY(140%);
+        background:var(--panel); border:1px solid var(--accent); color:var(--text);
+        padding:.7rem 1.1rem; border-radius:12px; font-size:.85rem; box-shadow:0 18px 40px -18px rgba(0,0,0,.8);
+        transition:transform .35s ease; z-index:20; max-width:90vw; text-align:center;
+    }
+    .toast.show{ transform:translateX(-50%) translateY(0); }
+    .toast b{ color:var(--accent); }
+</style>
+</head>
+<body>
+    <div class="top">
+        <div class="brand">Compile<b>r</b></div>
+        <a class="back" href="/">← back to site</a>
+    </div>
+
+    <div class="hud">
+        <div class="stat big"><span class="k">Build Points</span><span class="v" id="bp">0<span class="u">BP</span></span></div>
+        <div class="stat"><span class="k">Per second</span><span class="v med accent" id="bps">0/s</span></div>
+        <div class="stat"><span class="k">Click power</span><span class="v med" id="cp">1</span></div>
+        <div class="stat"><span class="k">Lifetime</span><span class="v med" id="life">0</span></div>
+    </div>
+
+    <div class="layout">
+        <div class="compile-col">
+            <div class="compile-wrap" id="compileWrap">
+                <button class="compile" id="compile" aria-label="Compile">
+                    <span class="big">Compile</span>
+                    <span class="sub" id="compileSub">+1 BP / click</span>
+                </button>
+            </div>
+            <div class="panel">
+                <h2>Upgrades</h2>
+                <div class="list" id="upgrades"></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Generators</h2>
+            <div class="list" id="generators"></div>
+        </div>
+    </div>
+
+    <div class="foot">
+        <p class="hint">Click <b>Compile</b> to earn Build Points. Buy generators to automate the build. Progress saves automatically.</p>
+        <button class="reset" id="reset">Reset save</button>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+<script>
+(function(){
+    'use strict';
+
+    var SAVE_KEY = 'compiler_idle_save_v1';
+    var OFFLINE_CAP = 8 * 3600;     // award at most 8 hours of offline progress
+
+    // ----- generator definitions (base cost, base output per second) -----
+    var GEN_DEFS = [
+        { name:'Intern',           base:0.1,   cost:15,          flavor:'Fetches coffee, occasionally commits.' },
+        { name:'Junior Dev',       base:1,      cost:100,         flavor:'Ships features, and a few bugs.' },
+        { name:'Linter Bot',       base:8,      cost:1100,        flavor:'Complains about your semicolons.' },
+        { name:'CI Runner',        base:47,     cost:12000,       flavor:'Green checkmarks, most of the time.' },
+        { name:'Build Server',     base:260,    cost:130000,      flavor:'It compiles while you sleep.' },
+        { name:'Cloud Cluster',    base:1400,   cost:1400000,     flavor:'Someone else\'s computer, at scale.' },
+        { name:'Quantum Compiler', base:7800,   cost:20000000,    flavor:'Builds in superposition.' },
+        { name:'AI Agent Swarm',   base:44000,  cost:330000000,   flavor:'They write the code now.' }
+    ];
+    var COST_GROWTH = 1.15;
+
+    // ----- upgrade definitions -----
+    // kind: 'click' (x click power), 'global' (x all output), 'gen' (x one generator, uses target index)
+    var UPG_DEFS = [
+        { id:'ff',     name:'Faster fingers',       kind:'click',  mult:2, cost:100,        showAt:50,        flavor:'Double your click power. RSI not included.' },
+        { id:'coffee', name:'Espresso machine',     kind:'gen',    target:0, mult:3, cost:1500,     showAt:600,     flavor:'Interns run on caffeine. Interns x3.' },
+        { id:'kb',     name:'Mechanical keyboard',  kind:'click',  mult:2, cost:5000,       showAt:2500,      flavor:'Clicky switches, clickier output. Click power x2.' },
+        { id:'ssd',    name:'SSD upgrade',          kind:'global', mult:2, cost:22000,      showAt:9000,      flavor:'Everything compiles twice as fast. All output x2.' },
+        { id:'review', name:'Code review culture',  kind:'gen',    target:1, mult:3, cost:40000,    showAt:18000,   flavor:'Junior devs actually ship. Junior Devs x3.' },
+        { id:'desk',   name:'Standing desk',        kind:'click',  mult:2, cost:400000,     showAt:180000,    flavor:'Peak posture, peak throughput. Click power x2.' },
+        { id:'fiber',  name:'Fiber internet',       kind:'global', mult:2, cost:3000000,    showAt:1200000,   flavor:'No more buffering the build. All output x2.' },
+        { id:'gpu',    name:'GPU farm',             kind:'gen',    target:4, mult:3, cost:9000000,  showAt:4000000, flavor:'Build servers go brrr. Build Servers x3.' },
+        { id:'cache',  name:'Distributed cache',    kind:'global', mult:2, cost:250000000,  showAt:90000000,  flavor:'Cache hit, cache hit, cache hit. All output x2.' }
+    ];
+
+    // ----- state -----
+    var state = {
+        bp: 0,
+        lifetime: 0,
+        owned: GEN_DEFS.map(function(){ return 0; }),
+        upg: {},                 // id -> true when bought
+        lastSave: Date.now()
+    };
+
+    // ----- number formatting -----
+    var SUFFIX = ['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc'];
+    function fmt(n){
+        if (!isFinite(n)) return '0';
+        var neg = n < 0; n = Math.abs(n);
+        if (n < 1000){
+            if (n === 0) return '0';
+            if (n < 10 && n % 1 !== 0) return (neg?'-':'') + n.toFixed(1);
+            return (neg?'-':'') + Math.floor(n).toString();
+        }
+        var tier = Math.floor(Math.log10(n) / 3);
+        if (tier >= SUFFIX.length) tier = SUFFIX.length - 1;
+        var scaled = n / Math.pow(1000, tier);
+        if (scaled >= 999.5 && tier < SUFFIX.length - 1){ tier += 1; scaled = n / Math.pow(1000, tier); }
+        var dec = scaled < 10 ? 2 : (scaled < 100 ? 1 : 0);
+        return (neg?'-':'') + scaled.toFixed(dec) + SUFFIX[tier];
+    }
+
+    // ----- multipliers derived from upgrades -----
+    function clickMult(){
+        var m = 1;
+        for (var i=0;i<UPG_DEFS.length;i++){ var u=UPG_DEFS[i]; if (state.upg[u.id] && u.kind==='click') m*=u.mult; }
+        return m;
+    }
+    function globalMult(){
+        var m = 1;
+        for (var i=0;i<UPG_DEFS.length;i++){ var u=UPG_DEFS[i]; if (state.upg[u.id] && u.kind==='global') m*=u.mult; }
+        return m;
+    }
+    function genMult(idx){
+        var m = 1;
+        for (var i=0;i<UPG_DEFS.length;i++){ var u=UPG_DEFS[i]; if (state.upg[u.id] && u.kind==='gen' && u.target===idx) m*=u.mult; }
+        return m;
+    }
+    function clickPower(){ return clickMult(); }               // base click = 1
+    function genOutput(idx){ return state.owned[idx] * GEN_DEFS[idx].base * genMult(idx) * globalMult(); }
+    function bpPerSec(){
+        var t = 0;
+        for (var i=0;i<GEN_DEFS.length;i++) t += genOutput(i);
+        return t;
+    }
+    function genCost(idx){ return GEN_DEFS[idx].cost * Math.pow(COST_GROWTH, state.owned[idx]); }
+
+    // ----- DOM refs -----
+    var el = {
+        bp: document.getElementById('bp'),
+        bps: document.getElementById('bps'),
+        cp: document.getElementById('cp'),
+        life: document.getElementById('life'),
+        compile: document.getElementById('compile'),
+        compileWrap: document.getElementById('compileWrap'),
+        compileSub: document.getElementById('compileSub'),
+        generators: document.getElementById('generators'),
+        upgrades: document.getElementById('upgrades'),
+        reset: document.getElementById('reset'),
+        toast: document.getElementById('toast')
+    };
+
+    var genNodes = [];   // {root, own, cost, prod}
+    var upgNodes = [];   // {root, cost}
+
+    function buildGenerators(){
+        el.generators.innerHTML = '';
+        GEN_DEFS.forEach(function(g, idx){
+            var root = document.createElement('button');
+            root.className = 'item gen';
+            root.innerHTML =
+                '<div class="body">' +
+                    '<div class="name"><span>'+g.name+'</span><span class="own">x0</span></div>' +
+                    '<div class="flavor">'+g.flavor+'</div>' +
+                    '<div class="prod">Produces 0/s</div>' +
+                '</div>' +
+                '<div class="cost"><span class="lbl">Cost</span><span class="c">'+fmt(g.cost)+'</span></div>';
+            root.addEventListener('click', function(){ buyGen(idx); });
+            el.generators.appendChild(root);
+            genNodes.push({
+                root: root,
+                own: root.querySelector('.own'),
+                cost: root.querySelector('.c'),
+                prod: root.querySelector('.prod')
+            });
+        });
+    }
+
+    function buildUpgrades(){
+        el.upgrades.innerHTML = '';
+        UPG_DEFS.forEach(function(u){
+            var root = document.createElement('button');
+            root.className = 'item upg locked';
+            root.innerHTML =
+                '<div class="body">' +
+                    '<div class="name"><span>'+u.name+'</span></div>' +
+                    '<div class="flavor">'+u.flavor+'</div>' +
+                '</div>' +
+                '<div class="cost"><span class="lbl">Cost</span><span class="c">'+fmt(u.cost)+'</span></div>';
+            root.addEventListener('click', function(){ buyUpg(u.id); });
+            el.upgrades.appendChild(root);
+            upgNodes.push({ root: root, cost: root.querySelector('.c') });
+        });
+    }
+
+    // ----- actions -----
+    function buyGen(idx){
+        var cost = genCost(idx);
+        if (state.bp < cost) return;
+        state.bp -= cost;
+        state.owned[idx] += 1;
+        refreshUI();
+    }
+    function buyUpg(id){
+        if (state.upg[id]) return;
+        var def = null;
+        for (var i=0;i<UPG_DEFS.length;i++){ if (UPG_DEFS[i].id===id){ def=UPG_DEFS[i]; break; } }
+        if (!def) return;
+        if (state.lifetime < def.showAt) return;   // still locked
+        if (state.bp < def.cost) return;
+        state.bp -= def.cost;
+        state.upg[id] = true;
+        refreshUI();
+    }
+
+    function doClick(clientX, clientY){
+        var gain = clickPower();
+        state.bp += gain;
+        state.lifetime += gain;
+        floatText('+' + fmt(gain), clientX, clientY);
+        el.compile.classList.remove('pulse');
+        void el.compile.offsetWidth;               // restart animation
+        el.compile.classList.add('pulse');
+        refreshUI();
+    }
+
+    function floatText(txt, clientX, clientY){
+        var wrapRect = el.compileWrap.getBoundingClientRect();
+        var x, y;
+        if (clientX == null){
+            var br = el.compile.getBoundingClientRect();
+            x = br.left + br.width/2 - wrapRect.left;
+            y = br.top + br.height*0.35 - wrapRect.top;
+        } else {
+            x = clientX - wrapRect.left;
+            y = clientY - wrapRect.top;
+        }
+        var s = document.createElement('span');
+        s.className = 'float';
+        s.textContent = txt;
+        s.style.left = x + 'px';
+        s.style.top = y + 'px';
+        el.compileWrap.appendChild(s);
+        setTimeout(function(){ if (s.parentNode) s.parentNode.removeChild(s); }, 800);
+    }
+
+    // ----- UI refresh -----
+    function refreshUI(){
+        el.bp.innerHTML = fmt(state.bp) + '<span class="u">BP</span>';
+        var ps = bpPerSec();
+        el.bps.textContent = fmt(ps) + '/s';
+        el.cp.textContent = fmt(clickPower());
+        el.life.textContent = fmt(state.lifetime);
+        el.compileSub.textContent = '+' + fmt(clickPower()) + ' BP / click';
+
+        for (var i=0;i<GEN_DEFS.length;i++){
+            var n = genNodes[i];
+            var cost = genCost(i);
+            n.own.textContent = 'x' + state.owned[i];
+            n.cost.textContent = fmt(cost);
+            var afford = state.bp >= cost;
+            n.cost.className = 'c ' + (afford ? 'afford' : 'cant');
+            n.root.classList.toggle('disabled', !afford);
+            var out = genOutput(i);
+            if (state.owned[i] > 0){
+                var share = ps > 0 ? Math.round(out / ps * 100) : 0;
+                n.prod.textContent = 'Produces ' + fmt(out) + '/s (' + share + '% of total)';
+            } else {
+                n.prod.textContent = 'Produces ' + fmt(GEN_DEFS[i].base) + '/s each';
+            }
+        }
+
+        for (var j=0;j<UPG_DEFS.length;j++){
+            var u = UPG_DEFS[j];
+            var un = upgNodes[j];
+            if (state.upg[u.id]){
+                un.root.classList.add('locked');   // bought: hide
+                continue;
+            }
+            var unlocked = state.lifetime >= u.showAt;
+            un.root.classList.toggle('locked', !unlocked);
+            if (unlocked){
+                var can = state.bp >= u.cost;
+                un.cost.textContent = fmt(u.cost);
+                un.cost.className = 'c ' + (can ? 'afford' : 'cant');
+                un.root.classList.toggle('disabled', !can);
+            }
+        }
+    }
+
+    // ----- save / load -----
+    function save(){
+        state.lastSave = Date.now();
+        try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e){}
+    }
+    function load(){
+        var raw;
+        try { raw = localStorage.getItem(SAVE_KEY); } catch(e){ raw = null; }
+        if (!raw) return;
+        var data;
+        try { data = JSON.parse(raw); } catch(e){ return; }
+        if (!data || typeof data !== 'object') return;
+
+        state.bp = (typeof data.bp === 'number' && isFinite(data.bp)) ? data.bp : 0;
+        state.lifetime = (typeof data.lifetime === 'number' && isFinite(data.lifetime)) ? data.lifetime : state.bp;
+        if (Array.isArray(data.owned)){
+            for (var i=0;i<GEN_DEFS.length;i++){
+                var v = data.owned[i];
+                state.owned[i] = (typeof v === 'number' && v >= 0) ? Math.floor(v) : 0;
+            }
+        }
+        state.upg = {};
+        if (data.upg && typeof data.upg === 'object'){
+            for (var k=0;k<UPG_DEFS.length;k++){
+                var id = UPG_DEFS[k].id;
+                if (data.upg[id]) state.upg[id] = true;
+            }
+        }
+        state.lastSave = (typeof data.lastSave === 'number') ? data.lastSave : Date.now();
+
+        // offline progress
+        var elapsed = (Date.now() - state.lastSave) / 1000;
+        if (elapsed > 5){
+            var capped = Math.min(elapsed, OFFLINE_CAP);
+            var earned = bpPerSec() * capped;
+            if (earned > 0){
+                state.bp += earned;
+                state.lifetime += earned;
+                showToast('Welcome back. Your build ran for ' + fmtTime(capped) + ' and earned <b>' + fmt(earned) + ' BP</b>.');
+            }
+        }
+    }
+
+    function fmtTime(sec){
+        sec = Math.floor(sec);
+        var h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+        if (h > 0) return h + 'h ' + m + 'm';
+        if (m > 0) return m + 'm ' + s + 's';
+        return s + 's';
+    }
+
+    var toastTimer = null;
+    function showToast(html){
+        el.toast.innerHTML = html;
+        el.toast.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function(){ el.toast.classList.remove('show'); }, 6000);
+    }
+
+    function resetSave(){
+        if (!window.confirm('Reset your save? This wipes all Build Points, generators and upgrades. This cannot be undone.')) return;
+        try { localStorage.removeItem(SAVE_KEY); } catch(e){}
+        state.bp = 0; state.lifetime = 0;
+        state.owned = GEN_DEFS.map(function(){ return 0; });
+        state.upg = {};
+        state.lastSave = Date.now();
+        refreshUI();
+        showToast('Save wiped. Fresh build, clean slate.');
+    }
+
+    // ----- events -----
+    el.compile.addEventListener('pointerdown', function(e){
+        // pointerdown feels snappier than click and covers touch + mouse
+        doClick(e.clientX, e.clientY);
+    });
+    // keyboard accessibility: Enter/Space on the focused button
+    el.compile.addEventListener('keydown', function(e){
+        if (e.code === 'Space' || e.code === 'Enter'){ e.preventDefault(); doClick(null, null); }
+    });
+    el.reset.addEventListener('click', resetSave);
+    window.addEventListener('beforeunload', save);
+    document.addEventListener('visibilitychange', function(){ if (document.hidden) save(); });
+
+    // ----- game loop -----
+    var lastTick = performance.now();
+    var lastUI = 0;
+    function loop(now){
+        var dt = (now - lastTick) / 1000;
+        if (dt > 0.25) dt = 0.25;          // clamp big gaps (tab throttling)
+        lastTick = now;
+
+        var ps = bpPerSec();
+        if (ps > 0){
+            var gain = ps * dt;
+            state.bp += gain;
+            state.lifetime += gain;
+        }
+
+        if (now - lastUI > 60){            // refresh UI ~16 times a second
+            refreshUI();
+            lastUI = now;
+        }
+        requestAnimationFrame(loop);
+    }
+
+    // ----- boot -----
+    buildGenerators();
+    buildUpgrades();
+    load();
+    refreshUI();
+    setInterval(save, 5000);               // autosave every 5s
+    requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Game Console · Mateaș Andrei</title>
+<meta name="description" content="A little arcade of framework-free vanilla JavaScript games by Mateaș Andrei.">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600..800&family=Instrument+Sans:wght@400..600&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --bg:#0b0b0e; --panel:#141419; --card:#111116; --text:#f2f0ec; --dim:#a7a7ad; --mut:#6f6f76;
+        --accent:#ff4d2e; --accent-2:#ff8a3d; --line:rgba(255,255,255,.1); --line-2:rgba(255,255,255,.16);
+        --ff:'Instrument Sans','Segoe UI',Arial,sans-serif; --ff-d:'Syne',Arial,sans-serif;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{
+        background:
+            radial-gradient(70% 50% at 85% -5%, rgba(255,77,46,.10) 0%, rgba(255,77,46,0) 55%),
+            radial-gradient(60% 45% at 10% 5%, rgba(89,167,255,.05) 0%, rgba(89,167,255,0) 55%),
+            var(--bg);
+        color:var(--text); font-family:var(--ff); min-height:100dvh; line-height:1.55;
+        padding:clamp(1.2rem,4vw,3rem);
+    }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:1080px; margin:0 auto; }
+
+    .top{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:clamp(1.6rem,4vw,2.6rem); }
+    .brand{ font-family:var(--ff-d); font-weight:800; font-size:1.2rem; letter-spacing:-.01em; text-transform:uppercase; }
+    .brand b{ color:var(--accent); }
+    .back{ font-size:.85rem; color:var(--dim); border-bottom:1px solid var(--line); padding-bottom:1px; transition:.2s; }
+    .back:hover{ color:var(--accent); border-color:var(--accent); }
+
+    .head{ margin-bottom:clamp(1.6rem,4vw,2.4rem); }
+    .kick{ display:inline-flex; align-items:center; gap:.5rem; font-size:.72rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:.7rem; }
+    .kick .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(255,77,46,.16); }
+    h1{ font-family:var(--ff-d); font-weight:800; font-size:clamp(2.2rem,7vw,3.6rem); line-height:1; letter-spacing:-.02em; text-transform:uppercase; }
+    h1 span{ color:var(--accent); }
+    .lead{ color:var(--dim); font-size:1rem; margin-top:.8rem; max-width:56ch; }
+    .lead b{ color:var(--text); font-weight:600; }
+
+    .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:clamp(.9rem,2vw,1.3rem); }
+    .card{ position:relative; display:flex; flex-direction:column; background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+        transition:transform .25s cubic-bezier(.2,.7,.3,1), border-color .25s, box-shadow .25s; }
+    .card:hover{ transform:translateY(-4px); border-color:var(--accent); box-shadow:0 24px 50px -26px rgba(255,77,46,.5); }
+    .shot{ position:relative; aspect-ratio:16/10; overflow:hidden; background:#0e0e13; border-bottom:1px solid var(--line); }
+    .shot img{ width:100%; height:100%; object-fit:cover; object-position:center; transition:transform .35s ease; }
+    .card:hover .shot img{ transform:scale(1.05); }
+    .play{ position:absolute; inset:0; display:grid; place-items:center; opacity:0; transition:opacity .25s;
+        background:linear-gradient(180deg, rgba(11,11,14,0), rgba(11,11,14,.45)); }
+    .card:hover .play{ opacity:1; }
+    .play span{ display:inline-flex; align-items:center; gap:.4rem; font-weight:700; font-size:.9rem; color:#0b0b0e;
+        background:linear-gradient(135deg,var(--accent),var(--accent-2)); padding:.55rem 1.1rem; border-radius:999px; box-shadow:0 10px 24px -10px rgba(255,77,46,.8); }
+    .tag{ position:absolute; top:.6rem; left:.6rem; font-size:.62rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+        color:var(--text); background:rgba(11,11,14,.6); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+        border:1px solid var(--line-2); padding:.28em .7em; border-radius:999px; }
+    .body{ padding:.85rem 1rem 1.05rem; }
+    .name{ font-family:var(--ff-d); font-weight:700; font-size:1.12rem; letter-spacing:-.01em; }
+    .desc{ color:var(--dim); font-size:.85rem; margin-top:.25rem; }
+
+    .foot{ margin-top:clamp(1.8rem,5vw,2.8rem); color:var(--mut); font-size:.8rem; text-align:center; }
+    .foot b{ color:var(--dim); font-weight:600; }
+</style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="top">
+            <div class="brand">Game <b>Console</b></div>
+            <a class="back" href="/">← back to site</a>
+        </div>
+
+        <header class="head">
+            <span class="kick"><span class="dot"></span>Arcade · 8 games</span>
+            <h1>Game <span>Console</span></h1>
+            <p class="lead">A little arcade of games I built <b>framework-free</b>, pure vanilla JavaScript and Canvas, no libraries. Pick one and play.</p>
+        </header>
+
+        <div class="grid">
+            <a class="card" href="breakpoint/">
+                <div class="shot"><span class="tag">Arcade</span><img src="previews/breakpoint.png" alt="Breakpoint preview" loading="lazy"><div class="play"><span>▶ Play</span></div></div>
+                <div class="body"><div class="name">Breakpoint</div><p class="desc">Brick-breaker with combos, power-ups and plenty of juice.</p></div>
+            </a>
+
+            <a class="card" href="sandbox/">
+                <div class="shot"><span class="tag">Sandbox</span><img src="previews/sandbox.png" alt="Sandbox preview" loading="lazy"><div class="play"><span>▶ Play</span></div></div>
+                <div class="body"><div class="name">Sandbox</div><p class="desc">A 2D block world: mine, build, and roam with critters.</p></div>
+            </a>
+
+            <a class="card" href="sand/">
+                <div class="shot"><span class="tag">Simulation</span><img src="previews/sand.png" alt="FallingSand preview" loading="lazy"><div class="play"><span>▶ Play</span></div></div>
+                <div class="body"><div class="name">FallingSand</div><p class="desc">Cellular-automata sandbox: sand, water, fire, oil and plants.</p></div>
+            </a>
+
+            <a class="card" href="typing/">
+                <div class="shot"><span class="tag">Typing</span><img src="previews/typing.png" alt="TypeStorm preview" loading="lazy"><div class="play"><span>▶ Play</span></div></div>
+                <div class="body"><div class="name">TypeStorm</div><p class="desc">Type the falling words before they hit the floor.</p></div>
+            </a>
+
+            <a class="card" href="2048/">
+                <div class="shot"><span class="tag">Puzzle</span><img src="previews/2048.png" alt="2048 preview" loading="lazy"><div class="play"><span>▶ Play</span></div></div>
+                <div class="body"><div class="name">2048</div><p class="desc">Slide and merge the tiles to reach 2048.</p></div>
+            </a>
+
+            <a class="card" href="runner/">
+                <div class="shot"><span class="tag">Runner</span><img src="previews/runner.png" alt="ShipIt preview" loading="lazy"><div class="play"><span>▶ Play</span></div></div>
+                <div class="body"><div class="name">ShipIt</div><p class="desc">Endless runner: jump the bugs, grab commits, ship the code.</p></div>
+            </a>
+
+            <a class="card" href="asteroids/">
+                <div class="shot"><span class="tag">Arcade</span><img src="previews/asteroids.png" alt="Asteroids preview" loading="lazy"><div class="play"><span>▶ Play</span></div></div>
+                <div class="body"><div class="name">Asteroids</div><p class="desc">Vector arcade shooter with splitting rocks and rising waves.</p></div>
+            </a>
+
+            <a class="card" href="idle/">
+                <div class="shot"><span class="tag">Idle</span><img src="previews/idle.png" alt="Compiler preview" loading="lazy"><div class="play"><span>▶ Play</span></div></div>
+                <div class="body"><div class="name">Compiler</div><p class="desc">Idle clicker: compile, hire interns, and watch the numbers grow.</p></div>
+            </a>
+        </div>
+
+        <p class="foot">All eight built with <b>vanilla JavaScript</b> and the Canvas API. Tip: press <b>Cmd/Ctrl + K</b> on the main site and search "game" to jump straight in.</p>
+    </div>
+</body>
+</html>

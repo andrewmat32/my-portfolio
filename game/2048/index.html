@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex">
+<title>2048 · a game by Mateaș Andrei</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600..800&family=Instrument+Sans:wght@400..600&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --bg:#0b0b0e; --panel:#141419; --text:#f2f0ec; --dim:#a7a7ad; --mut:#6f6f76;
+        --accent:#ff4d2e; --accent-2:#ff8a3d; --line:rgba(255,255,255,.1); --ok:#5fd99a;
+        --ff:'Instrument Sans','Segoe UI',Arial,sans-serif;
+        --ff-d:'Syne',Arial,sans-serif;
+        --cell:rgba(255,255,255,.04);
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ height:100%; }
+    body{
+        background:
+            radial-gradient(90% 70% at 80% -5%, rgba(255,77,46,.10) 0%, rgba(255,77,46,0) 55%),
+            var(--bg);
+        color:var(--text); font-family:var(--ff);
+        min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+        gap:.9rem; padding:1rem; overflow:hidden;
+    }
+    a{ color:inherit; }
+
+    .top{ width:100%; max-width:480px; display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
+    .brand{ font-family:var(--ff-d); font-weight:800; letter-spacing:-.01em; font-size:1.15rem; text-transform:uppercase; }
+    .brand b{ color:var(--accent); }
+    .back{ font-size:.82rem; color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px; }
+    .back:hover{ color:var(--accent); border-color:var(--accent); }
+
+    .hud{ width:100%; max-width:480px; display:flex; align-items:center; justify-content:space-between; gap:.75rem; font-size:.8rem; }
+    .stats{ display:flex; gap:1.4rem; }
+    .stat{ display:flex; flex-direction:column; gap:2px; }
+    .stat .k{ font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mut); }
+    .stat .v{ font-family:var(--ff-d); font-weight:700; font-size:1.05rem; color:var(--text); font-variant-numeric:tabular-nums; }
+    .stat .v.accent{ color:var(--accent); }
+    .newbtn{ font-family:var(--ff); font-weight:600; font-size:.82rem; padding:.5rem 1rem; border-radius:999px; border:1px solid var(--line);
+        background:none; color:var(--dim); cursor:pointer; transition:.2s; white-space:nowrap; }
+    .newbtn:hover{ border-color:var(--accent); color:var(--accent); }
+
+    .stage{ position:relative; width:100%; max-width:480px; }
+    .board{
+        position:relative; width:100%; aspect-ratio:1/1;
+        border:1px solid var(--line); border-radius:16px;
+        background:linear-gradient(180deg, #0e0e13, #0a0a0d);
+        touch-action:none; user-select:none; -webkit-user-select:none;
+    }
+    .cell{
+        position:absolute; border-radius:10px; background:var(--cell);
+    }
+    .tile{
+        position:absolute; display:grid; place-items:center;
+        border-radius:10px; font-family:var(--ff-d); font-weight:800;
+        font-variant-numeric:tabular-nums; letter-spacing:-.02em; line-height:1;
+        transition:left .12s ease, top .12s ease;
+        will-change:left, top;
+    }
+    .tile .n{ transform:translateZ(0); }
+    .tile.spawn{ animation:pop .18s ease; }
+    .tile.merged{ animation:merge .18s ease; }
+    @keyframes pop{ 0%{ transform:scale(0); } 70%{ transform:scale(1.12); } 100%{ transform:scale(1); } }
+    @keyframes merge{ 0%{ transform:scale(1); } 45%{ transform:scale(1.18); } 100%{ transform:scale(1); } }
+
+    .overlay{
+        position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+        background:rgba(8,8,11,.72); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+        border-radius:16px; padding:1.5rem; transition:opacity .25s; z-index:2;
+    }
+    .overlay.hidden{ opacity:0; pointer-events:none; }
+    .overlay h1{ font-family:var(--ff-d); font-weight:800; font-size:clamp(1.9rem,7vw,2.6rem); text-transform:uppercase; letter-spacing:-.02em; line-height:.98; }
+    .overlay h1 span{ color:var(--accent); }
+    .overlay .sub{ color:var(--dim); font-size:.95rem; margin:.5rem auto 1.1rem; max-width:32ch; }
+    .overlay .big{ font-family:var(--ff-d); font-weight:800; font-size:2.2rem; color:var(--accent); margin:.2rem 0; }
+    .btnrow{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
+    .btn{ font-family:var(--ff); font-weight:600; font-size:1rem; padding:.8rem 1.6rem; border-radius:999px; border:none; cursor:pointer;
+        background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#0b0b0e; transition:transform .15s, box-shadow .2s; box-shadow:0 12px 30px -12px rgba(255,77,46,.7); }
+    .btn:hover{ transform:translateY(-2px); }
+    .btn:active{ transform:translateY(0); }
+    .btn.ghost{ background:none; color:var(--dim); border:1px solid var(--line); box-shadow:none; }
+    .btn.ghost:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
+
+    .hint{ font-size:.78rem; color:var(--mut); text-align:center; max-width:480px; }
+    .hint b{ color:var(--dim); font-weight:600; }
+    @media (max-width:540px){ .hint .desk{ display:none; } }
+    @media (min-width:541px){ .hint .touch{ display:none; } }
+</style>
+</head>
+<body>
+    <div class="top">
+        <div class="brand">20<b>48</b></div>
+        <a class="back" href="/">← back to site</a>
+    </div>
+
+    <div class="hud">
+        <div class="stats">
+            <div class="stat"><span class="k">Score</span><span class="v accent" id="score">0</span></div>
+            <div class="stat"><span class="k">Best</span><span class="v" id="best">0</span></div>
+        </div>
+        <button class="newbtn" id="newBtn">New game</button>
+    </div>
+
+    <div class="stage">
+        <div class="board" id="board"></div>
+        <div class="overlay" id="overlay">
+            <div>
+                <h1 id="title">20<span>48</span></h1>
+                <p class="sub" id="msg">Join the tiles, reach 2048.</p>
+                <div class="big" id="bigline" hidden></div>
+                <div class="btnrow">
+                    <button class="btn" id="startBtn">Play</button>
+                    <button class="btn ghost" id="keepBtn" hidden>Keep going</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="hint">
+        <span class="desk">Move: <b>arrow keys</b> or <b>W A S D</b> · Combine equal tiles to reach <b>2048</b></span>
+        <span class="touch">Move: <b>swipe</b> up, down, left, or right · Combine equal tiles to reach <b>2048</b></span>
+    </p>
+
+<script>
+(function(){
+    'use strict';
+    const SIZE = 4;
+    const boardEl = document.getElementById('board');
+    const overlay = document.getElementById('overlay');
+    const titleEl = document.getElementById('title');
+    const msgEl = document.getElementById('msg');
+    const bigEl = document.getElementById('bigline');
+    const startBtn = document.getElementById('startBtn');
+    const keepBtn = document.getElementById('keepBtn');
+    const newBtn = document.getElementById('newBtn');
+    const scoreEl = document.getElementById('score');
+    const bestEl = document.getElementById('best');
+
+    const S = { MENU:0, PLAY:1, WIN:2, OVER:3 };
+    let state = S.MENU;
+    let score = 0;
+    let best = +(localStorage.getItem('m2048_best') || 0);
+    let grid = [];          // grid[r][c] = tile object or null
+    let tiles = [];         // live tile objects with DOM nodes
+    let uid = 1;
+    let wonAlready = false;  // true once player passed the win screen and kept going
+
+    bestEl.textContent = best;
+
+    // Warm palette: low tiles neutral/dark, higher tiles ramp toward orange accent and brighter.
+    const COLORS = {
+        2:    { bg:'#1b1b22', fg:'#c9c7cf' },
+        4:    { bg:'#23222c', fg:'#dcdae2' },
+        8:    { bg:'#3a2620', fg:'#ffcbb3' },
+        16:   { bg:'#54301f', fg:'#ffd2b8' },
+        32:   { bg:'#7a3a1e', fg:'#ffe0cc' },
+        64:   { bg:'#a5431c', fg:'#fff0e6' },
+        128:  { bg:'#c9491a', fg:'#fff6ef' },
+        256:  { bg:'#e24d1c', fg:'#fff8f3' },
+        512:  { bg:'#ff5a2a', fg:'#0b0b0e' },
+        1024: { bg:'#ff7a36', fg:'#0b0b0e' },
+        2048: { bg:'#ff8a3d', fg:'#0b0b0e' },
+        4096: { bg:'#ffb060', fg:'#0b0b0e' },
+        8192: { bg:'#ffd08a', fg:'#0b0b0e' }
+    };
+    function colorFor(v){ return COLORS[v] || COLORS[8192]; }
+
+    // ---- layout: cell geometry in percentages of the board padding box ----
+    // Board padding uses a gap fraction; tiles are absolutely positioned by percent.
+    const GAP = 0.03;   // fraction of board width used for each gap/pad
+    function geom(){
+        // total = pad + SIZE*cell + (SIZE-1)*gap + pad, with pad === gap
+        const gaps = (SIZE + 1) * GAP;
+        const cellFrac = (1 - gaps) / SIZE;
+        return { gap: GAP, cell: cellFrac };
+    }
+    const G = geom();
+
+    function posPct(index){ return (G.gap + index * (G.cell + G.gap)) * 100; }
+    function sizePct(){ return G.cell * 100; }
+
+    function fontFor(v){
+        const digits = String(v).length;
+        if (digits <= 2) return '2.0rem';
+        if (digits === 3) return '1.7rem';
+        if (digits === 4) return '1.35rem';
+        return '1.05rem';
+    }
+
+    // ---- build static background cells ----
+    function buildCells(){
+        for (let r = 0; r < SIZE; r++){
+            for (let c = 0; c < SIZE; c++){
+                const d = document.createElement('div');
+                d.className = 'cell';
+                d.style.left = posPct(c) + '%';
+                d.style.top = posPct(r) + '%';
+                d.style.width = sizePct() + '%';
+                d.style.height = sizePct() + '%';
+                boardEl.appendChild(d);
+            }
+        }
+    }
+
+    function makeTile(r, c, value){
+        const el = document.createElement('div');
+        el.className = 'tile';
+        el.style.width = sizePct() + '%';
+        el.style.height = sizePct() + '%';
+        const n = document.createElement('span');
+        n.className = 'n';
+        el.appendChild(n);
+        boardEl.appendChild(el);
+        const t = { id: uid++, r, c, value, el, nEl: n };
+        paint(t);
+        place(t);
+        tiles.push(t);
+        return t;
+    }
+
+    function paint(t){
+        const col = colorFor(t.value);
+        t.el.style.background = col.bg;
+        t.el.style.color = col.fg;
+        t.el.style.fontSize = fontFor(t.value);
+        if (t.value >= 512) t.el.style.boxShadow = '0 8px 26px -10px rgba(255,90,42,.8)';
+        else t.el.style.boxShadow = 'none';
+        t.nEl.textContent = t.value;
+    }
+
+    function place(t){
+        t.el.style.left = posPct(t.c) + '%';
+        t.el.style.top = posPct(t.r) + '%';
+    }
+
+    function removeTile(t){
+        if (t.el && t.el.parentNode) t.el.parentNode.removeChild(t.el);
+    }
+
+    function clearBoard(){
+        tiles.forEach(removeTile);
+        tiles = [];
+        grid = [];
+        for (let r = 0; r < SIZE; r++){
+            grid.push(new Array(SIZE).fill(null));
+        }
+    }
+
+    function emptyCells(){
+        const out = [];
+        for (let r = 0; r < SIZE; r++)
+            for (let c = 0; c < SIZE; c++)
+                if (!grid[r][c]) out.push({ r, c });
+        return out;
+    }
+
+    function spawnRandom(){
+        const cells = emptyCells();
+        if (!cells.length) return null;
+        const spot = cells[Math.floor(Math.random() * cells.length)];
+        const value = Math.random() < 0.9 ? 2 : 4;
+        const t = makeTile(spot.r, spot.c, value);
+        grid[spot.r][spot.c] = t;
+        t.el.classList.add('spawn');
+        setTimeout(function(){ if (t.el) t.el.classList.remove('spawn'); }, 190);
+        return t;
+    }
+
+    // ---- movement ----
+    // Directions expressed as ordered traversal so tiles resolve toward the
+    // direction of travel; one merge per tile per move.
+    function move(dir){
+        if (state !== S.PLAY) return;
+
+        // Build traversal order. We always process the cell nearest the target
+        // edge first so merges cascade correctly.
+        const rows = [0,1,2,3];
+        const cols = [0,1,2,3];
+        const rOrder = (dir === 'down') ? rows.slice().reverse() : rows;
+        const cOrder = (dir === 'right') ? cols.slice().reverse() : cols;
+        const dr = (dir === 'down') ? 1 : (dir === 'up') ? -1 : 0;
+        const dc = (dir === 'right') ? 1 : (dir === 'left') ? -1 : 0;
+
+        let moved = false;
+        let gained = 0;
+        const mergedThisMove = [];
+
+        for (const r of rOrder){
+            for (const c of cOrder){
+                const t = grid[r][c];
+                if (!t) continue;
+
+                // find farthest empty cell / mergeable neighbour in direction
+                let nr = r, nc = c;
+                while (true){
+                    const tr = nr + dr, tc = nc + dc;
+                    if (tr < 0 || tr >= SIZE || tc < 0 || tc >= SIZE) break;
+                    const occ = grid[tr][tc];
+                    if (!occ){ nr = tr; nc = tc; continue; }
+                    // occupied: merge if same value and target not already merged this move
+                    if (occ.value === t.value && !occ.mergedFrom){
+                        // merge t into occ
+                        grid[r][c] = null;
+                        occ.value *= 2;
+                        occ.mergedFrom = true;
+                        // slide t onto occ's cell then remove
+                        t.r = tr; t.c = tc;
+                        place(t);
+                        const dead = t;
+                        setTimeout(function(){ removeTile(dead); }, 120);
+                        paint(occ);
+                        occ.el.classList.remove('merged');
+                        void occ.el.offsetWidth;   // reflow to restart animation
+                        occ.el.classList.add('merged');
+                        gained += occ.value;
+                        mergedThisMove.push(occ);
+                        moved = true;
+                    }
+                    break;
+                }
+
+                if (grid[r][c] === t && (nr !== r || nc !== c)){
+                    // simple slide
+                    grid[r][c] = null;
+                    grid[nr][nc] = t;
+                    t.r = nr; t.c = nc;
+                    place(t);
+                    moved = true;
+                }
+            }
+        }
+
+        // clear merge flags
+        mergedThisMove.forEach(function(t){ t.mergedFrom = false; });
+        for (let r = 0; r < SIZE; r++)
+            for (let c = 0; c < SIZE; c++)
+                if (grid[r][c]) grid[r][c].mergedFrom = false;
+
+        if (!moved) return;
+
+        score += gained;
+        if (score > best){ best = score; localStorage.setItem('m2048_best', best); }
+        updateHud();
+
+        setTimeout(function(){
+            spawnRandom();
+            checkEnd(gained);
+        }, 120);
+    }
+
+    function checkEnd(gained){
+        // win: reached 2048 and not previously acknowledged
+        if (!wonAlready){
+            for (const t of tiles){
+                if (t.value >= 2048){
+                    state = S.WIN;
+                    showWin();
+                    return;
+                }
+            }
+        }
+        if (!movesAvailable()){
+            state = S.OVER;
+            showOver();
+        }
+    }
+
+    function movesAvailable(){
+        if (emptyCells().length) return true;
+        for (let r = 0; r < SIZE; r++){
+            for (let c = 0; c < SIZE; c++){
+                const v = grid[r][c] ? grid[r][c].value : 0;
+                if (c + 1 < SIZE && grid[r][c+1] && grid[r][c+1].value === v) return true;
+                if (r + 1 < SIZE && grid[r+1][c] && grid[r+1][c].value === v) return true;
+            }
+        }
+        return false;
+    }
+
+    function updateHud(){
+        scoreEl.textContent = score;
+        bestEl.textContent = best;
+    }
+
+    // ---- overlays ----
+    function showOverlay(title, msg, big, showKeep){
+        titleEl.innerHTML = title;
+        msgEl.textContent = msg || '';
+        if (big){ bigEl.hidden = false; bigEl.textContent = big; } else bigEl.hidden = true;
+        keepBtn.hidden = !showKeep;
+        startBtn.textContent = showKeep ? 'New game' : (state === S.OVER ? 'Play again' : 'Play');
+        overlay.classList.remove('hidden');
+    }
+    function hideOverlay(){ overlay.classList.add('hidden'); }
+
+    function showWin(){
+        showOverlay('You <span>win</span>', 'You reached 2048. Keep going for a higher score, or start fresh.', 'Score ' + score, true);
+    }
+    function showOver(){
+        showOverlay('Game <span>over</span>', 'No moves left. The board is full.', 'Score ' + score, false);
+    }
+
+    function startGame(){
+        clearBoard();
+        score = 0; wonAlready = false;
+        updateHud();
+        spawnRandom();
+        spawnRandom();
+        state = S.PLAY;
+        hideOverlay();
+    }
+
+    function keepGoing(){
+        wonAlready = true;
+        state = S.PLAY;
+        hideOverlay();
+    }
+
+    // ---- input ----
+    const KEYMAP = {
+        ArrowLeft:'left', ArrowRight:'right', ArrowUp:'up', ArrowDown:'down',
+        KeyA:'left', KeyD:'right', KeyW:'up', KeyS:'down'
+    };
+    window.addEventListener('keydown', function(e){
+        const dir = KEYMAP[e.code];
+        if (!dir) return;
+        e.preventDefault();
+        if (state === S.PLAY) move(dir);
+    });
+
+    startBtn.addEventListener('click', function(){
+        // In WIN state the primary button acts as New game; otherwise start/restart.
+        startGame();
+    });
+    keepBtn.addEventListener('click', keepGoing);
+    newBtn.addEventListener('click', startGame);
+
+    // swipe
+    let sx = 0, sy = 0, swiping = false;
+    boardEl.addEventListener('touchstart', function(e){
+        if (state !== S.PLAY) return;
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY; swiping = true;
+    }, { passive:true });
+    boardEl.addEventListener('touchmove', function(e){
+        if (swiping) e.preventDefault();
+    }, { passive:false });
+    boardEl.addEventListener('touchend', function(e){
+        if (!swiping) return;
+        swiping = false;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        const ax = Math.abs(dx), ay = Math.abs(dy);
+        const TH = 24;
+        if (Math.max(ax, ay) < TH) return;
+        if (ax > ay) move(dx > 0 ? 'right' : 'left');
+        else move(dy > 0 ? 'down' : 'up');
+    }, { passive:true });
+
+    // ---- init ----
+    buildCells();
+    updateHud();
+    showOverlay('20<span>48</span>', 'Join the tiles, reach 2048. Use arrow keys, WASD, or swipe.', null, false);
+})();
+</script>
+</body>
+</html>

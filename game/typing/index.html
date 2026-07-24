@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex">
+<title>TypeStorm · a game by Mateaș Andrei</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600..800&family=Instrument+Sans:wght@400..600&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --bg:#0b0b0e; --panel:#141419; --text:#f2f0ec; --dim:#a7a7ad; --mut:#6f6f76;
+        --accent:#ff4d2e; --accent-2:#ff8a3d; --line:rgba(255,255,255,.1); --ok:#5fd99a;
+        --ff:'Instrument Sans','Segoe UI',Arial,sans-serif;
+        --ff-d:'Syne',Arial,sans-serif;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ height:100%; }
+    body{
+        background:
+            radial-gradient(90% 70% at 80% -5%, rgba(255,77,46,.10) 0%, rgba(255,77,46,0) 55%),
+            var(--bg);
+        color:var(--text); font-family:var(--ff);
+        min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+        gap:.9rem; padding:1rem; overflow:hidden;
+    }
+    a{ color:inherit; }
+
+    .top{ width:100%; max-width:520px; display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
+    .brand{ font-family:var(--ff-d); font-weight:800; letter-spacing:-.01em; font-size:1.15rem; text-transform:uppercase; }
+    .brand b{ color:var(--accent); }
+    .back{ font-size:.82rem; color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px; }
+    .back:hover{ color:var(--accent); border-color:var(--accent); }
+
+    .hud{ width:100%; max-width:520px; display:flex; align-items:center; justify-content:space-between; gap:.75rem; font-size:.8rem; }
+    .stat{ display:flex; flex-direction:column; gap:2px; }
+    .stat .k{ font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mut); }
+    .stat .v{ font-family:var(--ff-d); font-weight:700; font-size:1.05rem; color:var(--text); font-variant-numeric:tabular-nums; }
+    .stat .v.accent{ color:var(--accent); }
+    .lives{ display:flex; gap:5px; align-items:center; height:1.05rem; }
+    .life{ width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px rgba(255,77,46,.7); }
+    .life.gone{ background:transparent; border:1px solid var(--mut); box-shadow:none; }
+    .mute{ background:none; border:1px solid var(--line); color:var(--dim); width:34px; height:34px; border-radius:9px; cursor:pointer; font-size:1rem; display:grid; place-items:center; transition:.2s; }
+    .mute:hover{ border-color:var(--accent); color:var(--accent); }
+
+    .stage{ position:relative; width:100%; max-width:520px; }
+    canvas{ display:block; width:100%; border:1px solid var(--line); border-radius:14px; background:linear-gradient(180deg, #0e0e13, #0a0a0d); touch-action:none; }
+
+    /* visually hidden but focusable input so mobile raises the keyboard */
+    .ghost-input{
+        position:absolute; opacity:0; pointer-events:none;
+        width:1px; height:1px; left:50%; top:50%;
+        border:0; padding:0; background:transparent; color:transparent;
+        font-size:16px; /* stops iOS zoom-on-focus */
+    }
+
+    .overlay{
+        position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+        background:rgba(8,8,11,.72); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+        border-radius:14px; padding:1.5rem; transition:opacity .25s; z-index:2;
+    }
+    .overlay.hidden{ opacity:0; pointer-events:none; }
+    .overlay h1{ font-family:var(--ff-d); font-weight:800; font-size:clamp(1.9rem,7vw,2.6rem); text-transform:uppercase; letter-spacing:-.02em; line-height:.98; }
+    .overlay h1 span{ color:var(--accent); }
+    .overlay .sub{ color:var(--dim); font-size:.95rem; margin:.5rem auto 1.1rem; max-width:32ch; }
+    .overlay .big{ font-family:var(--ff-d); font-weight:800; font-size:2.2rem; color:var(--accent); margin:.2rem 0; }
+    .legend{ display:flex; gap:.9rem; justify-content:center; flex-wrap:wrap; margin:.2rem auto 1.2rem; font-size:.72rem; color:var(--dim); }
+    .legend span{ display:inline-flex; align-items:center; gap:.35rem; }
+    .dot{ width:12px; height:12px; border-radius:3px; }
+    .btn{ font-family:var(--ff); font-weight:600; font-size:1rem; padding:.8rem 1.6rem; border-radius:999px; border:none; cursor:pointer;
+        background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#0b0b0e; transition:transform .15s, box-shadow .2s; box-shadow:0 12px 30px -12px rgba(255,77,46,.7); }
+    .btn:hover{ transform:translateY(-2px); }
+    .btn:active{ transform:translateY(0); }
+
+    .hint{ font-size:.78rem; color:var(--mut); text-align:center; max-width:520px; }
+    .hint b{ color:var(--dim); font-weight:600; }
+    @media (max-width:540px){ .hint .desk{ display:none; } }
+    @media (min-width:541px){ .hint .touch{ display:none; } }
+</style>
+</head>
+<body>
+    <div class="top">
+        <div class="brand">Type<b>Storm</b></div>
+        <a class="back" href="/">← back to site</a>
+    </div>
+
+    <div class="hud">
+        <div class="stat"><span class="k">Score</span><span class="v" id="score">0</span></div>
+        <div class="stat"><span class="k">Best</span><span class="v" id="best">0</span></div>
+        <div class="stat"><span class="k">WPM</span><span class="v accent" id="wpm">0</span></div>
+        <div class="stat"><span class="k">Level</span><span class="v" id="level">1</span></div>
+        <div class="stat"><span class="k">Lives</span><span class="lives" id="lives"></span></div>
+        <button class="mute" id="mute" aria-label="Toggle sound" title="Toggle sound">♪</button>
+    </div>
+
+    <div class="stage">
+        <canvas id="c"></canvas>
+        <input class="ghost-input" id="ghost" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-hidden="true" tabindex="-1">
+        <div class="overlay" id="overlay">
+            <div>
+                <h1 id="title">Type<span>Storm</span></h1>
+                <p class="sub" id="msg">Type the falling words before they hit the floor.</p>
+                <div class="big" id="bigline" hidden></div>
+                <div class="legend" id="legend">
+                    <span><i class="dot" style="background:#ff4d2e"></i>Active target</span>
+                    <span><i class="dot" style="background:#a7a7ad"></i>Remaining letters</span>
+                    <span><i class="dot" style="background:#5fd99a"></i>Cleared word</span>
+                </div>
+                <button class="btn" id="startBtn">Play</button>
+            </div>
+        </div>
+    </div>
+
+    <p class="hint">
+        <span class="desk">Type a word's first letter to lock on, then finish it. Clear words before they reach the bottom. Mute: <b>button</b></span>
+        <span class="touch">Tap the board to raise the keyboard, then type the falling words before they land.</span>
+    </p>
+
+<script>
+(function(){
+    'use strict';
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('overlay');
+    const titleEl = document.getElementById('title');
+    const msgEl = document.getElementById('msg');
+    const bigEl = document.getElementById('bigline');
+    const legendEl = document.getElementById('legend');
+    const startBtn = document.getElementById('startBtn');
+    const scoreEl = document.getElementById('score');
+    const bestEl = document.getElementById('best');
+    const wpmEl = document.getElementById('wpm');
+    const levelEl = document.getElementById('level');
+    const livesEl = document.getElementById('lives');
+    const muteBtn = document.getElementById('mute');
+    const ghost = document.getElementById('ghost');
+
+    let W = 480, H = 600, DPR = 1;
+    function fit(){
+        const cssW = Math.min(canvas.parentElement.clientWidth, 520);
+        const cssH = Math.round(cssW * 1.22);
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.style.height = cssH + 'px';
+        canvas.width = Math.round(cssW * DPR);
+        canvas.height = Math.round(cssH * DPR);
+        W = cssW; H = cssH;
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+
+    const S = { MENU:0, PLAY:1, OVER:2 };
+    let state = S.MENU;
+    let score = 0, best = +(localStorage.getItem('typestorm_hs') || 0);
+    let lives = 3, level = 1;
+    let words = [], particles = [];
+    let activeWord = null;         // the word currently being typed
+    let shake = 0, flash = 0, buzz = 0;
+    let muted = localStorage.getItem('typestorm_muted') === '1';
+
+    let spawnTimer = 0, spawnEvery = 1.7;   // seconds between spawns
+    let startTime = 0, typedChars = 0, wpm = 0;
+
+    const WORD_POOL = [
+        'function','const','async','await','deploy','commit','refactor','promise',
+        'closure','render','compile','import','export','module','buffer','socket',
+        'cache','lambda','vector','kernel','syntax','branch','merge','docker',
+        'pixel','canvas','array','object','string','number','boolean','null',
+        'return','yield','static','public','private','static','throw','catch',
+        'thread','stack','queue','graph','binary','regex','token','parser',
+        'schema','query','index','router','server','client','stream','event',
+        'hook','state','props','signal','worker','shader','matrix','scalar',
+        'daemon','runtime','payload','header','cookie','session','bundle','minify',
+        'linter','pointer','struct','enum','trait','macro','crate','build'
+    ];
+
+    bestEl.textContent = best;
+    muteBtn.textContent = muted ? '⊘' : '♪';
+
+    /* ---------- audio ---------- */
+    let actx = null;
+    function beep(freq, dur, type, vol){
+        if (muted) return;
+        try {
+            if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+            const o = actx.createOscillator(), g = actx.createGain();
+            o.type = type || 'square'; o.frequency.value = freq;
+            g.gain.value = (vol || 0.05);
+            o.connect(g); g.connect(actx.destination);
+            const t = actx.currentTime;
+            g.gain.setValueAtTime(g.gain.value, t);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + (dur || 0.08));
+            o.start(t); o.stop(t + (dur || 0.08));
+        } catch(e){}
+    }
+
+    /* ---------- helpers ---------- */
+    function wordFont(){ return Math.max(15, Math.round(W*0.044)); }
+
+    function measureWord(text, fs){
+        ctx.font = '700 ' + fs + "px 'Syne',sans-serif";
+        return ctx.measureText(text).width;
+    }
+
+    function fallSpeed(){
+        // px per second, ramps with level
+        return H * (0.075 + level*0.012);
+    }
+
+    function spawnWord(){
+        const fs = wordFont();
+        const text = WORD_POOL[(Math.random()*WORD_POOL.length)|0];
+        const w = measureWord(text, fs);
+        const padX = 12;
+        const x = padX + Math.random() * Math.max(1, (W - w - padX*2));
+        words.push({
+            text: text,
+            typed: 0,             // number of matched leading chars
+            x: x,
+            y: -fs,
+            fs: fs,
+            w: w,
+            vy: fallSpeed() * (0.85 + Math.random()*0.35),
+            dead: false
+        });
+    }
+
+    function burst(x, y, color, n){
+        for (let i=0;i<n;i++){
+            const a = Math.random()*Math.PI*2, s = 40 + Math.random()*180;
+            particles.push({ x, y, vx:Math.cos(a)*s, vy:Math.sin(a)*s, life:1, col:color, sz:2+Math.random()*3 });
+        }
+    }
+
+    /* ---------- input ---------- */
+    function handleChar(ch){
+        if (state !== S.PLAY) return;
+        ch = ch.toLowerCase();
+        if (ch < 'a' || ch > 'z') return;
+
+        // if no active word, try to find one whose next (first) letter matches
+        if (!activeWord || activeWord.dead){
+            activeWord = null;
+            let candidate = null, lowestY = -Infinity;
+            for (const wd of words){
+                if (wd.dead) continue;
+                if (wd.text[0] === ch){
+                    // prefer the lowest (most urgent) matching word
+                    if (wd.y > lowestY){ lowestY = wd.y; candidate = wd; }
+                }
+            }
+            if (candidate){
+                activeWord = candidate;
+                activeWord.typed = 1;
+                onGoodKey(activeWord);
+            } else {
+                // no match: harmless miss
+                beep(180, 0.03, 'sine', 0.02);
+            }
+            return;
+        }
+
+        // we have an active word: match its next letter
+        const next = activeWord.text[activeWord.typed];
+        if (next === ch){
+            activeWord.typed++;
+            onGoodKey(activeWord);
+            if (activeWord.typed >= activeWord.text.length){
+                clearWord(activeWord);
+            }
+        } else {
+            // wrong key against the active target: small feedback, keep target
+            beep(200, 0.03, 'sine', 0.02);
+        }
+    }
+
+    function onGoodKey(wd){
+        typedChars++;
+        beep(520 + wd.typed*30, 0.04, 'square', 0.035);
+    }
+
+    function clearWord(wd){
+        wd.dead = true;
+        const cx = wd.x + wd.w/2, cy = wd.y;
+        burst(cx, cy, '#5fd99a', 16);
+        score += 10 + wd.text.length * 2;
+        shake = Math.min(shake+5, 10); flash = 0.4;
+        beep(880, 0.09, 'square', 0.05);
+        beep(1180, 0.07, 'square', 0.035);
+        activeWord = null;
+        // level up every 200 points
+        const newLevel = 1 + Math.floor(score / 200);
+        if (newLevel > level){
+            level = newLevel;
+            spawnEvery = Math.max(0.55, 1.7 - (level-1)*0.13);
+        }
+        if (score > best){ best = score; localStorage.setItem('typestorm_hs', best); }
+        updateHud();
+    }
+
+    window.addEventListener('keydown', (e)=>{
+        if (state !== S.PLAY) return;
+        if (e.key === 'Backspace'){
+            e.preventDefault();
+            // simple: cancel current target
+            if (activeWord){ activeWord.typed = 0; activeWord = null; }
+            return;
+        }
+        if (e.key.length === 1){
+            handleChar(e.key);
+        }
+    });
+
+    // mobile: read from the ghost input
+    ghost.addEventListener('input', ()=>{
+        const v = ghost.value;
+        for (let i=0;i<v.length;i++) handleChar(v[i]);
+        ghost.value = '';
+    });
+
+    function focusGhost(){
+        try { ghost.focus({ preventScroll:true }); } catch(e){ try{ ghost.focus(); }catch(_){} }
+    }
+    canvas.addEventListener('pointerdown', ()=>{
+        if (state === S.PLAY) focusGhost();
+    });
+
+    startBtn.addEventListener('click', ()=>{
+        if (actx && actx.state === 'suspended'){ actx.resume(); }
+        startGame();
+    });
+    muteBtn.addEventListener('click', ()=>{
+        muted = !muted; localStorage.setItem('typestorm_muted', muted?'1':'0');
+        muteBtn.textContent = muted ? '⊘' : '♪';
+    });
+
+    /* ---------- hud / overlay ---------- */
+    function updateHud(){
+        scoreEl.textContent = score;
+        bestEl.textContent = best;
+        wpmEl.textContent = wpm;
+        levelEl.textContent = level;
+        const slots = Math.max(3, lives);
+        let html = '';
+        for (let i=0;i<slots;i++) html += '<span class="life'+(i<lives?'':' gone')+'"></span>';
+        livesEl.innerHTML = html;
+    }
+
+    function showOverlay(title, msg, big, btn, showLegend){
+        titleEl.innerHTML = title;
+        msgEl.textContent = msg || '';
+        if (big){ bigEl.hidden = false; bigEl.textContent = big; } else bigEl.hidden = true;
+        legendEl.style.display = showLegend ? 'flex' : 'none';
+        startBtn.textContent = btn || 'Play';
+        overlay.classList.remove('hidden');
+    }
+    function hideOverlay(){ overlay.classList.add('hidden'); }
+
+    /* ---------- game flow ---------- */
+    function startGame(){
+        score = 0; lives = 3; level = 1;
+        words = []; particles = []; activeWord = null;
+        spawnEvery = 1.7; spawnTimer = 0.4;
+        typedChars = 0; wpm = 0;
+        startTime = performance.now();
+        shake = 0; flash = 0; buzz = 0;
+        state = S.PLAY; hideOverlay(); updateHud();
+        focusGhost();
+    }
+
+    function loseLife(wd){
+        lives--;
+        if (activeWord === wd) activeWord = null;
+        burst(wd.x + wd.w/2, H - 6, 'hsl(0,90%,60%)', 18);
+        shake = 12; flash = 0.7; buzz = 1;
+        beep(140, 0.28, 'sawtooth', 0.05);
+        updateHud();
+        if (lives <= 0) gameOver();
+    }
+
+    function gameOver(){
+        state = S.OVER;
+        if (score > best){ best = score; localStorage.setItem('typestorm_hs', best); }
+        try { ghost.blur(); } catch(e){}
+        showOverlay('Game <span>over</span>', 'The storm got through.', 'Score ' + score, 'Play again', false);
+        updateHud();
+    }
+
+    /* ---------- update ---------- */
+    function update(dt){
+        // particles
+        for (let i=particles.length-1;i>=0;i--){
+            const p=particles[i]; p.life-=dt*1.8;
+            if(p.life<=0){ particles.splice(i,1); continue; }
+            p.vy+=260*dt; p.x+=p.vx*dt; p.y+=p.vy*dt;
+        }
+        if (shake>0) shake=Math.max(0,shake-dt*60);
+        if (flash>0) flash=Math.max(0,flash-dt*4);
+        if (buzz>0) buzz=Math.max(0,buzz-dt*3);
+
+        if (state !== S.PLAY) return;
+
+        // wpm (5 chars == 1 word, standard)
+        const mins = (performance.now() - startTime) / 60000;
+        wpm = mins > 0.02 ? Math.round((typedChars/5) / mins) : 0;
+        wpmEl.textContent = wpm;
+
+        // spawning
+        spawnTimer -= dt;
+        if (spawnTimer <= 0){
+            spawnWord();
+            spawnTimer = spawnEvery * (0.75 + Math.random()*0.5);
+        }
+
+        // move words
+        for (let i=words.length-1;i>=0;i--){
+            const wd = words[i];
+            if (wd.dead){ words.splice(i,1); continue; }
+            wd.y += wd.vy * dt;
+            if (wd.y >= H - 4){
+                words.splice(i,1);
+                loseLife(wd);
+            }
+        }
+    }
+
+    /* ---------- render ---------- */
+    function render(){
+        ctx.clearRect(0,0,W,H);
+        ctx.save();
+        if (shake>0) ctx.translate((Math.random()-.5)*shake, (Math.random()-.5)*shake);
+
+        // faint vertical grid
+        ctx.strokeStyle='rgba(255,255,255,.03)'; ctx.lineWidth=1;
+        for (let gx=0; gx<W; gx+=W/12){ ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke(); }
+
+        // danger line near the bottom
+        ctx.strokeStyle='rgba(255,77,46,.25)'; ctx.lineWidth=1; ctx.setLineDash([6,6]);
+        ctx.beginPath(); ctx.moveTo(0, H-4); ctx.lineTo(W, H-4); ctx.stroke(); ctx.setLineDash([]);
+
+        // words
+        ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+        for (const wd of words){
+            if (wd.dead) continue;
+            const fs = wd.fs;
+            ctx.font = '700 ' + fs + "px 'Syne',sans-serif";
+            const isActive = (wd === activeWord);
+
+            // subtle pill behind the active word
+            if (isActive){
+                const padX = 6, padY = 4;
+                ctx.fillStyle = 'rgba(255,77,46,.12)';
+                const bx = wd.x - padX, by = wd.y - fs, bw = wd.w + padX*2, bh = fs + padY*2;
+                ctx.beginPath();
+                const r = 5;
+                ctx.moveTo(bx+r,by); ctx.arcTo(bx+bw,by,bx+bw,by+bh,r); ctx.arcTo(bx+bw,by+bh,bx,by+bh,r);
+                ctx.arcTo(bx,by+bh,bx,by,r); ctx.arcTo(bx,by,bx+bw,by,r); ctx.closePath(); ctx.fill();
+            }
+
+            // typed prefix (accent) + remaining (dim)
+            const typed = wd.text.slice(0, wd.typed);
+            const rest = wd.text.slice(wd.typed);
+            let cx = wd.x;
+            if (typed){
+                ctx.fillStyle = '#ff4d2e';
+                ctx.shadowColor = 'rgba(255,77,46,.7)'; ctx.shadowBlur = isActive ? 10 : 0;
+                ctx.fillText(typed, cx, wd.y);
+                ctx.shadowBlur = 0;
+                cx += ctx.measureText(typed).width;
+            }
+            ctx.fillStyle = isActive ? '#f2f0ec' : '#a7a7ad';
+            ctx.fillText(rest, cx, wd.y);
+        }
+
+        // particles
+        for (const p of particles){
+            ctx.globalAlpha = Math.max(0, p.life);
+            ctx.fillStyle = p.col;
+            ctx.fillRect(p.x, p.y, p.sz, p.sz);
+        }
+        ctx.globalAlpha = 1;
+
+        // flash overlay (word cleared / life lost)
+        if (flash>0){
+            ctx.fillStyle = buzz>0 ? 'rgba(255,50,40,'+(flash*0.14)+')' : 'rgba(255,138,61,'+(flash*0.07)+')';
+            ctx.fillRect(0,0,W,H);
+        }
+        ctx.restore();
+    }
+
+    /* ---------- loop ---------- */
+    let last = 0;
+    function frame(ts){
+        const dt = last ? Math.min((ts-last)/1000, 0.033) : 0; last = ts;
+        update(dt);
+        render();
+        requestAnimationFrame(frame);
+    }
+
+    window.addEventListener('resize', fit);
+    fit();
+    state = S.MENU; updateHud();
+    showOverlay('Type<span>Storm</span>', 'Type the falling words before they hit the floor.', null, 'Play', true);
+    requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

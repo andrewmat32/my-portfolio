@@ -811,10 +811,12 @@
         { icon: 'fa-droplet', label: 'Accent · Lime', hint: 'accent', run: click('[data-accent="lime"]') },
         { icon: 'fa-droplet', label: 'Accent · Cobalt', hint: 'accent', run: click('[data-accent="cobalt"]') },
         { icon: 'fa-brands fa-github', label: 'GitHub', hint: '↗', run: () => window.open('https://github.com/andrewmat32', '_blank', 'noopener') },
-        { icon: 'fa-brands fa-linkedin-in', label: 'LinkedIn', hint: '↗', run: () => window.open('https://www.linkedin.com/in/mateas-andrei', '_blank', 'noopener') }
+        { icon: 'fa-brands fa-linkedin-in', label: 'LinkedIn', hint: '↗', run: () => window.open('https://www.linkedin.com/in/mateas-andrei', '_blank', 'noopener') },
+        // hidden arcade — only surfaces when you search (try "game", "play", "arcade" or "console")
+        { icon: 'fa-gamepad', label: 'Open Game Console (arcade)', hint: 'arcade game play console', secret: true, run: () => window.open('/game/', '_blank', 'noopener') }
     ];
 
-    let filtered = commands.slice(), active = 0, lastFocused = null;
+    let filtered = commands.filter(c => !c.secret), active = 0, lastFocused = null;
     const iconClass = (ic) => ic.indexOf('fa-brands') === 0 ? ic : ('fa-solid ' + ic);
     const render = () => {
         active = 0;
@@ -827,7 +829,7 @@
     const scrollActive = () => { const el = list.querySelector('.is-active'); if (el) el.scrollIntoView({ block: 'nearest' }); };
     const filter = () => {
         const q = input.value.trim().toLowerCase();
-        filtered = q ? commands.filter(c => c.label.toLowerCase().includes(q) || c.hint.toLowerCase().includes(q)) : commands.slice();
+        filtered = q ? commands.filter(c => c.label.toLowerCase().includes(q) || c.hint.toLowerCase().includes(q)) : commands.filter(c => !c.secret);
         render();
     };
     const setBgInert = (on) => { Array.from(document.body.children).forEach(el => { if (el === cmdk) return; if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); }); };

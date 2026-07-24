@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex">
+<title>Sandbox · a game by Mateaș Andrei</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600..800&family=Instrument+Sans:wght@400..600&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --bg:#0b0b0e; --text:#f2f0ec; --dim:#a7a7ad; --mut:#6f6f76;
+        --accent:#ff4d2e; --accent-2:#ff8a3d; --line:rgba(255,255,255,.1);
+        --ff:'Instrument Sans','Segoe UI',Arial,sans-serif; --ff-d:'Syne',Arial,sans-serif;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ height:100%; }
+    body{
+        background:radial-gradient(90% 70% at 80% -5%, rgba(255,77,46,.10) 0%, rgba(255,77,46,0) 55%), var(--bg);
+        color:var(--text); font-family:var(--ff);
+        min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+        gap:.7rem; padding:1rem; overflow:hidden;
+    }
+    a{ color:inherit; }
+    .top{ width:100%; max-width:720px; display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
+    .brand{ font-family:var(--ff-d); font-weight:800; letter-spacing:-.01em; font-size:1.15rem; text-transform:uppercase; }
+    .brand b{ color:var(--accent); }
+    .back{ font-size:.82rem; color:var(--dim); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px; }
+    .back:hover{ color:var(--accent); border-color:var(--accent); }
+
+    .stage{ position:relative; width:100%; max-width:720px; }
+    canvas{ display:block; width:100%; border:1px solid var(--line); border-radius:12px; image-rendering:pixelated; touch-action:none; cursor:crosshair; background:#7ec0ee; }
+
+    .overlay{ position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+        background:rgba(8,8,11,.78); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+        border-radius:12px; padding:1.5rem; transition:opacity .25s; z-index:5; }
+    .overlay.hidden{ opacity:0; pointer-events:none; }
+    .overlay h1{ font-family:var(--ff-d); font-weight:800; font-size:clamp(2rem,7vw,2.8rem); text-transform:uppercase; letter-spacing:-.02em; }
+    .overlay h1 span{ color:var(--accent); }
+    .overlay .sub{ color:var(--dim); font-size:.9rem; margin:.5rem auto 1rem; max-width:42ch; line-height:1.55; }
+    .overlay .sub b{ color:var(--text); }
+    .btn{ font-family:var(--ff); font-weight:600; font-size:1rem; padding:.75rem 1.6rem; border-radius:999px; border:none; cursor:pointer;
+        background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#0b0b0e; box-shadow:0 12px 30px -12px rgba(255,77,46,.7); transition:transform .15s; }
+    .btn:hover{ transform:translateY(-2px); }
+
+    .tc{ position:absolute; inset:0; z-index:4; pointer-events:none; display:none; }
+    .tc button{ position:absolute; pointer-events:auto; width:56px; height:56px; border-radius:14px; border:1px solid var(--line);
+        background:rgba(20,20,26,.55); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); color:var(--text); font-size:1.4rem; display:grid; place-items:center; user-select:none; }
+    .tc button:active{ background:rgba(255,77,46,.35); }
+    #tLeft{ left:10px; bottom:14px; } #tRight{ left:76px; bottom:14px; }
+    #tJump{ right:10px; bottom:14px; }
+    #tMode{ right:10px; bottom:80px; width:auto; padding:0 12px; height:38px; font-size:.8rem; font-weight:700; letter-spacing:.05em; }
+    body.touch .tc{ display:block; }
+
+    .hotbar{ display:flex; gap:6px; justify-content:center; flex-wrap:wrap; }
+    .slot{ position:relative; width:52px; height:52px; border:2px solid var(--line); border-radius:9px; background:#141419; cursor:pointer; overflow:hidden; }
+    .slot.active{ border-color:var(--accent); box-shadow:0 0 0 2px rgba(255,77,46,.25); }
+    .slot .sw{ position:absolute; inset:6px; border-radius:4px; }
+    .slot .n{ position:absolute; top:2px; left:4px; font-size:.6rem; color:var(--mut); }
+    .slot .c{ position:absolute; bottom:1px; right:4px; font-size:.72rem; font-weight:700; color:#fff; text-shadow:0 1px 2px #000; }
+    .hint{ font-size:.75rem; color:var(--mut); text-align:center; max-width:720px; }
+    .hint b{ color:var(--dim); font-weight:600; }
+    @media (max-width:600px){ .hint .desk{ display:none; } }
+    @media (min-width:601px){ .hint .touch{ display:none; } }
+</style>
+</head>
+<body>
+    <div class="top">
+        <div class="brand">Sand<b>box</b></div>
+        <a class="back" href="/">← back to site</a>
+    </div>
+
+    <div class="stage">
+        <canvas id="c"></canvas>
+        <div class="tc" id="tc">
+            <button id="tLeft" aria-label="left">◀</button>
+            <button id="tRight" aria-label="right">▶</button>
+            <button id="tJump" aria-label="jump">▲</button>
+            <button id="tMode" aria-label="toggle mine/build">MINE</button>
+        </div>
+        <div class="overlay" id="overlay">
+            <div>
+                <h1>Sand<span>box</span></h1>
+                <p class="sub">
+                    A tiny block world with critters. <b>Hold</b> left-click to <b>mine</b> (watch it crack),
+                    chop <b>trees</b>, dig for <b>coal</b>, then <b>build</b>. Pigs and chicks roam the surface.<br>
+                    Move <b>A/D · ← →</b> · Jump <b>W / ↑ / Space</b> · <b>Left-click</b> mine · <b>Right-click</b> place · <b>1–6</b> block.
+                </p>
+                <button class="btn" id="startBtn">Enter world</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="hotbar" id="hotbar"></div>
+
+    <p class="hint">
+        <span class="desk">Hold left-click to <b>mine</b> · right-click <b>place</b> · wheel or <b>1–6</b> select</span>
+        <span class="touch">Hold-tap to <b>mine/build</b> (toggle top-right) · buttons move & jump</span>
+    </p>
+
+<script>
+(function(){
+    'use strict';
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('overlay');
+    const startBtn = document.getElementById('startBtn');
+    const hotbarEl = document.getElementById('hotbar');
+
+    // ---------- tiles ----------
+    const AIR=0, GRASS=1, DIRT=2, STONE=3, WOOD=4, LEAVES=5, COAL=6;
+    const DEF = {
+        1:{name:'Grass',  top:'#6ab04c', body:'#7a5230', spec:'#5a9d3f', solid:true, hard:0.35},
+        2:{name:'Dirt',   top:'#7a5230', body:'#7a5230', spec:'#69451f', solid:true, hard:0.35},
+        3:{name:'Stone',  top:'#8b9098', body:'#8b9098', spec:'#767b84', solid:true, hard:0.9},
+        4:{name:'Wood',   top:'#7b5a34', body:'#7b5a34', spec:'#5f4526', solid:true, hard:0.55},
+        5:{name:'Leaves', top:'#4f9d3a', body:'#4f9d3a', spec:'#3f8730', solid:false, hard:0.2},
+        6:{name:'Coal',   top:'#3a3d42', body:'#3a3d42', spec:'#17181b', solid:true, hard:1.0}
+    };
+    const HOTBAR = [GRASS, DIRT, STONE, WOOD, LEAVES, COAL];
+
+    // ---------- world ----------
+    const WW = 140, WH = 72;
+    let world = new Uint8Array(WW*WH);
+    let surf = [];
+    const idx = (x,y)=> y*WW + x;
+    function tile(x,y){ if(x<0||x>=WW||y<0) return AIR; if(y>=WH) return STONE; return world[idx(x,y)]; }
+    function setTile(x,y,v){ if(x<0||x>=WW||y<0||y>=WH) return; world[idx(x,y)] = v; }
+    function solid(x,y){ if(x<0||x>=WW) return true; if(y<0) return false; if(y>=WH) return true; const d=DEF[world[idx(x,y)]]; return !!(d && d.solid); }
+    const rnd = ()=> Math.random();
+
+    function genWorld(){
+        world = new Uint8Array(WW*WH); surf = [];
+        const base = Math.floor(WH*0.34); let walk = 0;
+        for(let x=0;x<WW;x++){
+            const s = Math.sin(x*0.18)*2.2 + Math.sin(x*0.05)*3.4;
+            if(rnd()<0.5) walk += (rnd()<0.5?-1:1); walk = Math.max(-4, Math.min(4, walk));
+            surf[x] = Math.round(base + s + walk*0.5);
+        }
+        for(let x=0;x<WW;x++){
+            const sy = surf[x];
+            for(let y=sy;y<WH;y++){
+                let t; if(y===sy) t=GRASS; else if(y<sy+4) t=DIRT; else t=STONE;
+                world[idx(x,y)] = t;
+            }
+            for(let y=sy+6;y<WH-2;y++){
+                if(rnd()<0.02){ for(let k=0;k<3+((rnd()*3)|0);k++){ const cx=x+((rnd()*3-1)|0), cy=y+((rnd()*3-1)|0); if(tile(cx,cy)===STONE) setTile(cx,cy,COAL); } }
+            }
+            for(let y=sy+7;y<WH-3;y++){
+                const n = Math.sin(x*0.3+y*0.2)+Math.sin(x*0.13-y*0.31);
+                if(n>1.35 && world[idx(x,y)]===STONE) world[idx(x,y)]=AIR;
+            }
+        }
+        for(let x=3;x<WW-3;x++){
+            if(rnd()<0.09){
+                const sy = surf[x]; if(tile(x,sy)!==GRASS) continue;
+                const h = 3+((rnd()*2)|0);
+                for(let k=1;k<=h;k++) setTile(x,sy-k,WOOD);
+                const ty = sy-h;
+                for(let lx=-2;lx<=2;lx++) for(let ly=-2;ly<=1;ly++){
+                    if(Math.abs(lx)===2 && ly<=-2) continue;
+                    if(tile(x+lx,ty+ly)===AIR) setTile(x+lx,ty+ly,LEAVES);
+                }
+                x += 3;
+            }
+        }
+    }
+
+    // ---------- view / sizing ----------
+    let TILE=26, VIEW_W=0, VIEW_H=0, DPR=1;
+    function fit(){
+        const cssW = Math.min(canvas.parentElement.clientWidth, 720);
+        const cssH = Math.round(cssW * 0.66);
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.style.height = cssH+'px';
+        canvas.width = Math.round(cssW*DPR); canvas.height = Math.round(cssH*DPR);
+        ctx.setTransform(DPR,0,0,DPR,0,0); ctx.imageSmoothingEnabled = false;
+        TILE = Math.max(20, Math.round(cssW/20));
+        VIEW_W = cssW; VIEW_H = cssH;
+    }
+
+    // ---------- entities ----------
+    const GRAV = 2000;
+    function collideX(e){
+        const l=e.x,r=e.x+e.w,t=e.y,b=e.y+e.h;
+        const ty0=Math.floor(t/TILE), ty1=Math.floor((b-0.01)/TILE);
+        if(e.vx>0){ const tx=Math.floor(r/TILE); for(let ty=ty0;ty<=ty1;ty++) if(solid(tx,ty)){ e.x=tx*TILE-e.w-0.01; e.vx=0; e.bump=true; break; } }
+        else if(e.vx<0){ const tx=Math.floor(l/TILE); for(let ty=ty0;ty<=ty1;ty++) if(solid(tx,ty)){ e.x=(tx+1)*TILE+0.01; e.vx=0; e.bump=true; break; } }
+    }
+    function collideY(e){
+        e.onGround=false;
+        const l=e.x,r=e.x+e.w,t=e.y,b=e.y+e.h;
+        const tx0=Math.floor(l/TILE), tx1=Math.floor((r-0.01)/TILE);
+        if(e.vy>0){ const ty=Math.floor(b/TILE); for(let tx=tx0;tx<=tx1;tx++) if(solid(tx,ty)){ e.y=ty*TILE-e.h-0.01; e.vy=0; e.onGround=true; break; } }
+        else if(e.vy<0){ const ty=Math.floor(t/TILE); for(let tx=tx0;tx<=tx1;tx++) if(solid(tx,ty)){ e.y=(ty+1)*TILE+0.01; e.vy=0; break; } }
+    }
+    function moveEntity(e,dt){
+        e.vy += GRAV*dt; if(e.vy>TILE*30) e.vy=TILE*30;
+        e.bump=false;
+        e.x += e.vx*dt; collideX(e);
+        e.y += e.vy*dt; collideY(e);
+        e.x = Math.max(0, Math.min(WW*TILE-e.w, e.x));
+    }
+
+    // player
+    const PW = ()=> TILE*0.72, PH = ()=> TILE*1.72;
+    const SPEED = ()=> TILE*7.5, JUMP = ()=> TILE*15.5;
+    let player = { x:0, y:0, w:0, h:0, vx:0, vy:0, onGround:false, dir:1 };
+    const cam = { x:0, y:0 };
+
+    // critters
+    const CRIT = {
+        pig:  { body:'#e79aa6', dark:'#c97f8b', w:1.15, h:0.8, speed:2.2 },
+        chick:{ body:'#f0d24e', dark:'#d8b23a', w:0.72, h:0.72, speed:3.2 }
+    };
+    let critters = [];
+    function spawnCritters(){
+        critters = [];
+        for(let i=0;i<7;i++){
+            const type = rnd()<0.5?'pig':'chick';
+            const cx = 5 + ((rnd()*(WW-10))|0);
+            critters.push({ type, x:cx*TILE, y:(surf[cx]-3)*TILE, w:0,h:0, vx:0, vy:0, onGround:false, dir:rnd()<0.5?-1:1, walking:false, t:rnd()*2, anim:0 });
+        }
+    }
+
+    // ---------- inventory ----------
+    const inv = {}; HOTBAR.forEach(t=> inv[t]=0);
+    let sel = 0, particles = [], running = false, clock = 0;
+    let mining = { active:false, prog:0, tx:-1, ty:-1 };
+    let swingT = 0, hover = {tx:-1,ty:-1}, mode='mine';
+
+    function buildHotbar(){
+        hotbarEl.innerHTML = '';
+        HOTBAR.forEach((t,i)=>{
+            const d = DEF[t];
+            const el = document.createElement('div');
+            el.className = 'slot'+(i===sel?' active':'');
+            el.innerHTML = '<span class="n">'+(i+1)+'</span><span class="sw" style="background:'+d.top+'"></span><span class="c" id="cc'+t+'">'+inv[t]+'</span>';
+            el.addEventListener('click', ()=>{ sel=i; refreshHotbar(); });
+            hotbarEl.appendChild(el);
+        });
+    }
+    function refreshHotbar(){
+        [...hotbarEl.children].forEach((el,i)=> el.classList.toggle('active', i===sel));
+        HOTBAR.forEach(t=>{ const c=document.getElementById('cc'+t); if(c) c.textContent=inv[t]; });
+    }
+
+    // ---------- input ----------
+    let keyL=false, keyR=false, jumpHeld=false;
+    window.addEventListener('keydown', e=>{
+        if(e.code==='ArrowLeft'||e.code==='KeyA') keyL=true;
+        else if(e.code==='ArrowRight'||e.code==='KeyD') keyR=true;
+        else if(e.code==='ArrowUp'||e.code==='KeyW'||e.code==='Space'){ jumpHeld=true; e.preventDefault(); }
+        else if(e.code.startsWith('Digit')){ const n=+e.code.slice(5); if(n>=1&&n<=HOTBAR.length){ sel=n-1; refreshHotbar(); } }
+    });
+    window.addEventListener('keyup', e=>{
+        if(e.code==='ArrowLeft'||e.code==='KeyA') keyL=false;
+        else if(e.code==='ArrowRight'||e.code==='KeyD') keyR=false;
+        else if(e.code==='ArrowUp'||e.code==='KeyW'||e.code==='Space') jumpHeld=false;
+    });
+    canvas.addEventListener('wheel', e=>{ e.preventDefault(); sel=(sel+(e.deltaY>0?1:HOTBAR.length-1))%HOTBAR.length; refreshHotbar(); }, {passive:false});
+    canvas.addEventListener('contextmenu', e=> e.preventDefault());
+
+    function canvasToTile(clientX, clientY){
+        const r = canvas.getBoundingClientRect();
+        const mx = (clientX-r.left)/r.width*VIEW_W + cam.x;
+        const my = (clientY-r.top)/r.height*VIEW_H + cam.y;
+        return { tx:Math.floor(mx/TILE), ty:Math.floor(my/TILE) };
+    }
+    function inReach(tx,ty){
+        const pcx=(player.x+player.w/2)/TILE, pcy=(player.y+player.h/2)/TILE;
+        return Math.hypot(tx+0.5-pcx, ty+0.5-pcy) <= 4.8;
+    }
+    function overlapsPlayer(tx,ty){
+        return !((player.x+player.w)<=tx*TILE || player.x>=(tx+1)*TILE || (player.y+player.h)<=ty*TILE || player.y>=(ty+1)*TILE);
+    }
+    function breakBlock(tx,ty){
+        const v = tile(tx,ty), d=DEF[v]; if(v===AIR || !d) return;
+        if(inv[v]!==undefined) inv[v]++;
+        setTile(tx,ty,AIR);
+        for(let i=0;i<10;i++){ const a=rnd()*6.28, s=30+rnd()*110; particles.push({x:tx*TILE+TILE/2,y:ty*TILE+TILE/2,vx:Math.cos(a)*s,vy:Math.sin(a)*s-50,life:1,col:d.body}); }
+        refreshHotbar();
+    }
+    function placeAt(tx,ty){
+        if(!inReach(tx,ty)||tile(tx,ty)!==AIR||overlapsPlayer(tx,ty)) return;
+        const t = HOTBAR[sel]; if(inv[t]<=0) return;
+        inv[t]--; setTile(tx,ty,t); swingT=0.22; refreshHotbar();
+    }
+    canvas.addEventListener('pointerdown', e=>{
+        if(!running) return;
+        const p = canvasToTile(e.clientX, e.clientY); hover=p;
+        const place = (e.pointerType==='touch') ? (mode==='build') : (e.button===2);
+        if(place) placeAt(p.tx,p.ty);
+        else { mining.active=true; }
+    });
+    canvas.addEventListener('pointermove', e=>{ hover = canvasToTile(e.clientX,e.clientY); });
+    function stopMining(){ mining.active=false; mining.prog=0; mining.tx=-1; mining.ty=-1; }
+    window.addEventListener('pointerup', stopMining);
+    window.addEventListener('pointercancel', stopMining);
+
+    function hold(id, on, off){ const el=document.getElementById(id);
+        el.addEventListener('pointerdown', e=>{ e.preventDefault(); on(); });
+        el.addEventListener('pointerup',   e=>{ e.preventDefault(); off&&off(); });
+        el.addEventListener('pointerleave',()=> off&&off());
+    }
+    hold('tLeft', ()=>keyL=true, ()=>keyL=false);
+    hold('tRight',()=>keyR=true, ()=>keyR=false);
+    hold('tJump', ()=>jumpHeld=true, ()=>jumpHeld=false);
+    document.getElementById('tMode').addEventListener('click', function(){ mode = mode==='mine'?'build':'mine'; this.textContent = mode.toUpperCase(); });
+    if(window.matchMedia('(pointer: coarse)').matches) document.body.classList.add('touch');
+    startBtn.addEventListener('click', ()=>{ running=true; overlay.classList.add('hidden'); });
+
+    // ---------- update ----------
+    function updateCritter(c, dt){
+        const cd = CRIT[c.type]; c.w = TILE*cd.w; c.h = TILE*cd.h;
+        c.t -= dt;
+        if(c.t<=0){ c.walking = rnd()<0.62; if(c.walking && rnd()<0.5) c.dir *= -1; c.t = 1+rnd()*2.4; }
+        // skitter from the player
+        const dx = player.x - c.x;
+        if(Math.abs(dx) < TILE*3.2 && Math.abs(player.y-c.y) < TILE*3.5){ c.walking=true; c.dir = dx>0?-1:1; }
+        // wall / cliff awareness
+        if(c.onGround){
+            const footY = Math.floor((c.y+c.h-2)/TILE);
+            const frontX = Math.floor((c.dir>0 ? c.x+c.w+2 : c.x-2)/TILE);
+            if(solid(frontX, footY)){ if(!solid(frontX, footY-1)) c.vy = -JUMP()*0.62; else c.dir*=-1; }
+            else if(!solid(frontX, footY+1)) c.dir*=-1;
+        }
+        c.vx = c.walking ? c.dir*TILE*cd.speed : 0;
+        moveEntity(c, dt);
+        if(Math.abs(c.vx)>1) c.anim += dt*9; else c.anim = 0;
+    }
+    function update(dt){
+        clock += dt; if(swingT>0) swingT -= dt;
+
+        player.w=PW(); player.h=PH();
+        const dir=(keyR?1:0)-(keyL?1:0);
+        player.vx=dir*SPEED(); if(dir) player.dir=dir;
+        if(jumpHeld && player.onGround){ player.vy=-JUMP(); player.onGround=false; }
+        moveEntity(player, dt);
+
+        for(const c of critters) updateCritter(c, dt);
+
+        // mining (hold to break, cracks grow)
+        if(mining.active){
+            const {tx,ty}=hover; const v=tile(tx,ty);
+            if(inReach(tx,ty) && v!==AIR && DEF[v]){
+                if(tx!==mining.tx||ty!==mining.ty){ mining.tx=tx; mining.ty=ty; mining.prog=0; }
+                mining.prog += dt/DEF[v].hard;
+                if(mining.prog>=1){ breakBlock(tx,ty); mining.prog=0; mining.tx=-1; mining.ty=-1; }
+            } else { mining.prog=0; mining.tx=-1; mining.ty=-1; }
+        }
+
+        for(let i=particles.length-1;i>=0;i--){ const p=particles[i]; p.life-=dt*1.6; if(p.life<=0){particles.splice(i,1);continue;} p.vy+=900*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; }
+
+        cam.x = Math.max(0, Math.min(WW*TILE-VIEW_W, player.x+player.w/2 - VIEW_W/2));
+        cam.y = Math.max(0, Math.min(WH*TILE-VIEW_H, player.y+player.h/2 - VIEW_H/2));
+    }
+
+    // ---------- render ----------
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    const hx=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+    function mix(h1,h2,t){ const a=hx(h1),b=hx(h2); return 'rgb('+Math.round(lerp(a[0],b[0],t))+','+Math.round(lerp(a[1],b[1],t))+','+Math.round(lerp(a[2],b[2],t))+')'; }
+    function skyColor(wy){
+        const surfPx = WH*0.34*TILE;
+        if(wy < surfPx) return mix('#5aa9e6','#bfe3f5', Math.max(0,Math.min(1, wy/surfPx)));
+        return mix('#3a2f28','#120d0a', Math.min(1,(wy-surfPx)/((WH*TILE)-surfPx)));
+    }
+    function drawTile(t, sx, sy, tx, ty){
+        const d=DEF[t]; if(!d) return; const s=TILE, ix=Math.round(sx), iy=Math.round(sy);
+        if(t===GRASS){ ctx.fillStyle=d.body; ctx.fillRect(ix,iy,s,s); ctx.fillStyle=d.top; ctx.fillRect(ix,iy,s,Math.round(s*0.3)); }
+        else if(t===LEAVES){ ctx.globalAlpha=0.95; ctx.fillStyle=d.body; ctx.fillRect(ix,iy,s,s); ctx.globalAlpha=1; }
+        else { ctx.fillStyle=d.body; ctx.fillRect(ix,iy,s,s); }
+        const h=((tx*73856093)^(ty*19349663))>>>0; ctx.fillStyle=d.spec;
+        for(let k=0;k<3;k++){ const px=ix+((h>>(k*5))&7)/8*s*0.8, py=iy+((h>>(k*5+3))&7)/8*s*0.8; const sp=Math.max(2,Math.round(s*0.12)); ctx.fillRect(Math.round(px),Math.round(py),sp,sp); }
+    }
+    function drawCracks(){
+        if(!(mining.active && mining.prog>0 && mining.tx>=0)) return;
+        const s=TILE, ix=mining.tx*TILE-cam.x, iy=mining.ty*TILE-cam.y;
+        ctx.fillStyle='rgba(0,0,0,'+(mining.prog*0.18)+')'; ctx.fillRect(ix,iy,s,s);
+        ctx.strokeStyle='rgba(0,0,0,.6)'; ctx.lineWidth=Math.max(1,s*0.05);
+        const n=Math.ceil(mining.prog*5);
+        for(let k=0;k<n;k++){ const a=k*2.399; ctx.beginPath(); ctx.moveTo(ix+s/2,iy+s/2); ctx.lineTo(ix+s/2+Math.cos(a)*s*0.5, iy+s/2+Math.sin(a)*s*0.5); ctx.stroke(); }
+    }
+    function drawCritter(c){
+        const cd=CRIT[c.type];
+        const x=Math.round(c.x-cam.x), y=Math.round(c.y-cam.y), w=Math.round(c.w), h=Math.round(c.h);
+        const leg = Math.sin(c.anim)*Math.max(2,h*0.14), lw=Math.max(3,Math.round(w*0.18)), lh=Math.round(h*0.28);
+        ctx.fillStyle=cd.dark;
+        ctx.fillRect(x+Math.round(w*0.12), y+h-lh+Math.round(c.vx?leg:0), lw, lh);
+        ctx.fillRect(x+w-Math.round(w*0.12)-lw, y+h-lh-Math.round(c.vx?leg:0), lw, lh);
+        ctx.fillStyle=cd.body; ctx.fillRect(x, y, w, h-Math.round(h*0.14));
+        const fx = c.dir>0 ? x+w-Math.round(w*0.3) : x;   // facing side
+        if(c.type==='pig'){
+            ctx.fillStyle=cd.dark; ctx.fillRect(fx, y+Math.round(h*0.28), Math.round(w*0.3), Math.round(h*0.4)); // snout
+            ctx.fillStyle='#7a4b53'; ctx.fillRect(fx+Math.round(w*0.08), y+Math.round(h*0.42), 2, 3);
+            // ear
+            ctx.fillStyle=cd.dark; ctx.fillRect(c.dir>0? x+w-Math.round(w*0.28): x+Math.round(w*0.12), y-Math.round(h*0.06), Math.round(w*0.16), Math.round(h*0.16));
+        } else {
+            ctx.fillStyle='#ff8a3d'; ctx.fillRect(c.dir>0? x+w : x-Math.round(w*0.18), y+Math.round(h*0.34), Math.round(w*0.18), Math.max(2,Math.round(h*0.14))); // beak
+            ctx.fillStyle='#e0503a'; ctx.fillRect(x+Math.round(w*0.35), y-Math.round(h*0.12), Math.round(w*0.3), Math.round(h*0.14)); // comb
+        }
+        ctx.fillStyle='#141414';
+        ctx.fillRect(c.dir>0? x+w-Math.round(w*0.34): x+Math.round(w*0.2), y+Math.round(h*0.2), Math.max(2,Math.round(w*0.12)), Math.max(2,Math.round(h*0.14))); // eye
+    }
+    function drawPlayer(){
+        const x=Math.round(player.x-cam.x), y=Math.round(player.y-cam.y), w=Math.round(player.w), h=Math.round(player.h);
+        ctx.fillStyle='#333842'; ctx.fillRect(x, y+Math.round(h*0.62), w, Math.round(h*0.38));                 // legs
+        ctx.fillStyle='#ff5a36'; ctx.fillRect(x, y+Math.round(h*0.32), w, Math.round(h*0.32));                 // shirt
+        ctx.fillStyle='#e8b98a'; ctx.fillRect(x, y, w, Math.round(h*0.34));                                     // head
+        ctx.fillStyle='#3a2a1c'; ctx.fillRect(x, y, w, Math.round(h*0.1));                                      // hair
+        ctx.fillStyle='#1a1a1a';                                                                                 // eye
+        const ex = player.dir>0 ? x+w-Math.round(w*0.34) : x+Math.round(w*0.18);
+        ctx.fillRect(ex, y+Math.round(h*0.16), Math.max(2,Math.round(w*0.16)), Math.max(2,Math.round(h*0.06)));
+        // arm (reaches toward the cursor while mining / placing)
+        const sx=x+Math.round(w*0.5), sy=y+Math.round(h*0.42);
+        let ang, active = mining.active || swingT>0;
+        if(active){
+            const wx=(hover.tx*TILE+TILE/2)-cam.x, wy=(hover.ty*TILE+TILE/2)-cam.y;
+            ang=Math.atan2(wy-sy, wx-sx);
+            if(mining.active) ang += Math.sin(clock*22)*0.5;
+            else ang += Math.sin((0.22-swingT)*26)*0.7;
+        } else ang = player.dir>0 ? 0.55 : Math.PI-0.55;
+        ctx.save(); ctx.translate(sx,sy); ctx.rotate(ang);
+        const aL=Math.max(7,Math.round(w*1.05)), aW=Math.max(3,Math.round(h*0.11));
+        ctx.fillStyle='#e8b98a'; ctx.fillRect(0,-Math.round(aW/2), aL, aW);
+        ctx.fillStyle='#d79f70'; ctx.fillRect(aL-aW,-Math.round(aW/2), aW, aW);   // fist
+        ctx.restore();
+    }
+    function render(){
+        const g=ctx.createLinearGradient(0,0,0,VIEW_H);
+        g.addColorStop(0, skyColor(cam.y)); g.addColorStop(1, skyColor(cam.y+VIEW_H));
+        ctx.fillStyle=g; ctx.fillRect(0,0,VIEW_W,VIEW_H);
+        if(cam.y < WH*0.34*TILE){ ctx.fillStyle='rgba(255,240,190,.9)'; ctx.beginPath(); ctx.arc(VIEW_W*0.82 - cam.x*0.05, 46, 22, 0, 7); ctx.fill(); }
+
+        const tx0=Math.floor(cam.x/TILE), tx1=Math.ceil((cam.x+VIEW_W)/TILE);
+        const ty0=Math.floor(cam.y/TILE), ty1=Math.ceil((cam.y+VIEW_H)/TILE);
+        for(let ty=ty0;ty<=ty1;ty++) for(let tx=tx0;tx<=tx1;tx++){ const t=tile(tx,ty); if(t!==AIR) drawTile(t, tx*TILE-cam.x, ty*TILE-cam.y, tx, ty); }
+        drawCracks();
+
+        if(running && hover.tx>=0){
+            ctx.strokeStyle = inReach(hover.tx,hover.ty) ? 'rgba(255,255,255,.85)' : 'rgba(255,255,255,.2)';
+            ctx.lineWidth=2; ctx.strokeRect(hover.tx*TILE-cam.x+1, hover.ty*TILE-cam.y+1, TILE-2, TILE-2);
+        }
+        for(const c of critters){ if(c.x-cam.x>-TILE*2 && c.x-cam.x<VIEW_W+TILE*2) drawCritter(c); }
+        for(const p of particles){ ctx.globalAlpha=Math.max(0,p.life); ctx.fillStyle=p.col; ctx.fillRect(Math.round(p.x-cam.x-2),Math.round(p.y-cam.y-2),4,4); }
+        ctx.globalAlpha=1;
+        drawPlayer();
+    }
+
+    // ---------- loop ----------
+    let last=0;
+    function frame(ts){ const dt = last ? Math.min((ts-last)/1000, 0.033) : 0; last=ts; if(running) update(dt); render(); requestAnimationFrame(frame); }
+
+    // ---------- boot ----------
+    window.addEventListener('resize', fit);
+    fit(); genWorld(); spawnCritters();
+    player.w=PW(); player.h=PH();
+    player.x = Math.floor(WW/2)*TILE; player.y = (surf[Math.floor(WW/2)]-3)*TILE;
+    cam.x = player.x - VIEW_W/2; cam.y = player.y - VIEW_H/2;
+    buildHotbar();
+    requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
